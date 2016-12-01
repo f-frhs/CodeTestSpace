@@ -5,59 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-
-//-----------------------------------------------------------------------
-//class Program
-//{
-//    static void Main(string[] args)
-//    {
-//        StoresXmlRead();
-//        //Console.ReadKey();
-//    }
-
-//    static private void StoresXmlRead()
-//    {
-//        using (StreamReader reader = new StreamReader(@"C:\Users\hayashi\Desktop\test\aaa.xml"))
-//        {
-//            XmlSerializer serializer = new XmlSerializer(typeof(Stores));
-//            var value = (Stores)serializer.Deserialize(reader);
-//            Console.WriteLine(string.Format("NumOfStore = {0}.", value.store.Length));
-//            foreach (Store s in value.store)
-//            {
-//                Console.WriteLine(string.Format("Name = {0}", s.Name));
-//                foreach (Area a in s.area)
-//                {
-//                    Console.WriteLine(string.Format("description = {0}", a.description));
-//                }
-//            }
-//        }
-//    }
-//}
-
-//[XmlRootAttribute(Namespace = "", IsNullable = false)]
-//public class Stores
-//{
-//    [System.Xml.Serialization.XmlElementAttribute("Store")]
-//    public Store[] store { get; set; }
-//}
-
-//[XmlRootAttribute(Namespace = "", IsNullable = false)]
-//public class Store
-//{
-//    public string Name { get; set; }
-
-//    [XmlElementAttribute("Area")]
-//    public Area[] area { get; set; }
-//}
-
-//[XmlRoot(Namespace = "", IsNullable = false)]
-//public class Area
-//{
-//    public string description { get; set; }
-//}
-//-----------------------------------------------------------------------
-//                  ↑参考　↓改造
-//-----------------------------------------------------------------------
+using Microsoft.Office.Interop.Excel;
+using static System.Net.Mime.MediaTypeNames;
 
 class Program
 {
@@ -65,12 +14,12 @@ class Program
     {
         foreach (string file in GetFiles(@"C:\Users\hayashi\Desktop\csvtesrt"))
         {
-            StoresXmlRead(file);
+            XmlRead(file);
         }
         Console.ReadLine();
     }
 
-    static private void StoresXmlRead(string file)
+    static private void XmlRead(string file)
     {
         using (StreamReader reader = new StreamReader(file))
         {
@@ -128,6 +77,58 @@ class Program
             }
         }
     }
+
+    //static private void ExcelOutPut()
+    //{
+    //    //Excelのパス
+    //    string fileName = @"C:\c_sharp\test.xlsx";
+    //    Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+
+    //    //Excelが開かないようにする
+    //    xlApp.Visible = false;
+
+    //    //指定したパスのExcelを起動
+    //    Workbook wb = xlApp.Workbooks.Open(Filename: fileName);
+
+    //    try
+    //    {
+    //        //Sheetを指定
+    //        ((Worksheet)wb.Sheets[1]).Select();
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        //Sheetがなかった場合のエラー処理
+
+    //        //Appを閉じる
+    //        wb.Close(false);
+    //        xlApp.Quit();
+
+    //        //Errorメッセージ
+    //        Console.WriteLine("指定したSheetは存在しません．");
+    //        Console.ReadLine();
+
+    //        //実行を終了
+    //        System.Environment.Exit(0);
+    //    }
+
+    //    //変数宣言
+    //    Range CellRange;
+
+    //    foreach (string file in GetFiles(@"C:\Users\hayashi\Desktop\csvtesrt"))
+    //    {
+    //        //XmlRead(file);
+
+    //        //書き込む場所を指定
+    //        CellRange = xlApp.Cells[] as Range;
+
+    //        //書き込む内容
+    //        CellRange.Value2 = XmlRead(); ;
+    //    }
+
+    //    //Appを閉じる
+    //    wb.Close(true);
+    //    xlApp.Quit();
+    //}
 }
 
 [XmlRootAttribute(Namespace = "", IsNullable = false)]
@@ -202,5 +203,3 @@ public class measurement
     [XmlElement("absolute")]
     public string Absolute { get; set; }
 }
-
-//-----------------------------------------------------------------------
