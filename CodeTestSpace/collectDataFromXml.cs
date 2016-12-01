@@ -74,21 +74,10 @@ class Program
     {
         using (StreamReader reader = new StreamReader(file))
         {
+            DirectoryInfo dirInfo = Directory.GetParent(file);
+
             XmlSerializer serializer = new XmlSerializer(typeof(dot));
             var value = (dot)serializer.Deserialize(reader);
-
-            //foreach (cell CE in value.Cell)
-            //{
-            //    Console.WriteLine(string.Format("cell = {0}", CE.Name));
-            //}
-
-            //foreach (cycle CY in value.Cycle)
-            //{
-            //    foreach (date DA in CY.Date)
-            //    {
-            //        Console.WriteLine(string.Format("cycle = {0}", DA.Month));
-            //    }
-            //}
 
             foreach (inspectionpoint IP in value.Inspectionpoint)
             {
@@ -96,7 +85,7 @@ class Program
                 {
                     foreach(measurement ME in CH.Measurement)
                     {
-                        Console.WriteLine(string.Format($"{IP.Name}, {CH.Defaultname}, {ME.Absolute}"));
+                        Console.WriteLine(string.Format($"{dirInfo.Name}, {IP.Name}, {CH.Defaultname}, {ME.Absolute}"));
                     }
                 }
             }
@@ -124,7 +113,7 @@ class Program
             string[] files = null;
             try
             {
-                files = Directory.GetFiles(path);
+                files = Directory.GetFiles(path, "*.xml");
             }
             catch (Exception ex)
             {
