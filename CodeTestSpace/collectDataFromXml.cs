@@ -1,70 +1,105 @@
 ﻿// collectDataFroXmlFiles.cs <= mgetFileName.cs
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
+using System.Xml;
 using System.Xml.Serialization;
 
-class Mainclass
+//-----------------------------------------------------------------------
+//class Program
+//{
+//    static void Main(string[] args)
+//    {
+//        StoresXmlRead();
+//        //Console.ReadKey();
+//    }
+
+//    static private void StoresXmlRead()
+//    {
+//        using (StreamReader reader = new StreamReader(@"C:\Users\hayashi\Desktop\test\aaa.xml"))
+//        {
+//            XmlSerializer serializer = new XmlSerializer(typeof(Stores));
+//            var value = (Stores)serializer.Deserialize(reader);
+//            Console.WriteLine(string.Format("NumOfStore = {0}.", value.store.Length));
+//            foreach (Store s in value.store)
+//            {
+//                Console.WriteLine(string.Format("Name = {0}", s.Name));
+//                foreach (Area a in s.area)
+//                {
+//                    Console.WriteLine(string.Format("description = {0}", a.description));
+//                }
+//            }
+//        }
+//    }
+//}
+
+//[XmlRootAttribute(Namespace = "", IsNullable = false)]
+//public class Stores
+//{
+//    [System.Xml.Serialization.XmlElementAttribute("Store")]
+//    public Store[] store { get; set; }
+//}
+
+//[XmlRootAttribute(Namespace = "", IsNullable = false)]
+//public class Store
+//{
+//    public string Name { get; set; }
+
+//    [XmlElementAttribute("Area")]
+//    public Area[] area { get; set; }
+//}
+
+//[XmlRoot(Namespace = "", IsNullable = false)]
+//public class Area
+//{
+//    public string description { get; set; }
+//}
+//-----------------------------------------------------------------------
+//                  ↑参考　↓改造
+//-----------------------------------------------------------------------
+
+class Program
 {
-    static void Main(string[] arg)
+    static void Main(string[] args)
     {
-        foreach (string file in GetFiles(@"C:\Users\hayashi\Desktop\test"))
-        //foreach (string file in GetFiles(@"C:\Users\hayashi\Desktop\csvtesrt\1"))
+        foreach (string file in GetFiles(@"C:\Users\hayashi\Desktop\csvtesrt"))
         {
-            //Console.WriteLine(file);
-            //XDocument doc = XDocument.Load(file);
+            StoresXmlRead(file);
+        }
+        Console.ReadLine();
+    }
 
-            //var authors = doc.Descendants("absolute");
+    static private void StoresXmlRead(string file)
+    {
+        using (StreamReader reader = new StreamReader(file))
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(dot));
+            var value = (dot)serializer.Deserialize(reader);
 
-            //foreach (var author in authors)
+            //foreach (cell CE in value.Cell)
             //{
-            //    Console.WriteLine(author.Value);
+            //    Console.WriteLine(string.Format("cell = {0}", CE.Name));
             //}
-            //Console.ReadLine();
 
-            //  ---MDM系---
-            //FileStream inputStream = new FileStream(file, FileMode.Open); // ファイルストリームのインスタンスを作る。
-            //XmlSerializer serializer = new XmlSerializer(typeof(Company)); // シリアライザーのインスタンスを作る。
-            //Company model = (Company)serializer.Deserialize(inputStream); // 逆シリアライズしてオブジェクトに格納する。
-            //// 読み込んだデータの表示
-            //foreach (Person person in model.Person)
+            //foreach (cycle CY in value.Cycle)
             //{
-            //    Console.WriteLine(String.Format("ID={0}, Name={1}, NickName={2}, Color={3}", person.ID, person.Name, person.NickName, person.Color));
+            //    foreach (date DA in CY.Date)
+            //    {
+            //        Console.WriteLine(string.Format("cycle = {0}", DA.Month));
+            //    }
             //}
-            //  ---MDM系---
 
-            //var q = from parent in XElement.Parse(rsp).Element("root").Elements("parent")
-            //        from child in parent.Elements("child")
-            //        from item in child.Elements("item")
-            //        select new { Parent = parent, Child = child, Item = item };
-            //foreach (var x in q)
-            //{
-            //    Console.WriteLine("parent:{0}, child:{1}, item:{2}",
-            //        x.Parent.Attribute("id").Value,
-            //        x.Child.Attribute("id").Value,
-            //        x.Item.Attribute("id").Value
-            //        );
-            //}
-            //http://blogs.wankuma.com/masaru/archive/2011/08/08/201490.aspx
-            //
-
-            System.IO.FileStream fs = new System.IO.FileStream(file, System.IO.FileMode.Open);
-            System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(Cycleresult));
-            Cycleresult result = (Cycleresult)serializer.Deserialize(fs);
-
-            //Console.WriteLine(String.Format("SYSTEM={0}, Version={1}", configModel.SystemName, configModel.Version));
-            foreach (Date dataTime in result.Cycle)
+            foreach (inspectionpoint IP in value.Inspectionpoint)
             {
-                Console.WriteLine(String.Format("Month={0}, Day={1}, Year={2}", dataTime.Month, dataTime.Day, dataTime.Year));
+                foreach (characteristic CH in IP.Characteristic)
+                {
+                    foreach(measurement ME in CH.Measurement)
+                    {
+                        Console.WriteLine(string.Format($"{IP.Name}, {CH.Defaultname}, {ME.Absolute}"));
+                    }
+                }
             }
-            fs.Close();
-
         }
     }
 
@@ -78,7 +113,6 @@ class Mainclass
             try
             {
                 foreach (string subDir in Directory.GetDirectories(path))
-                //foreach (string subDir in Directory.EnumerateFiles(@"C:\Users\hayashi\Desktop\2016_1115_data", "*.xml")), System.IO.SearchOption.AllDirectories))
                 {
                     queue.Enqueue(subDir);
                 }
@@ -104,72 +138,80 @@ class Mainclass
                 }
             }
         }
-        Console.ReadLine();
     }
 }
 
-//  ---MDM系---
-//[System.Xml.Serialization.XmlRoot("company")]
-//public class Company
+[XmlRootAttribute(Namespace = "", IsNullable = false)]
+public class dot
+{
+    //[XmlElement("cell")]
+    //public cell[] Cell { get; set; }
+
+    //[XmlElement("parttype")]
+    //public parttype[] Parttype { get; set; }
+
+    [XmlElement("cycle")]
+    public cycle[] Cycle { get; set; }
+
+    public string STORED { get; set; }
+
+    [XmlElement("inspectionpoint")]
+    public inspectionpoint[] Inspectionpoint { get; set; }
+}
+
+//[XmlRoot(Namespace = "", IsNullable = false)]
+//public class cell
 //{
-//    // XMLファイル内にcompany要素直下のperson要素が複数あるので、プロパティをコレクションにする。
-//    [System.Xml.Serialization.XmlElement("person")]
-//    public System.Collections.Generic.List<Person> Person { get; set; }
+//    [XmlElement("name")]
+//    public string Name { get; set; }
 //}
-//public class Person
+
+//[XmlRoot(Namespace = "", IsNullable = false)]
+//public class parttype
 //{
-//    [System.Xml.Serialization.XmlAttribute("id")]
-//    public String ID { get; set; }
-//    [System.Xml.Serialization.XmlElement("name")]
-//    public String Name { get; set; }
-//    [System.Xml.Serialization.XmlElement("color")]
-//    public String Color { get; set; }
-//    [System.Xml.Serialization.XmlElement("nickname")]
-//    public String NickName { get; set; }
+//    [XmlElement("name")]
+//    public string Name { get; set; }
 //}
-//  ---MDM系---
 
-
-
-[System.Xml.Serialization.XmlRoot("cycleresult")]
-public class Cycleresult
+[XmlRoot(Namespace = "", IsNullable = false)]
+public class cycle
 {
-    [System.Xml.Serialization.XmlArray("cell")]
-    [System.Xml.Serialization.XmlArrayItem("name")]
-    public string Cell { get; set; }
-
-    [System.Xml.Serialization.XmlArray("parttype")]
-    [System.Xml.Serialization.XmlArrayItem("name")]
-    public string Parttype { get; set; }
-
-    [System.Xml.Serialization.XmlArray("cycle")]
-    [System.Xml.Serialization.XmlArrayItem("date")]
-    [System.Xml.Serialization.XmlArrayItem("time")]
-    public List<Date> Cycle { get; set; }
+    [XmlElement("date")]
+    public date[] Date { get; set; }
 }
 
-[Serializable]
-public class Date
+[XmlRoot(Namespace = "", IsNullable = false)]
+public class date
 {
-    [System.Xml.Serialization.XmlElement("month")]
+    [XmlElement("month")]
     public string Month { get; set; }
-
-    [System.Xml.Serialization.XmlElement("day")]
-    public string Day { get; set; }
-
-    [System.Xml.Serialization.XmlElement("year")]
-    public string Year { get; set; }
 }
 
-[Serializable]
-public class Time
+[XmlRoot(Namespace = "", IsNullable = false)]
+public class inspectionpoint
 {
-    [System.Xml.Serialization.XmlElement("hour")]
-    public string Month { get; set; }
+    [XmlElement("name")]
+    public string Name { get; set; }
 
-    [System.Xml.Serialization.XmlElement("minute")]
-    public string Day { get; set; }
-
-    [System.Xml.Serialization.XmlElement("second")]
-    public string Year { get; set; }
+    [XmlElement("characteristic")]
+    public characteristic[] Characteristic { get; set; }
 }
+
+[XmlRoot(Namespace = "", IsNullable = false)]
+public class characteristic
+{
+    [XmlElement("defaultname")]
+    public string Defaultname { get; set; }
+
+    [XmlElement("measurement")]
+    public measurement[] Measurement { get; set; }
+}
+
+[XmlRoot(Namespace = "", IsNullable = false)]
+public class measurement
+{
+    [XmlElement("absolute")]
+    public string Absolute { get; set; }
+}
+
+//-----------------------------------------------------------------------
