@@ -11,6 +11,7 @@ using System.Linq;
 
 class Program
 {
+    //private static List<Tuple<string, string, string, double>> list;
     private static List<Tuple<string, string, string, double>> list;
 
     static void Main(string[] args)
@@ -34,8 +35,7 @@ class Program
 
             ////計算結果の出力
             //var sum = (list.Select(d => d.Item4).Sum());
-            //var oddList = (list.FindAll(IsSmaller));
-
+            //var boo = list.Where(x => x.Item3 == x);
 
         }
         Console.ReadLine();
