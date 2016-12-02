@@ -7,19 +7,88 @@ using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.Office.Interop.Excel;
 using static System.Net.Mime.MediaTypeNames;
+using System.Linq;
 
 class Program
 {
+    private static List<Tuple<string, string, string, double>> list;
+
     static void Main(string[] args)
     {
         foreach (string file in GetFiles(@"C:\Users\hayashi\Desktop\csvtesrt"))
         {
             XmlRead(file);
+
+            //個々の出力
+            //oDo: list全体をエクセルに吐き出す
+            //
+
+            foreach (var tuple in list)
+            {
+                var Name = tuple.Item1;
+                var IPName = tuple.Item2;
+                var DefaltName = tuple.Item3;
+                var Absolute = tuple.Item4;
+                Console.WriteLine(string.Format($"{Name}, {IPName}, {DefaltName}, {Absolute}"));
+            }
+
+            ////計算結果の出力
+            //var sum = (list.Select(d => d.Item4).Sum());
+            //var oddList = (list.FindAll(IsSmaller));
+
+
         }
         Console.ReadLine();
     }
 
-    static private void XmlRead(string file)
+    private static bool IsSmaller(int num)
+    {
+        return num < 5;
+    }
+
+    ////渡されたパスのxmlをデシリアライズcmdに書き出し
+    //static private void XmlRead(string file)
+    //{
+    //    using (StreamReader reader = new StreamReader(file))
+    //    {
+    //        DirectoryInfo dirInfo = Directory.GetParent(file);
+
+    //        XmlSerializer serializer = new XmlSerializer(typeof(dot));
+    //        var value = (dot)serializer.Deserialize(reader);
+
+    //        foreach (inspectionpoint IP in value.Inspectionpoint)
+    //        {
+    //            foreach (characteristic CH in IP.Characteristic)
+    //            {
+    //                foreach(measurement ME in CH.Measurement)
+    //                {
+    //                    Console.WriteLine(string.Format($"{dirInfo.Name}, {IP.Name}, {CH.Defaultname}, {ME.Absolute}"));
+
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
+
+    // 標準偏差計算
+    private Double CalcStandardDeviation(Double[] p_Values)
+    {
+        //平均を取得
+        Double l_Average = p_Values.Average();
+
+        //「σの二乗×データ数」まで計算
+        Double l_StandardDeviation = 0;
+        foreach (Double f_Value in p_Values)
+        {
+            l_StandardDeviation += (f_Value - l_Average) * (f_Value - l_Average);
+        }
+
+        //σを算出して返却
+        return Math.Sqrt(l_StandardDeviation / p_Values.Length);
+    }
+
+    //渡されたパスのxmlをデシリアライズ配列に書き出し　
+    private static void XmlRead(string file)
     {
         using (StreamReader reader = new StreamReader(file))
         {
@@ -27,20 +96,22 @@ class Program
 
             XmlSerializer serializer = new XmlSerializer(typeof(dot));
             var value = (dot)serializer.Deserialize(reader);
+            list = new List<Tuple<string, string, string, double>>();
 
             foreach (inspectionpoint IP in value.Inspectionpoint)
             {
                 foreach (characteristic CH in IP.Characteristic)
                 {
-                    foreach(measurement ME in CH.Measurement)
+                    foreach (measurement ME in CH.Measurement)
                     {
-                        Console.WriteLine(string.Format($"{dirInfo.Name}, {IP.Name}, {CH.Defaultname}, {ME.Absolute}"));
+                        list.Add(Tuple.Create(dirInfo.Name, IP.Name, CH.Defaultname, double.Parse(ME.Absolute)));
                     }
                 }
             }
         }
     }
 
+    //指定階層下のフォルダからxmlのパスを書き出し返す
     static IEnumerable<string> GetFiles(string path)
     {
         Queue<string> queue = new Queue<string>();
@@ -77,60 +148,9 @@ class Program
             }
         }
     }
-
-    //static private void ExcelOutPut()
-    //{
-    //    //Excelのパス
-    //    string fileName = @"C:\c_sharp\test.xlsx";
-    //    Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
-
-    //    //Excelが開かないようにする
-    //    xlApp.Visible = false;
-
-    //    //指定したパスのExcelを起動
-    //    Workbook wb = xlApp.Workbooks.Open(Filename: fileName);
-
-    //    try
-    //    {
-    //        //Sheetを指定
-    //        ((Worksheet)wb.Sheets[1]).Select();
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        //Sheetがなかった場合のエラー処理
-
-    //        //Appを閉じる
-    //        wb.Close(false);
-    //        xlApp.Quit();
-
-    //        //Errorメッセージ
-    //        Console.WriteLine("指定したSheetは存在しません．");
-    //        Console.ReadLine();
-
-    //        //実行を終了
-    //        System.Environment.Exit(0);
-    //    }
-
-    //    //変数宣言
-    //    Range CellRange;
-
-    //    foreach (string file in GetFiles(@"C:\Users\hayashi\Desktop\csvtesrt"))
-    //    {
-    //        //XmlRead(file);
-
-    //        //書き込む場所を指定
-    //        CellRange = xlApp.Cells[] as Range;
-
-    //        //書き込む内容
-    //        CellRange.Value2 = XmlRead(); ;
-    //    }
-
-    //    //Appを閉じる
-    //    wb.Close(true);
-    //    xlApp.Quit();
-    //}
 }
 
+//以下xmlのデシリアライズ
 [XmlRootAttribute(Namespace = "", IsNullable = false)]
 public class dot
 {
