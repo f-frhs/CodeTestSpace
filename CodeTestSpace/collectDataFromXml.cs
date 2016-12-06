@@ -13,31 +13,47 @@ class Program
 {
     //private static List<Tuple<string, string, string, double>> list;
     private static List<Tuple<string, string, string, double>> list;
+    private static List<double> listX;
 
     static void Main(string[] args)
     {
+        listX = new List<double>();
+
         foreach (string file in GetFiles(@"C:\Users\hayashi\Desktop\csvtesrt"))
         {
             XmlRead(file);
 
             //個々の出力
             //oDo: list全体をエクセルに吐き出す
-            //
+            //foreach (var tuple in list)
+            //{
+            //    var Name = tuple.Item1;
+            //    var IPName = tuple.Item2;
+            //    var DefaltName = tuple.Item3;
+            //    var Absolute = tuple.Item4;
+            //    Console.WriteLine(string.Format($"{Name}, {IPName}, {DefaltName}, {Absolute}"));
+            //}
+            //     ↓
+            //foreach (var l in list)
+            //{
+            //    Console.WriteLine(l);
+            //}
 
-            foreach (var tuple in list)
+            var datax = list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "X");
+
+            foreach (var l in datax)
             {
-                var Name = tuple.Item1;
-                var IPName = tuple.Item2;
-                var DefaltName = tuple.Item3;
-                var Absolute = tuple.Item4;
-                Console.WriteLine(string.Format($"{Name}, {IPName}, {DefaltName}, {Absolute}"));
+                var Absolute = l.Item4;
+                Console.WriteLine(string.Format($"{Absolute}"));
+                listX.Add(Absolute);
             }
-
-            ////計算結果の出力
-            //var sum = (list.Select(d => d.Item4).Sum());
-            //var boo = list.Where(x => x.Item3 == x);
-
         }
+
+        //var sum = listX.Average();
+        Console.WriteLine("-------------------------");
+        var resoluteX = CalcSD(listX);
+        Console.WriteLine(string.Format($"{resoluteX.ave}"));
+        Console.WriteLine(string.Format($"{resoluteX.sd}"));
         Console.ReadLine();
     }
 
@@ -70,24 +86,48 @@ class Program
     //    }
     //}
 
-    // 標準偏差計算
-    private Double CalcStandardDeviation(Double[] p_Values)
+    // 渡されたList<doubel>の標準偏差計算を返す
+    private static dynamic CalcSD(List<double> p_Values)
     {
-        //平均を取得
-        Double l_Average = p_Values.Average();
+        //平均
+        Double l_Ave = p_Values.Average();
 
-        //「σの二乗×データ数」まで計算
-        Double l_StandardDeviation = 0;
+        //σの二乗×データ数
+        Double l_calcSD = 0;
         foreach (Double f_Value in p_Values)
         {
-            l_StandardDeviation += (f_Value - l_Average) * (f_Value - l_Average);
+            l_calcSD += (f_Value - l_Ave) * (f_Value - l_Ave);
         }
 
         //σを算出して返却
-        return Math.Sqrt(l_StandardDeviation / p_Values.Length);
+        var l_SD = Math.Sqrt(l_calcSD / (p_Values.Count - 1));
+
+        return new
+        {
+            ave = l_Ave,
+            sd = l_SD
+        };
     }
 
-    //渡されたパスのxmlをデシリアライズ配列に書き出し　
+    //削除予定
+    //private static double CalcStandardDeviation(List<double> p_Values)
+    //{
+    //    //平均
+    //    Double l_Ave = p_Values.Average();
+
+    //    //σの二乗×データ数
+    //    Double l_calcSD = 0;
+    //    foreach (Double f_Value in p_Values)
+    //    {
+    //        l_calcSD += (f_Value - l_Ave) * (f_Value - l_Ave);
+    //    }
+
+    //    //σを算出して返却
+    //    var l_SD = Math.Sqrt(l_calcSD / (p_Values.Count - 1));
+    //    return new resolute(l_Ave, l_SD));
+    //}
+
+    //渡されたパスのxmlを、配列に書き出す
     private static void XmlRead(string file)
     {
         using (StreamReader reader = new StreamReader(file))
