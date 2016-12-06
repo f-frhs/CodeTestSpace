@@ -25,15 +25,6 @@ class Program
 
             //個々の出力
             //oDo: list全体をエクセルに吐き出す
-            //foreach (var tuple in list)
-            //{
-            //    var Name = tuple.Item1;
-            //    var IPName = tuple.Item2;
-            //    var DefaltName = tuple.Item3;
-            //    var Absolute = tuple.Item4;
-            //    Console.WriteLine(string.Format($"{Name}, {IPName}, {DefaltName}, {Absolute}"));
-            //}
-            //     ↓
             //foreach (var l in list)
             //{
             //    Console.WriteLine(l);
@@ -55,11 +46,6 @@ class Program
         Console.WriteLine(string.Format($"{resoluteX.ave}"));
         Console.WriteLine(string.Format($"{resoluteX.sd}"));
         Console.ReadLine();
-    }
-
-    private static bool IsSmaller(int num)
-    {
-        return num < 5;
     }
 
     ////渡されたパスのxmlをデシリアライズcmdに書き出し
@@ -108,24 +94,6 @@ class Program
             sd = l_SD
         };
     }
-
-    //削除予定
-    //private static double CalcStandardDeviation(List<double> p_Values)
-    //{
-    //    //平均
-    //    Double l_Ave = p_Values.Average();
-
-    //    //σの二乗×データ数
-    //    Double l_calcSD = 0;
-    //    foreach (Double f_Value in p_Values)
-    //    {
-    //        l_calcSD += (f_Value - l_Ave) * (f_Value - l_Ave);
-    //    }
-
-    //    //σを算出して返却
-    //    var l_SD = Math.Sqrt(l_calcSD / (p_Values.Count - 1));
-    //    return new resolute(l_Ave, l_SD));
-    //}
 
     //渡されたパスのxmlを、配列に書き出す
     private static void XmlRead(string file)
