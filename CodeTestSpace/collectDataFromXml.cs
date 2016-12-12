@@ -129,9 +129,15 @@ class Program
         var HNN2_K = new List<double>();
         var HNN2_D = new List<double>();
 
+        //var lengthX1_2 = new List<Tuple<double, double>>(
+        var lengthX1_2 = new List<double>();
+        var lengthX1_3 = new List<Tuple<double, double>>();
+        var lengthX2_3 = new List<Tuple<double, double>>();
+
         foreach (string file in GetFiles(@"C:\Users\hayashi\Desktop\csvtesrt"))
         {
             XmlRead(file);
+            DirectoryInfo dirInfo = Directory.GetParent(file);
 
             foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "X")) { CHY1_X.Add(l.Item4); };
             foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "Y")) { CHY1_Y.Add(l.Item4); };
@@ -246,43 +252,102 @@ class Program
             foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2_No").FindAll(c => c.Item3 == "Orientation J")) { HNN2_J.Add(l.Item4); };
             foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2_No").FindAll(c => c.Item3 == "Orientation K")) { HNN2_K.Add(l.Item4); };
             foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2_No").FindAll(c => c.Item3 == "Diameter")) { HNN2_K.Add(l.Item4); };
+
+            var arrayCH1_X = CHY1_X.ToArray();
+            var arrayCH2_X = CHY2_X.ToArray();
+            var arrayCH3_X = CHY3_X.ToArray();
+            var arrayCH1_Y = CHY1_Y.ToArray();
+            var arrayCH2_Y = CHY2_Y.ToArray();
+            var arrayCH3_Y = CHY3_Y.ToArray();
+            var arrayCH1_Z = CHY1_Z.ToArray();
+            var arrayCH2_Z = CHY2_Z.ToArray();
+            var arrayCH3_Z = CHY3_Z.ToArray();
+
+            var arrayFH1_X = FHY1_X.ToArray();
+            var arrayFH2_X = FHY2_X.ToArray();
+            var arrayFH3_X = FHY3_X.ToArray();
+            var arrayFH1_Y = FHY1_Y.ToArray();
+            var arrayFH2_Y = FHY2_Y.ToArray();
+            var arrayFH3_Y = FHY3_Y.ToArray();
+            var arrayFH1_Z = FHY1_Z.ToArray();
+            var arrayFH2_Z = FHY2_Z.ToArray();
+            var arrayFH3_Z = FHY3_Z.ToArray();
+
+            var resoltCHX1_2 = arrayCH2_X.Zip(arrayCH1_X, (x, y) => (x - y) * (x - y)).ToArray();
+            var resoltCHX1_3 = arrayCH3_X.Zip(arrayCH1_X, (x, y) => (x - y) * (x - y)).ToArray();
+            var resoltCHX2_3 = arrayCH3_X.Zip(arrayCH2_X, (x, y) => (x - y) * (x - y)).ToArray();
+            var resoltCHY1_2 = arrayCH2_Y.Zip(arrayCH1_Y, (x, y) => (x - y) * (x - y)).ToArray();
+            var resoltCHY1_3 = arrayCH3_Y.Zip(arrayCH1_Y, (x, y) => (x - y) * (x - y)).ToArray();
+            var resoltCHY2_3 = arrayCH3_Y.Zip(arrayCH2_Y, (x, y) => (x - y) * (x - y)).ToArray();
+            var resoltCHZ1_2 = arrayCH2_Z.Zip(arrayCH1_Z, (x, y) => (x - y) * (x - y)).ToArray();
+            var resoltCHZ1_3 = arrayCH3_Z.Zip(arrayCH1_Z, (x, y) => (x - y) * (x - y)).ToArray();
+            var resoltCHZ2_3 = arrayCH3_Z.Zip(arrayCH2_Z, (x, y) => (x - y) * (x - y)).ToArray();
+
+            var resoletCH1_2 = CalcSquare(resoltCHX1_2, resoltCHY1_2, resoltCHZ1_2);
+            var resoletCH1_3 = CalcSquare(resoltCHX1_3, resoltCHY1_3, resoltCHZ1_3);
+            var resoletCH2_3 = CalcSquare(resoltCHX2_3, resoltCHY2_3, resoltCHZ2_3);
+
+            lengthX1_2.Add(resoletCH1_2);
+            //lengthX1_2.Add(Tuple.Create(resoletCH1_2, resoletCH1_2));
+            //lengthX1_3.Add(Tuple.Create(resoletCH1_3, resoletCH1_3));
+            //lengthX2_3.Add(Tuple.Create(resoletCH2_3, resoletCH2_3));
+
+            //Console.WriteLine($"{dirInfo.Name},{resoletCH1_2}");
+            //Console.WriteLine($"{dirInfo.Name},{resoletCH1_3}");
+            //Console.WriteLine($"{dirInfo.Name},{resoletCH2_3}");
         }
 
         Console.WriteLine("----------結果---------------");
-        var arrayCH1_X = CHY1_X.ToArray();
-        var arrayCH2_X = CHY2_X.ToArray();
-        var resoltCH1_2 = arrayCH2_X.Zip(arrayCH1_X, (x, y) => x - y).ToArray();
-        var resoletX = CalcSD(resoltCH1_2);
-
-
-        Console.WriteLine(resoletX);
+        foreach (var item in lengthX1_2)
+        {
+            Console.WriteLine($"{item}");
+        }
+        foreach (var item in lengthX1_3)
+        {
+            Console.WriteLine($"{item}");
+        }
+        foreach (var item in lengthX2_3)
+        {
+            Console.WriteLine($"{item}");
+        }
 
         Console.ReadLine();
+
     }
 
     //ToDo: list全体をエクセルに吐き出す
 
     //ToDo: Listから任意の要素を抜き出す部分の関数化
 
-    // List<doubel>を受取り、その平均と標準偏差計算を返す
-    private static dynamic CalcSD(double[] p_Values)
+    //引数の総和の平方根を返す
+    private static double CalcSquare(double[] x, double[] y, double[] z)
     {
-        //平均
-        Double l_Ave = p_Values.Average();
+        double length3D = (((x.Zip(y, (a, b) => (a + b)).ToArray()).Zip(z, (a, b) => (a + b))).Select(i => Math.Sqrt(i)).());
+        return length3D;
+    }
+
+    // List<doubel>を受取り、その平均と標準偏差計算を返す
+    private static dynamic CalcSD(double[] x, double[] y, double[] z)
+    {
+        //距離： x y z の和の平方根
+        double[] length3D = (((x.Zip(y, (a, b) => (a + b)).ToArray()).Zip(z, (a, b) => (a + b))).Select(i => Math.Sqrt(i)).ToArray());
+
+        //距離： 平均
+        Double l_Avg = length3D.Average();
 
         //σの二乗×データ数
         Double l_calcSD = 0;
-        foreach (Double f_Value in p_Values)
+        foreach (Double data in length3D)
         {
-            l_calcSD += (f_Value - l_Ave) * (f_Value - l_Ave);
+            l_calcSD += (data - l_Avg) * (data - l_Avg);
         }
 
         //σを算出して返却
-        var l_SD = Math.Sqrt(l_calcSD / (p_Values.Length - 1));
+        var l_SD = Math.Sqrt(l_calcSD / (length3D.Length - 1));
 
         return new
         {
-            ave = l_Ave,
+            avg = l_Avg,
             sd = l_SD
         };
     }
@@ -294,12 +359,14 @@ class Program
         {
             DirectoryInfo dirInfo = Directory.GetParent(file);
 
+
             XmlSerializer serializer = new XmlSerializer(typeof(dot));
             var value = (dot)serializer.Deserialize(reader);
             list = new List<Tuple<string, string, string, double>>();
 
             foreach (inspectionpoint IP in value.Inspectionpoint)
             {
+                foreach (parttype PT in value.Parttype)
                 foreach (characteristic CH in IP.Characteristic)
                 {
                     foreach (measurement ME in CH.Measurement)
@@ -357,8 +424,8 @@ public class dot
     //[XmlElement("cell")]
     //public cell[] Cell { get; set; }
 
-    //[XmlElement("parttype")]
-    //public parttype[] Parttype { get; set; }
+    [XmlElement("parttype")]
+    public parttype[] Parttype { get; set; }
 
     [XmlElement("cycle")]
     public cycle[] Cycle { get; set; }
@@ -376,12 +443,12 @@ public class dot
 //    public string Name { get; set; }
 //}
 
-//[XmlRoot(Namespace = "", IsNullable = false)]
-//public class parttype
-//{
-//    [XmlElement("name")]
-//    public string Name { get; set; }
-//}
+[XmlRoot(Namespace = "", IsNullable = false)]
+public class parttype
+{
+    [XmlElement("name")]
+    public string Name { get; set; }
+}
 
 [XmlRoot(Namespace = "", IsNullable = false)]
 public class cycle
