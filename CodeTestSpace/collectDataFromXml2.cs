@@ -1,468 +1,466 @@
-﻿using System;
-using System.IO;
-//using AutoAssyModules.Perceptron;
+﻿// collectDataFroXmlFiles.cs <= mgetFileName.cs
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-using System.Xml.Linq;
+using System.IO;
 using System.Xml;
+using System.Xml.Serialization;
+using Microsoft.Office.Interop.Excel;
+using static System.Net.Mime.MediaTypeNames;
+using System.Linq;
 
-namespace OutputHoleDataToCSV
+class Program
 {
-    public class Program
+    private static List<Tuple<string, string, string, double>> list;
+
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            //---cmdから読み取る場合----
-            //string[] arguments = System.Environment.GetCommandLineArgs();
-            //var watchFile = arguments[1];
-            //OutputHoleDataToCSV(watchFile);
-            //---cmdから読み取る場合----
+        double CHY1_X = 0; 
+        double CHY1_Y = 0; 
+        double CHY1_Z = 0; 
+        double CHY1_I = 0; 
+        double CHY1_J = 0; 
+        double CHY1_K = 0; 
+        double CHY1_D = 0; 
+        double FHY1_X = 0; 
+        double FHY1_Y = 0; 
+        double FHY1_Z = 0; 
+        double FHY1_I = 0; 
+        double FHY1_J = 0; 
+        double FHY1_K = 0; 
+        double FHY1_D = 0; 
+        double CHY2_X = 0; 
+        double CHY2_Y = 0; 
+        double CHY2_Z = 0; 
+        double CHY2_I = 0; 
+        double CHY2_J = 0; 
+        double CHY2_K = 0; 
+        double CHY2_D = 0; 
+        double FHY2_X = 0; 
+        double FHY2_Y = 0; 
+        double FHY2_Z = 0; 
+        double FHY2_I = 0; 
+        double FHY2_J = 0; 
+        double FHY2_K = 0; 
+        double FHY2_D = 0; 
+        double CHY3_X = 0; 
+        double CHY3_Y = 0; 
+        double CHY3_Z = 0; 
+        double CHY3_I = 0; 
+        double CHY3_J = 0; 
+        double CHY3_K = 0; 
+        double CHY3_D = 0; 
+        double FHY3_X = 0; 
+        double FHY3_Y = 0; 
+        double FHY3_Z = 0; 
+        double FHY3_I = 0; 
+        double FHY3_J = 0; 
+        double FHY3_K = 0; 
+        double FHY3_D = 0; 
+        double HNY1_X = 0; 
+        double HNY1_Y = 0; 
+        double HNY1_Z = 0; 
+        double HNY1_I = 0; 
+        double HNY1_J = 0; 
+        double HNY1_K = 0; 
+        double HNY1_D = 0; 
+        double HNY2_X = 0; 
+        double HNY2_Y = 0; 
+        double HNY2_Z = 0; 
+        double HNY2_I = 0; 
+        double HNY2_J = 0; 
+        double HNY2_K = 0; 
+        double HNY2_D = 0;        
 
-            foreach (string file in GetFiles(@"C:\Users\hayashi\Desktop\test\"))
-            {
-                OutputHoleDataToCSV(file);
-            }
+        double CHN1_X = 0; 
+        double CHN1_Y = 0; 
+        double CHN1_Z = 0; 
+        double CHN1_I = 0; 
+        double CHN1_J = 0; 
+        double CHN1_K = 0; 
+        double CHN1_D = 0; 
+        double FHN1_X = 0; 
+        double FHN1_Y = 0; 
+        double FHN1_Z = 0; 
+        double FHN1_I = 0; 
+        double FHN1_J = 0; 
+        double FHN1_K = 0; 
+        double FHN1_D = 0; 
+        double CHN2_X = 0; 
+        double CHN2_Y = 0; 
+        double CHN2_Z = 0; 
+        double CHN2_I = 0; 
+        double CHN2_J = 0; 
+        double CHN2_K = 0; 
+        double CHN2_D = 0; 
+        double FHN2_X = 0; 
+        double FHN2_Y = 0; 
+        double FHN2_Z = 0; 
+        double FHN2_I = 0; 
+        double FHN2_J = 0; 
+        double FHN2_K = 0; 
+        double FHN2_D = 0; 
+        double CHN3_X = 0; 
+        double CHN3_Y = 0; 
+        double CHN3_Z = 0; 
+        double CHN3_I = 0; 
+        double CHN3_J = 0; 
+        double CHN3_K = 0; 
+        double CHN3_D = 0; 
+        double FHN3_X = 0; 
+        double FHN3_Y = 0; 
+        double FHN3_Z = 0; 
+        double FHN3_I = 0; 
+        double FHN3_J = 0; 
+        double FHN3_K = 0; 
+        double FHN3_D = 0; 
+        double HNN1_X = 0; 
+        double HNN1_Y = 0; 
+        double HNN1_Z = 0; 
+        double HNN1_I = 0; 
+        double HNN1_J = 0; 
+        double HNN1_K = 0; 
+        double HNN1_D = 0; 
+        double HNN2_X = 0; 
+        double HNN2_Y = 0; 
+        double HNN2_Z = 0; 
+        double HNN2_I = 0; 
+        double HNN2_J = 0; 
+        double HNN2_K = 0; 
+        double HNN2_D = 0;    
+
+        //var lengthX1_2 = new List<Tuple<double, double>>(
+        var lengthX1_2 = new List<double>();
+        var lengthX1_3 = new List<Tuple<double, double>>();
+        var lengthX2_3 = new List<Tuple<double, double>>();
+
+        foreach (string file in GetFiles(@"C:\Users\hayashi\Desktop\csvtesrt"))
+        {
+            XmlRead(file);
+            DirectoryInfo dirInfo = Directory.GetParent(file);
+
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "X")) { CHY1_X = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "Y")) { CHY1_Y = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "Z")) { CHY1_Z = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "Orientation I")) { CHY1_I = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "Orientation J")) { CHY1_J = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "Orientation K")) { CHY1_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "Diameter")) { CHY1_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1").FindAll(c => c.Item3 == "X")) { FHY1_X = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1").FindAll(c => c.Item3 == "Y")) { FHY1_Y = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1").FindAll(c => c.Item3 == "Z")) { FHY1_Z = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1").FindAll(c => c.Item3 == "Orientation I")) { FHY1_I = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1").FindAll(c => c.Item3 == "Orientation J")) { FHY1_J = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1").FindAll(c => c.Item3 == "Orientation K")) { FHY1_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1").FindAll(c => c.Item3 == "Diameter")) { FHY1_J = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2").FindAll(c => c.Item3 == "X")) { CHY2_X = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2").FindAll(c => c.Item3 == "Y")) { CHY2_Y = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2").FindAll(c => c.Item3 == "Z")) { CHY2_Z = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2").FindAll(c => c.Item3 == "Orientation I")) { CHY2_I = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2").FindAll(c => c.Item3 == "Orientation J")) { CHY2_J = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2").FindAll(c => c.Item3 == "Orientation K")) { CHY2_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2").FindAll(c => c.Item3 == "Diameter")) { CHY2_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2").FindAll(c => c.Item3 == "X")) { FHY2_X = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2").FindAll(c => c.Item3 == "Y")) { FHY2_Y = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2").FindAll(c => c.Item3 == "Z")) { FHY2_Z = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2").FindAll(c => c.Item3 == "Orientation I")) { FHY2_I = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2").FindAll(c => c.Item3 == "Orientation J")) { FHY2_J = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2").FindAll(c => c.Item3 == "Orientation K")) { FHY2_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2").FindAll(c => c.Item3 == "Diameter")) { FHY2_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3").FindAll(c => c.Item3 == "X")) { CHY3_X = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3").FindAll(c => c.Item3 == "Y")) { CHY3_Y = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3").FindAll(c => c.Item3 == "Z")) { CHY3_Z = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3").FindAll(c => c.Item3 == "Orientation I")) { CHY3_I = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3").FindAll(c => c.Item3 == "Orientation J")) { CHY3_J = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3").FindAll(c => c.Item3 == "Orientation K")) { CHY3_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3").FindAll(c => c.Item3 == "Diameter")) { CHY3_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3").FindAll(c => c.Item3 == "X")) { FHY3_X = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3").FindAll(c => c.Item3 == "Y")) { FHY3_Y = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3").FindAll(c => c.Item3 == "Z")) { FHY3_Z = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3").FindAll(c => c.Item3 == "Orientation I")) { FHY3_I = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3").FindAll(c => c.Item3 == "Orientation J")) { FHY3_J = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3").FindAll(c => c.Item3 == "Orientation K")) { FHY3_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3").FindAll(c => c.Item3 == "Diameter")) { FHY3_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1").FindAll(c => c.Item3 == "X")) { HNY1_X = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1").FindAll(c => c.Item3 == "Y")) { HNY1_Y = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1").FindAll(c => c.Item3 == "Z")) { HNY1_Z = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1").FindAll(c => c.Item3 == "Orientation I")) { HNY1_I = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1").FindAll(c => c.Item3 == "Orientation J")) { HNY1_J = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1").FindAll(c => c.Item3 == "Orientation K")) { HNY1_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1").FindAll(c => c.Item3 == "Diameter")) { HNY1_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2").FindAll(c => c.Item3 == "X")) { HNY2_X = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2").FindAll(c => c.Item3 == "Y")) { HNY2_Y = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2").FindAll(c => c.Item3 == "Z")) { HNY2_Z = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2").FindAll(c => c.Item3 == "Orientation I")) { HNY2_I = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2").FindAll(c => c.Item3 == "Orientation J")) { HNY2_J = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2").FindAll(c => c.Item3 == "Orientation K")) { HNY2_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2").FindAll(c => c.Item3 == "Diameter")) { HNY2_K = (l.Item4); };
+
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1_No").FindAll(c => c.Item3 == "X")) { CHN1_X = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1_No").FindAll(c => c.Item3 == "Y")) { CHN1_Y = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1_No").FindAll(c => c.Item3 == "Z")) { CHN1_Z = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1_No").FindAll(c => c.Item3 == "Orientation I")) { CHN1_I = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1_No").FindAll(c => c.Item3 == "Orientation J")) { CHN1_J = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1_No").FindAll(c => c.Item3 == "Orientation K")) { CHN1_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1_No").FindAll(c => c.Item3 == "Diameter")) { CHN1_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1_No").FindAll(c => c.Item3 == "X")) { FHN1_X = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1_No").FindAll(c => c.Item3 == "Y")) { FHN1_Y = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1_No").FindAll(c => c.Item3 == "Z")) { FHN1_Z = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1_No").FindAll(c => c.Item3 == "Orientation I")) { FHN1_I = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1_No").FindAll(c => c.Item3 == "Orientation J")) { FHN1_J = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1_No").FindAll(c => c.Item3 == "Orientation K")) { FHN1_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1_No").FindAll(c => c.Item3 == "Diameter")) { FHN1_J = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2_No").FindAll(c => c.Item3 == "X")) { CHN2_X = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2_No").FindAll(c => c.Item3 == "Y")) { CHN2_Y = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2_No").FindAll(c => c.Item3 == "Z")) { CHN2_Z = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2_No").FindAll(c => c.Item3 == "Orientation I")) { CHN2_I = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2_No").FindAll(c => c.Item3 == "Orientation J")) { CHN2_J = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2_No").FindAll(c => c.Item3 == "Orientation K")) { CHN2_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2_No").FindAll(c => c.Item3 == "Diameter")) { CHN2_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2_No").FindAll(c => c.Item3 == "X")) { FHN2_X = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2_No").FindAll(c => c.Item3 == "Y")) { FHN2_Y = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2_No").FindAll(c => c.Item3 == "Z")) { FHN2_Z = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2_No").FindAll(c => c.Item3 == "Orientation I")) { FHN2_I = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2_No").FindAll(c => c.Item3 == "Orientation J")) { FHN2_J = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2_No").FindAll(c => c.Item3 == "Orientation K")) { FHN2_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2_No").FindAll(c => c.Item3 == "Diameter")) { FHN2_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3_No").FindAll(c => c.Item3 == "X")) { CHN3_X = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3_No").FindAll(c => c.Item3 == "Y")) { CHN3_Y = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3_No").FindAll(c => c.Item3 == "Z")) { CHN3_Z = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3_No").FindAll(c => c.Item3 == "Orientation I")) { CHN3_I = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3_No").FindAll(c => c.Item3 == "Orientation J")) { CHN3_J = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3_No").FindAll(c => c.Item3 == "Orientation K")) { CHN3_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3_No").FindAll(c => c.Item3 == "Diameter")) { CHN3_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3_No").FindAll(c => c.Item3 == "X")) { FHN3_X = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3_No").FindAll(c => c.Item3 == "Y")) { FHN3_Y = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3_No").FindAll(c => c.Item3 == "Z")) { FHN3_Z = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3_No").FindAll(c => c.Item3 == "Orientation I")) { FHN3_I = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3_No").FindAll(c => c.Item3 == "Orientation J")) { FHN3_J = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3_No").FindAll(c => c.Item3 == "Orientation K")) { FHN3_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3_No").FindAll(c => c.Item3 == "Diameter")) { FHN3_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1_No").FindAll(c => c.Item3 == "X")) { HNN1_X = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1_No").FindAll(c => c.Item3 == "Y")) { HNN1_Y = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1_No").FindAll(c => c.Item3 == "Z")) { HNN1_Z = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1_No").FindAll(c => c.Item3 == "Orientation I")) { HNN1_I = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1_No").FindAll(c => c.Item3 == "Orientation J")) { HNN1_J = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1_No").FindAll(c => c.Item3 == "Orientation K")) { HNN1_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1_No").FindAll(c => c.Item3 == "Diameter")) { HNN1_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2_No").FindAll(c => c.Item3 == "X")) { HNN2_X = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2_No").FindAll(c => c.Item3 == "Y")) { HNN2_Y = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2_No").FindAll(c => c.Item3 == "Z")) { HNN2_Z = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2_No").FindAll(c => c.Item3 == "Orientation I")) { HNN2_I = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2_No").FindAll(c => c.Item3 == "Orientation J")) { HNN2_J = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2_No").FindAll(c => c.Item3 == "Orientation K")) { HNN2_K = (l.Item4); };
+            foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2_No").FindAll(c => c.Item3 == "Diameter")) { HNN2_K = (l.Item4); };
+
+            var resoltCHX1_2 = CHY1_X - CHY2_X;
+            var resoltCHX1_3 = CHY1_X - CHY3_X;
+            var resoltCHX2_3 = CHY2_X - CHY3_X;
+            var resoltCHY1_2 = CHY1_Y - CHY2_Y;
+            var resoltCHY1_3 = CHY1_Y - CHY3_Y;
+            var resoltCHY2_3 = CHY2_Y - CHY3_Y;
+            var resoltCHZ1_2 = CHY1_Z - CHY2_Z;
+            var resoltCHZ1_3 = CHY1_Z - CHY3_Z;
+            var resoltCHZ2_3 = CHY2_Z - CHY3_Z;     
+
+            var resoletCH1_2 = CalcSquare(resoltCHX1_2, resoltCHY1_2, resoltCHZ1_2);
+            var resoletCH1_3 = CalcSquare(resoltCHX1_3, resoltCHY1_3, resoltCHZ1_3);
+            var resoletCH2_3 = CalcSquare(resoltCHX2_3, resoltCHY2_3, resoltCHZ2_3);
+
+            lengthX1_2.Add(resoletCH1_2);
+
         }
 
-        static IEnumerable<string> GetFiles(string path)
+        Console.WriteLine("----------結果---------------");
+        foreach (var item in lengthX1_2)
         {
-            Queue<string> queue = new Queue<string>();
-            queue.Enqueue(path);
-            while (queue.Count > 0)
+            Console.WriteLine($"{item}");
+        }
+        foreach (var item in lengthX1_3)
+        {
+            Console.WriteLine($"{item}");
+        }
+        foreach (var item in lengthX2_3)
+        {
+            Console.WriteLine($"{item}");
+        }
+
+        Console.ReadLine();
+
+    }
+
+    //ToDo: list全体をエクセルに吐き出す
+
+    //ToDo: Listから任意の要素を抜き出す部分の関数化
+
+    //引数の総和の平方根を返す
+    private static double CalcSquare(double x, double y, double z)
+    {
+        double length3D = Math.Sqrt(x * x + y * y + z * z );
+        return length3D;
+    }
+
+    // List<doubel>を受取り、その平均と標準偏差計算を返す
+    private static dynamic CalcSD(double[] x, double[] y, double[] z)
+    {
+        //距離： x y z の和の平方根
+        double[] length3D = (((x.Zip(y, (a, b) => (a + b)).ToArray()).Zip(z, (a, b) => (a + b))).Select(i => Math.Sqrt(i)).ToArray());
+
+        //距離： 平均
+        Double l_Avg = length3D.Average();
+
+        //σの二乗×データ数
+        Double l_calcSD = 0;
+        foreach (Double data in length3D)
+        {
+            l_calcSD += (data - l_Avg) * (data - l_Avg);
+        }
+
+        //σを算出して返却
+        var l_SD = Math.Sqrt(l_calcSD / (length3D.Length - 1));
+
+        return new
+        {
+            avg = l_Avg,
+            sd = l_SD
+        };
+    }
+
+    //xmlのパス受取り、Absoluteの値をListに書き出す
+    private static void XmlRead(string file)
+    {
+        using (StreamReader reader = new StreamReader(file))
+        {
+            DirectoryInfo dirInfo = Directory.GetParent(file);
+
+
+            XmlSerializer serializer = new XmlSerializer(typeof(dot));
+            var value = (dot)serializer.Deserialize(reader);
+            list = new List<Tuple<string, string, string, double>>();
+
+            foreach (inspectionpoint IP in value.Inspectionpoint)
             {
-                path = queue.Dequeue();
-                try
-                {
-                    foreach (string subDir in Directory.GetDirectories(path))
-                    //foreach (string subDir in Directory.EnumerateFiles(@"C:\Users\hayashi\Desktop\2016_1115_data", "*.xml")), System.IO.SearchOption.AllDirectories))
+                foreach (parttype PT in value.Parttype)
+                    foreach (characteristic CH in IP.Characteristic)
                     {
-                        queue.Enqueue(subDir);
+                        foreach (measurement ME in CH.Measurement)
+                        {
+                            list.Add(Tuple.Create(dirInfo.Name, IP.Name, CH.Defaultname, double.Parse(ME.Absolute)));
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    Console.Error.WriteLine(ex);
-                }
-                string[] files = null;
-                try
-                {
-                    files = Directory.GetFiles(path);
-                }
-                catch (Exception ex)
-                {
-                    Console.Error.WriteLine(ex);
-                }
-                if (files != null)
-                {
-                    for (int i = 0; i < files.Length; i++)
-                    {
-                        yield return files[i];
-                    }
-                }
             }
-        }
-
-        private struct MeasureData
-        {
-            internal string x, y, z, i, j, k, d;
-        }
-
-        private static MeasureData GetValues(CPerceptronData data, string inspecName)
-        {
-            CInspectionCharacteristic ichara = null;
-
-            var p = new MeasureData();
-            p.x = CPerceptronData.IsContains(data, inspecName, "X", out ichara) ? ichara.Measurement.abusolute : string.Empty;
-            p.y = CPerceptronData.IsContains(data, inspecName, "Y", out ichara) ? ichara.Measurement.abusolute : string.Empty;
-            p.z = CPerceptronData.IsContains(data, inspecName, "Z", out ichara) ? ichara.Measurement.abusolute : string.Empty;
-            p.i = CPerceptronData.IsContains(data, inspecName, "Orientation I", out ichara) ? ichara.Measurement.abusolute : string.Empty;
-            p.j = CPerceptronData.IsContains(data, inspecName, "Orientation J", out ichara) ? ichara.Measurement.abusolute : string.Empty;
-            p.k = CPerceptronData.IsContains(data, inspecName, "Orientation K", out ichara) ? ichara.Measurement.abusolute : string.Empty;
-            p.d = CPerceptronData.IsContains(data, inspecName, "Diameter", out ichara) ? ichara.Measurement.abusolute : string.Empty;
-
-            return p;
-        }
-
-        static void OutputHoleDataToCSV(string watchFile)
-        {
-            var fileFulPath = Path.GetFullPath(watchFile);
-            var fileCurrentDirectoryName = Path.GetFileName(Path.GetDirectoryName(fileFulPath));   //対象xmlファイルが存在する(フルパスではない)ディレクトリ名
-            var xmlFileName = Path.GetFileName(fileFulPath);
-
-            var data = CPerceptronData.LoadFromFile(fileFulPath, true);
-
-            var c1Y = GetValues(data, inspecName: "CubeHole1");
-            var c2Y = GetValues(data, inspecName: "CubeHole2");
-            var c3Y = GetValues(data, inspecName: "CubeHole3");
-            var f1Y = GetValues(data, inspecName: "FrangeHole1");
-            var f2Y = GetValues(data, inspecName: "FrangeHole2");
-            var f3Y = GetValues(data, inspecName: "FrangeHole3");
-            var n1Y = GetValues(data, inspecName: "HoleNut1");
-            var n2Y = GetValues(data, inspecName: "HoleNut2");
-            var c1N = GetValues(data, inspecName: "CubeHole1_No");
-            var c2N = GetValues(data, inspecName: "CubeHole2_No");
-            var c3N = GetValues(data, inspecName: "CubeHole3_No");
-            var f1N = GetValues(data, inspecName: "FrangeHole1_No");
-            var f2N = GetValues(data, inspecName: "FrangeHole2_No");
-            var f3N = GetValues(data, inspecName: "FrangeHole3_No");
-            var n1N = GetValues(data, inspecName: "HoleNut1_No");
-            var n2N = GetValues(data, inspecName: "HoleNut2_No");
-
-            Console.WriteLine($"{fileCurrentDirectoryName}, {xmlFileName}," +
-
-                              $"{c1Y.x},{c1Y.y},{c1Y.z},{c1Y.i},{c1Y.j},{c1Y.k},{c1Y.d}," +
-                              $"{c2Y.x},{c2Y.y},{c2Y.z},{c2Y.i},{c2Y.j},{c2Y.k},{c2Y.d}," +
-                              $"{c3Y.x},{c3Y.y},{c3Y.z},{c3Y.i},{c3Y.j},{c3Y.k},{c3Y.d}," +
-                              $"{f1Y.x},{f1Y.y},{f1Y.z},{f1Y.i},{f1Y.j},{f1Y.k},{f1Y.d}," +
-                              $"{f2Y.x},{f2Y.y},{f2Y.z},{f2Y.i},{f2Y.j},{f2Y.k},{f2Y.d}," +
-                              $"{f3Y.x},{f3Y.y},{f3Y.z},{f3Y.i},{f3Y.j},{f3Y.k},{f3Y.d}," +
-                              $"{n1Y.x},{n1Y.y},{n1Y.z},{n1Y.i},{n1Y.j},{n1Y.k},{n1Y.d}," +
-                              $"{n2Y.x},{n2Y.y},{n2Y.z},{n2Y.i},{n2Y.j},{n2Y.k},{n2Y.d}," +
-
-                              $"{c1N.x},{c1N.y},{c1N.z},{c1N.i},{c1N.j},{c1N.k},{c1N.d}," +
-                              $"{c2N.x},{c2N.y},{c2N.z},{c2N.i},{c2N.j},{c2N.k},{c2N.d}," +
-                              $"{c3N.x},{c3N.y},{c3N.z},{c3N.i},{c3N.j},{c3N.k},{c3N.d}," +
-                              $"{f1N.x},{f1N.y},{f1N.z},{f1N.i},{f1N.j},{f1N.k},{f1N.d}," +
-                              $"{f2N.x},{f2N.y},{f2N.z},{f2N.i},{f2N.j},{f2N.k},{f2N.d}," +
-                              $"{f3N.x},{f3N.y},{f3N.z},{f3N.i},{f3N.j},{f3N.k},{f3N.d}," +
-                              $"{n1N.x},{n1N.y},{n1N.z},{n1N.i},{n1N.j},{n1N.k},{n1N.d}," +
-                              $"{n2N.x},{n2N.y},{n2N.z},{n2N.i},{n2N.j},{n2N.k},{n2N.d},"
-
-            );
-            Console.ReadLine();
-        }
-
-        //パーセプトロン結果ファイルを解析するクラス
-        //[XmlRoot("dot")]
-        [Serializable]
-        [XmlRoot("dot")]
-        public class CPerceptronData
-        {
-            [XmlIgnore]
-            public string TConst { set; get; }
-
-            [XmlArray("cell")]
-            [XmlArrayItem("name")]
-            public string[] Cell { set; get; }
-
-            [XmlArray("parttype")]
-            [XmlArrayItem("name")]
-            public string[] Parttype { set; get; }
-
-            [XmlElement("cycle")]
-            public CPerceptronCycle Cycle { set; get; }
-
-            [XmlElement("compensationtype")]
-            public string Compensationtype { set; get; }
-
-            [XmlElement("inspectionpoint")]
-            public List<CInspectionPoint> Inspections { set; get; }
-
-            //コンストラクタ
-            public CPerceptronData()
-            {
-                var className = this.GetType().FullName;
-                TConst = "[" + className + "]";
-
-                //Trace.WriteLine(TConst + System.Reflection.MethodBase.GetCurrentMethod().Name);
-            }
-
-            //データをファイルに保存する
-            //シリアライズして保存
-            public void SaveToFile(string fname)
-            {
-                //Trace.WriteLine(TConst + System.Reflection.MethodBase.GetCurrentMethod().Name);
-
-                //XMLファイルに保存する
-                var serializer1 = new XmlSerializer(typeof(CPerceptronData));
-                var sw = new StreamWriter(fname, false, new UTF8Encoding(false));
-                serializer1.Serialize(sw, this);
-                sw.Close();
-            }
-
-            /// <summary>パーセプトロン結果ファイルを解析し、パース結果を返す </summary>
-            /// <param name="fname">結果ファイル（パス文字列を含む）</param>
-            /// <param name="flg">XMLパースの指定</param>
-            /// <returns>解析結果</returns>
-            public static CPerceptronData LoadFromFile(string fname, bool flg)
-            {
-                //Trace.WriteLine(STConst + System.Reflection.MethodBase.GetCurrentMethod().Name);
-
-                //書き出したファイルを読み込んでクラスを再設定
-                var serializer2 = new XmlSerializer(typeof(CPerceptronData));
-                using (var sr = new StreamReader(fname, new UTF8Encoding(false)))
-                {
-                    var ans = (CPerceptronData)serializer2.Deserialize(sr);
-                    sr.Close();
-
-                    return ans;
-                }
-            }
-
-            /// <summary>結果に指定情報が含まれているかチェックする </summary>
-            /// <param name="cdata">パーセプトロン結果ファイル</param>
-            /// <param name="InspecName">計測名 Nut1,Hole1など</param>
-            /// <param name="element">計測要素 X,Y..など</param>
-            /// <param name="pCharacteristic">計測要素の結果格納先</param>
-            /// <returns>計測要素が存在する場合は true</returns>
-            public static bool IsContains(CPerceptronData cdata, string InspecName, string element, out CInspectionCharacteristic pCharacteristic)
-            {
-                CInspectionCharacteristic chara = null;
-                var ans = false;
-
-                //結果にInspecNameがない場合
-                if (cdata.Inspections.All(d => d.name != InspecName))
-                {
-                    pCharacteristic = null;
-                    return false;
-                }
-
-                //InspecNameで、elementを検索し、合致すれば返す
-                var dInspec = cdata.Inspections.First(d => d.name == InspecName);
-                if (dInspec.CInspectionCharacteristics.Any(d => d.defaultName == element))
-                {
-                    chara = dInspec.CInspectionCharacteristics.First(d => d.defaultName == element);
-                    ans = true;
-                }
-
-                //var ans = cdata.Inspections.Any(d =>
-                //{
-                //    if (d.CInspectionCharacteristics.Any(dd => dd.defaultName == element))
-                //    {
-                //        chara = d.CInspectionCharacteristics.First(ddd => ddd.defaultName == element);
-                //        return true;
-                //    }
-                //    else
-                //    {
-                //        return false;
-                //    }
-                //});
-
-                pCharacteristic = chara;
-                return ans;
-            }
-
-            //xmlファイルを解析して、データを取得する
-            public static CPerceptronData LoadFromFile(string fname)
-            {
-                //Trace.WriteLine(STConst + System.Reflection.MethodBase.GetCurrentMethod().Name);
-
-                //xmlファイルを読み込む
-                var xmlData = XElement.Load(fname);
-
-                var ans = new CPerceptronData();
-
-                ans.Cell = new string[1];
-                ans.Cell[0] = xmlData.Element("cell").Element("name").Value;
-
-                ans.Parttype = new string[1];
-                ans.Parttype[0] = xmlData.Element("parttype").Element("name").Value;
-
-                var date = new CPerceptronDate();
-                date.year = int.Parse(xmlData.Element("cycle").Element("date").Element("year").Value);
-                date.month = int.Parse(xmlData.Element("cycle").Element("date").Element("month").Value);
-                date.day = int.Parse(xmlData.Element("cycle").Element("date").Element("day").Value);
-
-                var time = new CPerceptronTime();
-                time.hour = int.Parse(xmlData.Element("cycle").Element("time").Element("hour").Value);
-                time.minute = int.Parse(xmlData.Element("cycle").Element("time").Element("minute").Value);
-                time.second = int.Parse(xmlData.Element("cycle").Element("time").Element("second").Value);
-
-                var partid = new CPerceptronPartID();
-                partid.partID = xmlData.Element("cycle").Element("partid").Element("name").Value;
-                partid.partValue = xmlData.Element("cycle").Element("partid").Element("value").Value;
-
-                var processid = new CPerceptronProcessID();
-                processid.ProcessID = xmlData.Element("cycle").Element("processid").Element("name").Value;
-                processid.ProcessValue = xmlData.Element("cycle").Element("processid").Element("value").Value;
-
-                ans.Cycle = new CPerceptronCycle();
-                ans.Cycle.Date = date;
-                ans.Cycle.PTime = time;
-                ans.Cycle.PartID = partid;
-                ans.Cycle.ProcessID = processid;
-
-                var ins = xmlData.Elements("inspectionpoint").ToArray();
-
-                var insList = new List<CInspectionPoint>();
-
-                foreach (var xElement in ins)
-                {
-                    var inspect = new CInspectionPoint();
-                    inspect.name = xElement.Element("name").Value;
-                    inspect.featuretype = xElement.Element("featuretype").Value;
-                    inspect.CInspectionCharacteristics = new List<CInspectionCharacteristic>();
-
-                    foreach (var chara in xElement.Elements("characteristic"))
-                    {
-                        var characteristic = new CInspectionCharacteristic();
-                        characteristic.defaultName = chara.Element("defaultname").Value;
-                        characteristic.aliasName = chara.Element("aliasname").Value;
-
-                        //characteristic.Measurement = new CMeasurement();
-                        //characteristic.Measurement.abusolute =
-                        //    double.Parse(chara.Elements("measurement").First().Element("deviation").Value);
-                        //characteristic.Measurement.nominal =
-                        //    double.Parse(chara.Elements("measurement").First().Element("nominal").Value);
-                        //characteristic.Measurement.abusolute =
-                        //    double.Parse(chara.Elements("measurement").First().Element("absolute").Value);
-
-                        characteristic.Measurement = new CMeasurementString();
-                        characteristic.Measurement.abusolute =
-                            chara.Elements("measurement").First().Element("deviation").Value;
-                        characteristic.Measurement.nominal =
-                            chara.Elements("measurement").First().Element("nominal").Value;
-                        characteristic.Measurement.abusolute =
-                            chara.Elements("measurement").First().Element("absolute").Value;
-
-
-                        inspect.CInspectionCharacteristics.Add(characteristic);
-                    }
-                    //inspect.CInspectionCharacteristics = clist.ToArray();
-                    insList.Add(inspect);
-                }
-
-                ans.Inspections = insList;
-
-                return ans;
-
-            }
-
-        }
-
-
-        /////////////////////////
-        [Serializable]
-        public class CInspectionCharacteristic
-        {
-            [XmlElement("defaultname")]
-            public string defaultName { set; get; }
-
-            [XmlElement("aliasname")]
-            public string aliasName { set; get; }
-
-            //[XmlElement("measurement")]
-            //public CMeasurement Measurement { set; get; }
-
-            [XmlElement("measurement")]
-            public CMeasurementString Measurement { set; get; }
-        }
-
-        [Serializable]
-        public class CPerceptronCycle
-        {
-            [XmlElement("date")]
-            public CPerceptronDate Date { set; get; }
-
-            [XmlElement("time")]
-            public CPerceptronTime PTime { set; get; }
-
-            [XmlElement("partid")]
-            public CPerceptronPartID PartID { set; get; }
-
-            [XmlElement("processid")]
-            public CPerceptronProcessID ProcessID { set; get; }
-
-            [XmlElement("buildquality")]
-            public string Quality { set; get; }
-
-            [XmlElement("workshift")]
-            public string Workshift { set; get; }
-
-            [XmlElement("cyclemode")]
-            public string CycleMode { set; get; }
-
-            [XmlElement("alignment")]
-            public string Alignment { set; get; }
-        }
-
-        [Serializable]
-        public class CInspectionPoint
-        {
-            [XmlElement("name")]
-            public string name { set; get; }
-
-            [XmlElement("featuretype")]
-            public string featuretype { set; get; }
-
-            [XmlElement("characteristic")]
-            public List<CInspectionCharacteristic> CInspectionCharacteristics { set; get; }
-
-
-            public static CInspectionPoint LoadFromNode(XmlReader node)
-            {
-                //Trace.WriteLine(TConst + System.Reflection.MethodBase.GetCurrentMethod().Name);
-
-                var serializer = new XmlSerializer(typeof(CInspectionPoint));
-                var ans = (CInspectionPoint)serializer.Deserialize(node);
-
-                return ans;
-
-            }
-        }
-
-        [Serializable]
-        public class CPerceptronDate
-        {
-            [XmlElement("month")]
-            public int month { set; get; }
-
-            [XmlElement("day")]
-            public int day { set; get; }
-
-            [XmlElement("year")]
-            public int year { set; get; }
-        }
-
-        [Serializable]
-        public class CPerceptronTime
-        {
-            [XmlElement("hour")]
-            public int hour { set; get; }
-
-            [XmlElement("minute")]
-            public int minute { set; get; }
-
-            [XmlElement("second")]
-            public int second { set; get; }
-        }
-
-        [Serializable]
-        public class CPerceptronPartID
-        {
-            [XmlElement("name")]
-            public string partID { set; get; }
-
-            [XmlElement("value")]
-            public string partValue { set; get; }
-        }
-
-        [Serializable]
-        public class CPerceptronProcessID
-        {
-            [XmlElement("name")]
-            public string ProcessID { set; get; }
-
-            [XmlElement("value")]
-            public string ProcessValue { set; get; }
-        }
-
-
-
-        /// <summary>計測データをstringでパースする </summary>
-        public class CMeasurementString
-        {
-            [XmlElement("deviation")]
-            public string deviation { set; get; }
-
-            [XmlElement("nominal")]
-            public string nominal { set; get; }
-
-            [XmlElement("absolute")]
-            public string abusolute { set; get; }
         }
     }
+
+    //指定階層下のフォルダにあるxmlのパスを返す
+    static IEnumerable<string> GetFiles(string path)
+    {
+        Queue<string> queue = new Queue<string>();
+        queue.Enqueue(path);
+        while (queue.Count > 0)
+        {
+            path = queue.Dequeue();
+            try
+            {
+                foreach (string subDir in Directory.GetDirectories(path))
+                {
+                    queue.Enqueue(subDir);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex);
+            }
+            string[] files = null;
+            try
+            {
+                files = Directory.GetFiles(path, "*.xml");
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex);
+            }
+            if (files != null)
+            {
+                for (int i = 0; i < files.Length; i++)
+                {
+                    yield return files[i];
+                }
+            }
+        }
+    }
+}
+
+//以下xmlのデシリアライズ
+[XmlRootAttribute(Namespace = "", IsNullable = false)]
+public class dot
+{
+    //[XmlElement("cell")]
+    //public cell[] Cell { get; set; }
+
+    [XmlElement("parttype")]
+    public parttype[] Parttype { get; set; }
+
+    [XmlElement("cycle")]
+    public cycle[] Cycle { get; set; }
+
+    public string STORED { get; set; }
+
+    [XmlElement("inspectionpoint")]
+    public inspectionpoint[] Inspectionpoint { get; set; }
+}
+
+//[XmlRoot(Namespace = "", IsNullable = false)]
+//public class cell
+//{
+//    [XmlElement("name")]
+//    public string Name { get; set; }
+//}
+
+[XmlRoot(Namespace = "", IsNullable = false)]
+public class parttype
+{
+    [XmlElement("name")]
+    public string Name { get; set; }
+}
+
+[XmlRoot(Namespace = "", IsNullable = false)]
+public class cycle
+{
+    [XmlElement("date")]
+    public date[] Date { get; set; }
+}
+
+[XmlRoot(Namespace = "", IsNullable = false)]
+public class date
+{
+    [XmlElement("month")]
+    public string Month { get; set; }
+}
+
+[XmlRoot(Namespace = "", IsNullable = false)]
+public class inspectionpoint
+{
+    [XmlElement("name")]
+    public string Name { get; set; }
+
+    [XmlElement("characteristic")]
+    public characteristic[] Characteristic { get; set; }
+}
+
+[XmlRoot(Namespace = "", IsNullable = false)]
+public class characteristic
+{
+    [XmlElement("defaultname")]
+    public string Defaultname { get; set; }
+
+    [XmlElement("measurement")]
+    public measurement[] Measurement { get; set; }
+}
+
+[XmlRoot(Namespace = "", IsNullable = false)]
+public class measurement
+{
+    [XmlElement("absolute")]
+    public string Absolute { get; set; }
 }
