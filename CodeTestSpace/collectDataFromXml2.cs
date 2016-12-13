@@ -38,7 +38,7 @@ class Program
         var placeName = new List<string> { "CubeHole1", "CubeHole2", "CubeHole3", "FrangeHole1", "FrangeHole2", "FrangeHole3", "HoleNut1", "HoleNut2" };
         var pointName = new List<string> { "X", "Y", "Z", "Orientation I", "Orientation J", "Orientation K", "Diamater" };
 
-        var names = new Dictionary<string, List<double>>();       
+        var names = new Dictionary<string, List<double>>();
 
         foreach (var varName in varNames)
         {
@@ -48,22 +48,21 @@ class Program
                 XmlRead(file);
                 DirectoryInfo dirInfo = Directory.GetParent(file);
 
-                //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "X"))
-                //{
-                //    names[varName].Add(l.Item4);
-                //};
-                foreach (var m in placeName)
+                foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "X"))
                 {
-                    foreach (var n in pointName)
-                    {
-                        foreach (var l in list.FindAll(c => c.Item2 == m).FindAll(c => c.Item3 == n))
-                        {
-                            names[varName].Add(l.Item4);
-                        };
-                    }
-                }
+                    names[varName].Add(l.Item4);
+                };
+
+                //foreach (var place in pointName)
+                //{
+                //    foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == place))
+                //    {
+                //        names[varName].Add(l.Item4);
+                //    }
+                //}
 
             }
+        }
 
             //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "Y")) { CHY1_Y = (l.Item4); };
             //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "Z")) { CHY1_Z = (l.Item4); };
@@ -184,7 +183,7 @@ class Program
 
             //lengthX1_2.Add(resoletCH1_2);
 
-        }
+        //}
 
         //Console.WriteLine("----------結果---------------");
         //foreach (var item in lengthX1_2)
