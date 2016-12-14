@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="collectDataFromXml2.cs" />
     <Compile Include="System\Collections\Specialized.cs" />
+    <Compile Include="System\SUM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />

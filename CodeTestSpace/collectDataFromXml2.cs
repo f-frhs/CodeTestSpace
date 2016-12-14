@@ -19,163 +19,28 @@ class Program
         var lengthX1_3 = new List<double>();
         var lengthX2_3 = new List<double>();
 
+        var placeNames = new List<string> { "CubeHole1", "CubeHole2", "CubeHole3", "FrangeHole1", "FrangeHole2", "FrangeHole3", "HoleNut1", "HoleNut2" };
+        var pointNames = new List<string> { "X", "Y", "Z", "Orientation I", "Orientation J", "Orientation K", "Diamater" };
 
-        var varNames = new List<string>();
-        foreach (var place in new string[] { "CH","FH","HN"})
+        var names = new Dictionary<string, List<double>>();
+
+
+        foreach (var placeName in placeNames)
         {
-            foreach (var propriety in new string[] { "Y","N"})
+            foreach (var pointName in pointNames)
             {
-                foreach (var number in new string[] { "1","2","3"})
+                foreach (string file in GetFiles(@"C:\Users\hayashi\Desktop\csvtesrt"))
                 {
-                    foreach (var point in new string[] { "X", "Y", "Z" })
+                    XmlRead(file);
+                    names[$"{placeName}_{pointName}"] = new List<double>();
+                    foreach (var l in list.FindAll(c => c.Item2 == placeName).FindAll(c => c.Item3 == pointName))
                     {
-                        varNames.Add($"{place}{propriety}{number}_{point}");
-                    }
+                        names[$"{placeName}_{pointName}"].Add(l.Item4);
+                    };
                 }
             }
         }
 
-        var placeName = new List<string> { "CubeHole1", "CubeHole2", "CubeHole3", "FrangeHole1", "FrangeHole2", "FrangeHole3", "HoleNut1", "HoleNut2" };
-        var pointName = new List<string> { "X", "Y", "Z", "Orientation I", "Orientation J", "Orientation K", "Diamater" };
-
-        var names = new Dictionary<string, List<double>>();
-
-        foreach (var varName in varNames)
-        {
-            names[varName] = new List<double>();
-            foreach (string file in GetFiles(@"C:\Users\hayashi\Desktop\csvtesrt"))
-            {
-                XmlRead(file);
-                DirectoryInfo dirInfo = Directory.GetParent(file);
-
-                foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "X"))
-                {
-                    names[varName].Add(l.Item4);
-                };
-
-                //foreach (var place in pointName)
-                //{
-                //    foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == place))
-                //    {
-                //        names[varName].Add(l.Item4);
-                //    }
-                //}
-
-            }
-        }
-
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "Y")) { CHY1_Y = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "Z")) { CHY1_Z = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "Orientation I")) { CHY1_I = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "Orientation J")) { CHY1_J = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "Orientation K")) { CHY1_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "Diameter")) { CHY1_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1").FindAll(c => c.Item3 == "X")) { FHY1_X = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1").FindAll(c => c.Item3 == "Y")) { FHY1_Y = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1").FindAll(c => c.Item3 == "Z")) { FHY1_Z = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1").FindAll(c => c.Item3 == "Orientation I")) { FHY1_I = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1").FindAll(c => c.Item3 == "Orientation J")) { FHY1_J = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1").FindAll(c => c.Item3 == "Orientation K")) { FHY1_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1").FindAll(c => c.Item3 == "Diameter")) { FHY1_J = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2").FindAll(c => c.Item3 == "X")) { CHY2_X = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2").FindAll(c => c.Item3 == "Y")) { CHY2_Y = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2").FindAll(c => c.Item3 == "Z")) { CHY2_Z = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2").FindAll(c => c.Item3 == "Orientation I")) { CHY2_I = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2").FindAll(c => c.Item3 == "Orientation J")) { CHY2_J = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2").FindAll(c => c.Item3 == "Orientation K")) { CHY2_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2").FindAll(c => c.Item3 == "Diameter")) { CHY2_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2").FindAll(c => c.Item3 == "X")) { FHY2_X = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2").FindAll(c => c.Item3 == "Y")) { FHY2_Y = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2").FindAll(c => c.Item3 == "Z")) { FHY2_Z = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2").FindAll(c => c.Item3 == "Orientation I")) { FHY2_I = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2").FindAll(c => c.Item3 == "Orientation J")) { FHY2_J = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2").FindAll(c => c.Item3 == "Orientation K")) { FHY2_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2").FindAll(c => c.Item3 == "Diameter")) { FHY2_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3").FindAll(c => c.Item3 == "X")) { CHY3_X = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3").FindAll(c => c.Item3 == "Y")) { CHY3_Y = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3").FindAll(c => c.Item3 == "Z")) { CHY3_Z = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3").FindAll(c => c.Item3 == "Orientation I")) { CHY3_I = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3").FindAll(c => c.Item3 == "Orientation J")) { CHY3_J = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3").FindAll(c => c.Item3 == "Orientation K")) { CHY3_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3").FindAll(c => c.Item3 == "Diameter")) { CHY3_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3").FindAll(c => c.Item3 == "X")) { FHY3_X = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3").FindAll(c => c.Item3 == "Y")) { FHY3_Y = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3").FindAll(c => c.Item3 == "Z")) { FHY3_Z = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3").FindAll(c => c.Item3 == "Orientation I")) { FHY3_I = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3").FindAll(c => c.Item3 == "Orientation J")) { FHY3_J = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3").FindAll(c => c.Item3 == "Orientation K")) { FHY3_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3").FindAll(c => c.Item3 == "Diameter")) { FHY3_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1").FindAll(c => c.Item3 == "X")) { HNY1_X = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1").FindAll(c => c.Item3 == "Y")) { HNY1_Y = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1").FindAll(c => c.Item3 == "Z")) { HNY1_Z = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1").FindAll(c => c.Item3 == "Orientation I")) { HNY1_I = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1").FindAll(c => c.Item3 == "Orientation J")) { HNY1_J = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1").FindAll(c => c.Item3 == "Orientation K")) { HNY1_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1").FindAll(c => c.Item3 == "Diameter")) { HNY1_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2").FindAll(c => c.Item3 == "X")) { HNY2_X = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2").FindAll(c => c.Item3 == "Y")) { HNY2_Y = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2").FindAll(c => c.Item3 == "Z")) { HNY2_Z = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2").FindAll(c => c.Item3 == "Orientation I")) { HNY2_I = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2").FindAll(c => c.Item3 == "Orientation J")) { HNY2_J = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2").FindAll(c => c.Item3 == "Orientation K")) { HNY2_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2").FindAll(c => c.Item3 == "Diameter")) { HNY2_K = (l.Item4); };
-
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1_No").FindAll(c => c.Item3 == "X")) { CHN1_X = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1_No").FindAll(c => c.Item3 == "Y")) { CHN1_Y = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1_No").FindAll(c => c.Item3 == "Z")) { CHN1_Z = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1_No").FindAll(c => c.Item3 == "Orientation I")) { CHN1_I = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1_No").FindAll(c => c.Item3 == "Orientation J")) { CHN1_J = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1_No").FindAll(c => c.Item3 == "Orientation K")) { CHN1_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1_No").FindAll(c => c.Item3 == "Diameter")) { CHN1_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1_No").FindAll(c => c.Item3 == "X")) { FHN1_X = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1_No").FindAll(c => c.Item3 == "Y")) { FHN1_Y = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1_No").FindAll(c => c.Item3 == "Z")) { FHN1_Z = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1_No").FindAll(c => c.Item3 == "Orientation I")) { FHN1_I = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1_No").FindAll(c => c.Item3 == "Orientation J")) { FHN1_J = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1_No").FindAll(c => c.Item3 == "Orientation K")) { FHN1_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole1_No").FindAll(c => c.Item3 == "Diameter")) { FHN1_J = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2_No").FindAll(c => c.Item3 == "X")) { CHN2_X = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2_No").FindAll(c => c.Item3 == "Y")) { CHN2_Y = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2_No").FindAll(c => c.Item3 == "Z")) { CHN2_Z = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2_No").FindAll(c => c.Item3 == "Orientation I")) { CHN2_I = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2_No").FindAll(c => c.Item3 == "Orientation J")) { CHN2_J = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2_No").FindAll(c => c.Item3 == "Orientation K")) { CHN2_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole2_No").FindAll(c => c.Item3 == "Diameter")) { CHN2_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2_No").FindAll(c => c.Item3 == "X")) { FHN2_X = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2_No").FindAll(c => c.Item3 == "Y")) { FHN2_Y = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2_No").FindAll(c => c.Item3 == "Z")) { FHN2_Z = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2_No").FindAll(c => c.Item3 == "Orientation I")) { FHN2_I = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2_No").FindAll(c => c.Item3 == "Orientation J")) { FHN2_J = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2_No").FindAll(c => c.Item3 == "Orientation K")) { FHN2_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole2_No").FindAll(c => c.Item3 == "Diameter")) { FHN2_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3_No").FindAll(c => c.Item3 == "X")) { CHN3_X = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3_No").FindAll(c => c.Item3 == "Y")) { CHN3_Y = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3_No").FindAll(c => c.Item3 == "Z")) { CHN3_Z = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3_No").FindAll(c => c.Item3 == "Orientation I")) { CHN3_I = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3_No").FindAll(c => c.Item3 == "Orientation J")) { CHN3_J = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3_No").FindAll(c => c.Item3 == "Orientation K")) { CHN3_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "CubeHole3_No").FindAll(c => c.Item3 == "Diameter")) { CHN3_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3_No").FindAll(c => c.Item3 == "X")) { FHN3_X = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3_No").FindAll(c => c.Item3 == "Y")) { FHN3_Y = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3_No").FindAll(c => c.Item3 == "Z")) { FHN3_Z = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3_No").FindAll(c => c.Item3 == "Orientation I")) { FHN3_I = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3_No").FindAll(c => c.Item3 == "Orientation J")) { FHN3_J = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3_No").FindAll(c => c.Item3 == "Orientation K")) { FHN3_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "FrangeHole3_No").FindAll(c => c.Item3 == "Diameter")) { FHN3_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1_No").FindAll(c => c.Item3 == "X")) { HNN1_X = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1_No").FindAll(c => c.Item3 == "Y")) { HNN1_Y = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1_No").FindAll(c => c.Item3 == "Z")) { HNN1_Z = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1_No").FindAll(c => c.Item3 == "Orientation I")) { HNN1_I = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1_No").FindAll(c => c.Item3 == "Orientation J")) { HNN1_J = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1_No").FindAll(c => c.Item3 == "Orientation K")) { HNN1_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut1_No").FindAll(c => c.Item3 == "Diameter")) { HNN1_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2_No").FindAll(c => c.Item3 == "X")) { HNN2_X = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2_No").FindAll(c => c.Item3 == "Y")) { HNN2_Y = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2_No").FindAll(c => c.Item3 == "Z")) { HNN2_Z = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2_No").FindAll(c => c.Item3 == "Orientation I")) { HNN2_I = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2_No").FindAll(c => c.Item3 == "Orientation J")) { HNN2_J = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2_No").FindAll(c => c.Item3 == "Orientation K")) { HNN2_K = (l.Item4); };
-            //foreach (var l in list.FindAll(c => c.Item2 == "HoleNut2_No").FindAll(c => c.Item3 == "Diameter")) { HNN2_K = (l.Item4); };   
 
             //var resoletCH1_2 = CalcSquare(CHY1_X - CHY2_X, CHY1_Y - CHY2_Y, CHY1_Z - CHY2_Z);
             //var resoletCH1_3 = CalcSquare(CHY1_X - CHY3_X, CHY1_Y - CHY3_Y, CHY1_Z - CHY3_Z);
@@ -183,28 +48,28 @@ class Program
 
             //lengthX1_2.Add(resoletCH1_2);
 
-        //}
+            //}
 
-        //Console.WriteLine("----------結果---------------");
-        //foreach (var item in lengthX1_2)
-        //{
-        //    Console.WriteLine($"{item}");
-        //}
-        //foreach (var item in lengthX1_3)
-        //{
-        //    Console.WriteLine($"{item}");
-        //}
-        //foreach (var item in lengthX2_3)
-        //{
-        //    Console.WriteLine($"{item}");
-        //}
+            //Console.WriteLine("----------結果---------------");
+            //foreach (var item in lengthX1_2)
+            //{
+            //    Console.WriteLine($"{item}");
+            //}
+            //foreach (var item in lengthX1_3)
+            //{
+            //    Console.WriteLine($"{item}");
+            //}
+            //foreach (var item in lengthX2_3)
+            //{
+            //    Console.WriteLine($"{item}");
+            //}
 
-        foreach (var e in names["CHY1_X"])
+            foreach (var e in names["CubeHole1_X"])
         {
             Console.WriteLine(e);
         }
 
-        Console.WriteLine(names["CHY1_X"].Sum());
+        //Console.WriteLine(names["CubeHole1_X"].Sum());
 
         Console.ReadLine();
 
