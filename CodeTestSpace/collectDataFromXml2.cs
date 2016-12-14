@@ -127,9 +127,7 @@ class Program
         Console.WriteLine(fhLength12);
         Console.WriteLine(fhLength13);
         Console.WriteLine(fhLength23);
-
         Console.WriteLine("--------------------------------");
-
         Console.WriteLine(chNLength12);
         Console.WriteLine(chNLength13);
         Console.WriteLine(chNLength23);
@@ -138,10 +136,9 @@ class Program
         Console.WriteLine(fhNLength23);
 
         Console.ReadLine();
-
     }
 
-    //ToDo: list全体をエクセルに吐き出す
+    //ToDo: 全体をエクセルに吐き出す
 
     //ToDo: Listから任意の要素を抜き出す部分の関数化
 
