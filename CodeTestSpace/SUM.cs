@@ -93,35 +93,38 @@ class Program
             }
         }
 
-        var placeName = new List<string> { "CubeHole1", "CubeHole2", "CubeHole3", "FrangeHole1", "FrangeHole2", "FrangeHole3", "HoleNut1", "HoleNut2" };
-        var pointName = new List<string> { "X", "Y", "Z", "Orientation I", "Orientation J", "Orientation K", "Diamater" };
+        var placeNames = new List<string> { "CubeHole1", "CubeHole2", "CubeHole3", "FrangeHole1", "FrangeHole2", "FrangeHole3", "HoleNut1", "HoleNut2" };
+        var pointNames = new List<string> { "X", "Y", "Z", "Orientation I", "Orientation J", "Orientation K", "Diamater" };
 
         var names = new Dictionary<string, List<double>>();
 
-        foreach (var varName in varNames)
+        foreach (var placeName in placeNames)
         {
-            names[varName] = new List<double>();
-            foreach (string file in GetFiles(@"C:\Users\hayashi\Desktop\csvtesrt"))
+            foreach (var pointName in pointNames)
             {
-                XmlRead(file);
-                DirectoryInfo dirInfo = Directory.GetParent(file);
+                    names[$"{placeName}_{pointName}"] = new List<double>();
+                    foreach (string file in GetFiles(@"C:\Users\hayashi\Desktop\csvtesrt"))
+                    {
+                        XmlRead(file);
+                        DirectoryInfo dirInfo = Directory.GetParent(file);
 
-                foreach (var l in list.FindAll(c => c.Item2 == "CubeHole1").FindAll(c => c.Item3 == "X"))
-                {
-                    names[varName].Add(l.Item4);
-                };
+                        foreach (var l in list.FindAll(c => c.Item2 == placeName).FindAll(c => c.Item3 == "X"))
+                        {
+                            names[$"{placeName}_{pointName}"].Add(l.Item4);
+                        };
+                    }
             }
         }
 
-        foreach (var e in names["CHY1_X"])
+        foreach (var e in names["CubeHole1_X"])
         {
             Console.WriteLine(e);
         }
         Console.WriteLine("----------------");
 
-        Console.WriteLine($"Count: {names["CHY1_X"].Count}");
-        Console.WriteLine($"Sum: {names["CHY1_X"].Sum()}");
-        Console.WriteLine($"Average: {names["CHY1_X"].Average()}");
+        Console.WriteLine($"Count: {names["CubeHole1_X"].Count}");
+        Console.WriteLine($"Sum: {names["CubeHole1_X"].Sum()}");
+        Console.WriteLine($"Average: {names["CubeHole1_X"].Average()}");
   //      Console.WriteLine($"SD: {names["CHY1_X"].Sd()}");
 
         Console.ReadKey();

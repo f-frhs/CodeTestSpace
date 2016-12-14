@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 using Microsoft.Office.Interop.Excel;
 using static System.Net.Mime.MediaTypeNames;
 using System.Linq;
+using CodeTestSpace;
 
 class Program
 {
@@ -24,15 +25,16 @@ class Program
 
         var names = new Dictionary<string, List<double>>();
 
-
         foreach (var placeName in placeNames)
         {
             foreach (var pointName in pointNames)
             {
+                names[$"{placeName}_{pointName}"] = new List<double>();
                 foreach (string file in GetFiles(@"C:\Users\hayashi\Desktop\csvtesrt"))
                 {
                     XmlRead(file);
-                    names[$"{placeName}_{pointName}"] = new List<double>();
+                    DirectoryInfo dirInfo = Directory.GetParent(file);
+
                     foreach (var l in list.FindAll(c => c.Item2 == placeName).FindAll(c => c.Item3 == pointName))
                     {
                         names[$"{placeName}_{pointName}"].Add(l.Item4);
@@ -41,35 +43,30 @@ class Program
             }
         }
 
+        //Console.WriteLine($"Count: {names["CubeHole1_X"].Count}");
+        //Console.WriteLine($"Sum: {names["CubeHole1_X"].Sum()}");
+        //Console.WriteLine($"Average: {names["CubeHole1_X"].Average()}");
+        //Console.WriteLine($"SD: {names["CubeHole1_X"].Sd()}");
 
-            //var resoletCH1_2 = CalcSquare(CHY1_X - CHY2_X, CHY1_Y - CHY2_Y, CHY1_Z - CHY2_Z);
-            //var resoletCH1_3 = CalcSquare(CHY1_X - CHY3_X, CHY1_Y - CHY3_Y, CHY1_Z - CHY3_Z);
-            //var resoletCH2_3 = CalcSquare(CHY2_X - CHY3_X, CHY2_Y - CHY3_Y, CHY2_Z - CHY3_Z);
+        var CH_X12 = names["CubeHole1_X"].ToArray().Zip(names["CubeHole2_X"].ToArray(), (x, y) => (x - y) * (x - y)).ToArray();
+        var CH_X13 = names["CubeHole1_X"].ToArray().Zip(names["CubeHole3_X"].ToArray(), (x, y) => (x - y) * (x - y)).ToArray();
+        var CH_X23 = names["CubeHole2_X"].ToArray().Zip(names["CubeHole3_X"].ToArray(), (x, y) => (x - y) * (x - y)).ToArray();
 
-            //lengthX1_2.Add(resoletCH1_2);
+        var CH_Y12 = names["CubeHole1_Y"].ToArray().Zip(names["CubeHole2_Y"].ToArray(), (x, y) => (x - y) * (x - y)).ToArray();
+        var CH_Y13 = names["CubeHole1_Y"].ToArray().Zip(names["CubeHole3_Y"].ToArray(), (x, y) => (x - y) * (x - y)).ToArray();
+        var CH_Y23 = names["CubeHole2_Y"].ToArray().Zip(names["CubeHole3_Y"].ToArray(), (x, y) => (x - y) * (x - y)).ToArray();
 
-            //}
+        var CH_Z12 = names["CubeHole1_Z"].ToArray().Zip(names["CubeHole2_Z"].ToArray(), (x, y) => (x - y) * (x - y)).ToArray();
+        var CH_Z13 = names["CubeHole1_Z"].ToArray().Zip(names["CubeHole3_Z"].ToArray(), (x, y) => (x - y) * (x - y)).ToArray();
+        var CH_Z23 = names["CubeHole2_Z"].ToArray().Zip(names["CubeHole3_Z"].ToArray(), (x, y) => (x - y) * (x - y)).ToArray();
 
-            //Console.WriteLine("----------結果---------------");
-            //foreach (var item in lengthX1_2)
-            //{
-            //    Console.WriteLine($"{item}");
-            //}
-            //foreach (var item in lengthX1_3)
-            //{
-            //    Console.WriteLine($"{item}");
-            //}
-            //foreach (var item in lengthX2_3)
-            //{
-            //    Console.WriteLine($"{item}");
-            //}
+        var chLength12 = CalcSD(CH_X12, CH_Y12, CH_Z12);
+        var chLength13 = CalcSD(CH_X13, CH_Y13, CH_Z13);
+        var chLength23 = CalcSD(CH_X23, CH_Y23, CH_Z23);
 
-            foreach (var e in names["CubeHole1_X"])
-        {
-            Console.WriteLine(e);
-        }
-
-        //Console.WriteLine(names["CubeHole1_X"].Sum());
+        Console.WriteLine(chLength12);
+        Console.WriteLine(chLength13);
+        Console.WriteLine(chLength23);
 
         Console.ReadLine();
 
