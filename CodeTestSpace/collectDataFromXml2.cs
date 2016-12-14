@@ -48,6 +48,9 @@ class Program
         //Console.WriteLine($"Average: {names["CubeHole1_X"].Average()}");
         //Console.WriteLine($"SD: {names["CubeHole1_X"].Sd()}");
 
+
+        //ToDo：----------------以下を簡略化----------------------
+
         //CH各穴間各対応座標の差の２乗
         var CH_X12 = names["CubeHole1_X"].ToArray().Zip(names["CubeHole2_X"].ToArray(), (x, y) => (x - y) * (x - y)).ToArray();
         var CH_X13 = names["CubeHole1_X"].ToArray().Zip(names["CubeHole3_X"].ToArray(), (x, y) => (x - y) * (x - y)).ToArray();
