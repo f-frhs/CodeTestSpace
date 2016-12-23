@@ -21,7 +21,7 @@ class Program
         var lengthX2_3 = new List<double>();
 
         var placeNames = new List<string> { "CubeHole1", "CubeHole2", "CubeHole3", "FrangeHole1", "FrangeHole2", "FrangeHole3", "HoleNut1", "HoleNut2", "CubeHole1_No", "CubeHole2_No", "CubeHole3_No", "FrangeHole1_No", "FrangeHole2_No", "FrangeHole3_No", "HoleNut1_No", "HoleNut2_No" };
-        var pointNames = new List<string> { "X", "Y", "Z", "Orientation I", "Orientation J", "Orientation K", "Diamater" };
+        var pointNames = new List<string> { "X", "Y", "Z", "Orientation I", "Orientation J", "Orientation K", "Diameter" };
 
         var names = new Dictionary<string, List<double>>();
 
@@ -43,6 +43,7 @@ class Program
             }
         }
 
+        //Console.WriteLine($"{list}");
         //Console.WriteLine($"Count: {names["CubeHole1_X"].Count}");
         //Console.WriteLine($"Sum: {names["CubeHole1_X"].Sum()}");
         //Console.WriteLine($"Average: {names["CubeHole1_X"].Average()}");
@@ -123,20 +124,36 @@ class Program
         var fhNLength13 = CalcSD(FHN_X13, FHN_Y13, FHN_Z13);
         var fhNLength23 = CalcSD(FHN_X23, FHN_Y23, FHN_Z23);
 
+        //FH穴座標・直径
+        Console.WriteLine($"Svg: {names["CubeHole1_X"].Average()},SD: {names["CubeHole1_X"].Sd()}");
+        Console.WriteLine($"Svg: {names["CubeHole1_Y"].Average()},SD: {names["CubeHole1_Y"].Sd()}");
+        Console.WriteLine($"Svg: {names["CubeHole1_Z"].Average()},SD: {names["CubeHole1_Z"].Sd()}");
+        Console.WriteLine($"Svg: {names["CubeHole1_Diameter"].Average()},SD: {names["CubeHole1_Diameter"].Sd()}");
+        Console.WriteLine($"Svg: {names["CubeHole2_X"].Average()},SD: {names["CubeHole2_X"].Sd()}");
+        Console.WriteLine($"Svg: {names["CubeHole2_Y"].Average()},SD: {names["CubeHole2_Y"].Sd()}");
+        Console.WriteLine($"Svg: {names["CubeHole2_Z"].Average()},SD: {names["CubeHole2_Z"].Sd()}");
+        Console.WriteLine($"Svg: {names["CubeHole2_Diameter"].Average()},SD: {names["CubeHole2_Diameter"].Sd()}");
+        Console.WriteLine($"Svg: {names["CubeHole3_X"].Average()},SD: {names["CubeHole3_X"].Sd()}");
+        Console.WriteLine($"Svg: {names["CubeHole3_Y"].Average()},SD: {names["CubeHole3_Y"].Sd()}");
+        Console.WriteLine($"Svg: {names["CubeHole3_Z"].Average()},SD: {names["CubeHole3_Z"].Sd()}");
+        Console.WriteLine($"Svg: {names["CubeHole3_Diameter"].Average()},SD: {names["CubeHole3_Diameter"].Sd()}");
+
+        
+
         //各穴間距離の平均と標準偏差
-        Console.WriteLine(chLength12);
-        Console.WriteLine(chLength13);
-        Console.WriteLine(chLength23);
-        Console.WriteLine(fhLength12);
-        Console.WriteLine(fhLength13);
-        Console.WriteLine(fhLength23);
-        Console.WriteLine("--------------------------------");
-        Console.WriteLine(chNLength12);
-        Console.WriteLine(chNLength13);
-        Console.WriteLine(chNLength23);
-        Console.WriteLine(fhNLength12);
-        Console.WriteLine(fhNLength13);
-        Console.WriteLine(fhNLength23);
+        //Console.WriteLine(chLength12);
+        //Console.WriteLine(chLength13);
+        //Console.WriteLine(chLength23);
+        //Console.WriteLine(fhLength12);
+        //Console.WriteLine(fhLength13);
+        //Console.WriteLine(fhLength23);
+        //Console.WriteLine("--------------------------------");
+        //Console.WriteLine(chNLength12);
+        //Console.WriteLine(chNLength13);
+        //Console.WriteLine(chNLength23);
+        //Console.WriteLine(fhNLength12);
+        //Console.WriteLine(fhNLength13);
+        //Console.WriteLine(fhNLength23);
 
         Console.ReadLine();
     }
