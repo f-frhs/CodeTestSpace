@@ -51,6 +51,25 @@ class Program
 
 
         //ToDo：----------------以下を簡略化----------------------
+        //出力：各試行(Front2mm...ごと)、全試行(各試行の合算)
+        //---RB1フランジ、RB2フランジ
+        //穴間距離：　CH、FH各試行のAvgとSD
+        //穴座標：　CH全試行 x,y,z のAvgとSD、各試行 x,y,z,Dia のAvgとSD
+        //          FH各試行 x,y,z,Dia のAvgとSD
+        //各穴法線ベクトル：　CH、FH各試行 i,j,k のAvgとSD
+        //ｰｰｰRB1フランジ
+        //穴間距離：　CH各試行のAvgとSD
+        //穴座標：　CH各試行 x,y,z,Dia のAvgとSD
+        //各穴法線ベクトル：　CH各試行 i,j,k のAvgとSD
+        //---ナットランナー
+        //穴間距離：　CH各試行のAvgとSD
+        //穴座標：　NH各試行 x,y,z,Dia のAvgとSD
+        //          CH各試行 x,y,z,Dia のAvgとSD
+        //ｰｰｰマテハン
+        //穴間距離：　MH1-2　各試行の　AvgとSD
+        //穴座標：　MH　各試行 x,y,z,Dia のAvgとSD
+        //各穴法線ベクトル：　MH　各試行 i,j,k のAvgとSD
+        //マテハン設置誤差：　x,y,z,Roll,Pitch,Yaw のAvgとSD
 
         //CH各穴間各対応座標の差の２乗
         var CH_X12 = names["CubeHole1_X"].ToArray().Zip(names["CubeHole2_X"].ToArray(), (x, y) => (x - y) * (x - y)).ToArray();
