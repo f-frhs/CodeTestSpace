@@ -13,6 +13,7 @@ using CodeTestSpace;
 class Program
 {
     private static List<Tuple<string, string, string, double>> list;
+    private static Dictionary<string, List<double>> names;
 
     static void Main(string[] args)
     {
@@ -23,7 +24,7 @@ class Program
         var placeNames = new List<string> { "CubeHole1", "CubeHole2", "CubeHole3", "FrangeHole1", "FrangeHole2", "FrangeHole3", "HoleNut1", "HoleNut2", "CubeHole1_No", "CubeHole2_No", "CubeHole3_No", "FrangeHole1_No", "FrangeHole2_No", "FrangeHole3_No", "HoleNut1_No", "HoleNut2_No" };
         var pointNames = new List<string> { "X", "Y", "Z", "Orientation I", "Orientation J", "Orientation K", "Diameter" };
 
-        var names = new Dictionary<string, List<double>>();
+        names = new Dictionary<string, List<double>>();
 
         foreach (var placeName in placeNames)
         {
@@ -156,9 +157,7 @@ class Program
         Console.WriteLine($"Svg: {names["CubeHole3_Y"].Average()},SD: {names["CubeHole3_Y"].Sd()}");
         Console.WriteLine($"Svg: {names["CubeHole3_Z"].Average()},SD: {names["CubeHole3_Z"].Sd()}");
         Console.WriteLine($"Svg: {names["CubeHole3_Diameter"].Average()},SD: {names["CubeHole3_Diameter"].Sd()}");
-
         
-
         //各穴間距離の平均と標準偏差
         //Console.WriteLine(chLength12);
         //Console.WriteLine(chLength13);
@@ -180,6 +179,13 @@ class Program
     //ToDo: 全体をエクセルに吐き出す
 
     //ToDo: Listから任意の要素を抜き出す部分の関数化
+
+    //引数の各項の差の二乗を返す
+    private static double[] CalcEachMinusSquare(string a, string b)
+    {
+        double[] results  = names[a].ToArray().Zip(names[b].ToArray(), (x, y) => (x - y) * (x - y)).ToArray();
+        return results;
+    }
 
     //引数の総和の平方根を返す
     private static double CalcSquare(double x, double y, double z)
