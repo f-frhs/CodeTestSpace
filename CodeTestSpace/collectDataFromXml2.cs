@@ -75,6 +75,7 @@ class Program
         throw new NotImplementedException();
     }
 
+    //結果をファイルに保存する
     public void SaveDatas(string fName, List<InspectItem> items, List<double> mean, List<double> dev,
         List<CalcAnswer> funcs)
     {
