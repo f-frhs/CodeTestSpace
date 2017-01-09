@@ -10,13 +10,101 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Linq;
 using CodeTestSpace;
 
+public class InspectItem
+{
+    //注目測定点名 CubeHole1など
+    public List<string> InsNames { set; get; }
+
+    //項目 Xなど
+    public List<string> Inspects { set; get; }
+}
+
+public class CalcSetting
+{
+    public string InsName1 { set; get; }
+    public string InsName2 { set; get; }
+    public string Operator { set; get; }
+}
+
+public class CalcAnswer
+{
+    public string InsName { set; get; }
+    public string Inspect { set; get; }
+    public double Ans { set; get; }
+}
+
 class Program
 {
     private static List<Tuple<string, string, string, double>> list;
     private static Dictionary<string, List<double>> names;
 
+
+    //注目測定点名と注目計測名と項目をファイルから読み込む
+    public List<InspectItem> GetInspectionItems(string fName)
+    {
+        throw new NotImplementedException();
+    }
+
+    //特殊計算内容をファイルから読み込む
+    public List<CalcSetting> GetClcSettings(string fName)
+    {
+        throw new NotImplementedException();
+    }
+
+    //指定フォルダ以下のファイルを取得する
+    public List<string> GetXmlFiles(string basePath)
+    {
+        throw new NotImplementedException();
+    }
+
+    //注目計測名と注目測定名のデータを収集する
+    public List<CalcAnswer> CollectAnswers(InspectItem inspect)
+    {
+        throw new NotImplementedException();
+    }
+
+    //平均と分散を求める
+    public double[] CalcMeanDev(List<CalcAnswer> correctDatas)
+    {
+        throw new NotImplementedException();
+    }
+
+    //特殊計算を実施する
+    public double CalcFunction(CalcSetting calSetting)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SaveDatas(string fName, List<InspectItem> items, List<double> mean, List<double> dev,
+        List<CalcAnswer> funcs)
+    {
+        throw new NotImplementedException();
+    }
+
     static void Main(string[] args)
     {
+        //注目測定点名と注目計測名と項目をファイルから読み込む
+        //例
+        //ST1_SF01　（注目測定点名）
+        //CubeHole1,CubeHole2 (注目計測名)
+        //X Y ...等（項目）
+        //注目計測名、項目は可変数
+
+        //特殊計算内容をファイルから読み込む
+        //例：
+        //distance,CubeHole1,CubeHole2
+        //特殊計算内容は可変とする
+
+        //指定フォルダ以下のファイルを取得する
+        //注目測定点名と合致するファイルを更にコレクトする
+
+        //コレクトしたファイルから、注目計測名と注目測定名のデータを収集する
+        
+        //収集したデータから、各注目測定点名ごとの平均と分散を求める
+
+        //結果をファイルに保存する
+
+
         var lengthX1_2 = new List<double>();
         var lengthX1_3 = new List<double>();
         var lengthX2_3 = new List<double>();
