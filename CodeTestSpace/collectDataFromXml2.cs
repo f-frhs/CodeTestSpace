@@ -145,21 +145,20 @@ class Program
         var fhNLength23 = CalcSD(FHN_X23, FHN_Y23, FHN_Z23);
 
         //FH穴座標・直径
-        Console.WriteLine($"Svg: {names["CubeHole1_X"].Average()},SD: {names["CubeHole1_X"].Sd()}");
-        Console.WriteLine($"Svg: {names["CubeHole1_Y"].Average()},SD: {names["CubeHole1_Y"].Sd()}");
-        Console.WriteLine($"Svg: {names["CubeHole1_Z"].Average()},SD: {names["CubeHole1_Z"].Sd()}");
-        Console.WriteLine($"Svg: {names["CubeHole1_Diameter"].Average()},SD: {names["CubeHole1_Diameter"].Sd()}");
-        Console.WriteLine($"Svg: {names["CubeHole2_X"].Average()},SD: {names["CubeHole2_X"].Sd()}");
-        Console.WriteLine($"Svg: {names["CubeHole2_Y"].Average()},SD: {names["CubeHole2_Y"].Sd()}");
-        Console.WriteLine($"Svg: {names["CubeHole2_Z"].Average()},SD: {names["CubeHole2_Z"].Sd()}");
-        Console.WriteLine($"Svg: {names["CubeHole2_Diameter"].Average()},SD: {names["CubeHole2_Diameter"].Sd()}");
-        Console.WriteLine($"Svg: {names["CubeHole3_X"].Average()},SD: {names["CubeHole3_X"].Sd()}");
-        Console.WriteLine($"Svg: {names["CubeHole3_Y"].Average()},SD: {names["CubeHole3_Y"].Sd()}");
-        Console.WriteLine($"Svg: {names["CubeHole3_Z"].Average()},SD: {names["CubeHole3_Z"].Sd()}");
-        Console.WriteLine($"Svg: {names["CubeHole3_Diameter"].Average()},SD: {names["CubeHole3_Diameter"].Sd()}");
-        
+        //Console.WriteLine($"Svg: {names["CubeHole1_X"].Average()},SD: {names["CubeHole1_X"].Sd()}");
+        //Console.WriteLine($"Svg: {names["CubeHole1_Y"].Average()},SD: {names["CubeHole1_Y"].Sd()}");
+        //Console.WriteLine($"Svg: {names["CubeHole1_Z"].Average()},SD: {names["CubeHole1_Z"].Sd()}");
+        //Console.WriteLine($"Svg: {names["CubeHole1_Diameter"].Average()},SD: {names["CubeHole1_Diameter"].Sd()}");
+        //Console.WriteLine($"Svg: {names["CubeHole2_X"].Average()},SD: {names["CubeHole2_X"].Sd()}");
+        //Console.WriteLine($"Svg: {names["CubeHole2_Y"].Average()},SD: {names["CubeHole2_Y"].Sd()}");
+        //Console.WriteLine($"Svg: {names["CubeHole2_Z"].Average()},SD: {names["CubeHole2_Z"].Sd()}");
+        //Console.WriteLine($"Svg: {names["CubeHole2_Diameter"].Average()},SD: {names["CubeHole2_Diameter"].Sd()}");
+        //Console.WriteLine($"Svg: {names["CubeHole3_X"].Average()},SD: {names["CubeHole3_X"].Sd()}");
+        //Console.WriteLine($"Svg: {names["CubeHole3_Y"].Average()},SD: {names["CubeHole3_Y"].Sd()}");
+        //Console.WriteLine($"Svg: {names["CubeHole3_Z"].Average()},SD: {names["CubeHole3_Z"].Sd()}");
+        //Console.WriteLine($"Svg: {names["CubeHole3_Diameter"].Average()},SD: {names["CubeHole3_Diameter"].Sd()}");
+
         //各穴間距離の平均と標準偏差
-        //Console.WriteLine(chLength12);
         //Console.WriteLine(chLength13);
         //Console.WriteLine(chLength23);
         //Console.WriteLine(fhLength12);
@@ -173,6 +172,18 @@ class Program
         //Console.WriteLine(fhNLength13);
         //Console.WriteLine(fhNLength23);
 
+        foreach (var serultsCH_X12 in CHN_X12)
+        {
+            Console.WriteLine(serultsCH_X12);
+        }
+        Console.WriteLine("--------------------");
+
+        var rE = CalcEachMinusSquare("CubeHole1_X", "CubeHole2_X");
+        foreach(var resultsRE in rE)
+        {
+            Console.WriteLine(resultsRE);
+        }
+
         Console.ReadLine();
     }
 
@@ -181,6 +192,7 @@ class Program
     //ToDo: Listから任意の要素を抜き出す部分の関数化
 
     //引数の各項の差の二乗を返す
+    //ToDo結果が望むものと違う修正：CubeHole1_X", "CubeHole2_Xのみの予定
     private static double[] CalcEachMinusSquare(string a, string b)
     {
         double[] results  = names[a].ToArray().Zip(names[b].ToArray(), (x, y) => (x - y) * (x - y)).ToArray();
