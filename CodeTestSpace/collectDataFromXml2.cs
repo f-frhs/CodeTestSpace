@@ -18,6 +18,7 @@ public class InspectItem
     public List<string> InsNames { set; get; }
 
     //注目計測名 CubeHole1など
+    /// <summary></summary>
     public List<string> Inspects { set; get; }
 
     //項目 Xなど
@@ -43,6 +44,12 @@ class Program
     private static List<Tuple<string, string, string, double>> list;
     private static Dictionary<string, List<double>> names;
 
+    //指定フォルダ以下のファイルを取得する
+    public static List<string> GetXmlFiles(string basePath)
+    {
+        List<string> fnames = Directory.GetFiles(basePath, "*.xml", SearchOption.AllDirectories).ToList();
+        return fnames;
+    }
 
     //注目測定点名と注目計測名と項目をファイルから読み込む
     public List<InspectItem> GetInspectionItems(string fName)
@@ -57,13 +64,6 @@ class Program
         throw new NotImplementedException();
     }
 
-    //指定フォルダ以下のファイルを取得する
-    public List<string> GetXmlFiles(string basePath)
-    {
-        List < string > fnames = Directory.GetFiles(basePath, "*.xml", SearchOption.AllDirectories).ToList();
-        return fnames;
-    }
-
     //注目計測名と注目測定名のデータを収集する
     public List<CalcAnswer> CollectAnswers(InspectItem inspect)
     {
@@ -76,7 +76,7 @@ class Program
         throw new NotImplementedException();
     }
 
-    //特殊計算を実施する
+    //特殊計算(2点間の3D距離測定)を実施する
     public double CalcFunction(CalcSetting calSetting)
     {
         throw new NotImplementedException();
@@ -92,7 +92,7 @@ class Program
     static void Main(string[] args)
     {
         string basePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\testdata\";
-        var fnames = Program.GetFiles(basePath);
+        var fnames = GetXmlFiles(basePath);
 
         foreach(var fname in fnames)
         {
@@ -100,16 +100,14 @@ class Program
 
             var xmlFileName = Path.GetFileName(fname);
 
-            var data = CPerceptronData.LoadFromFile(fname, true);
-
-            CInspectionCharacteristic outInspect;
-            if(CPerceptronData.IsContains(data, "CubeHole1", "X", out outInspect))
+            var data = CPerceptronData.LoadFromFile(fname, true); CInspectionCharacteristic outInspect;
+            if (CPerceptronData.IsContains(data, "CubeHole1", "X", out outInspect))
             {
                 Console.WriteLine($"X={outInspect.Measurement.abusolute}");
             }
 
-        }
 
+        }
 
 
         Console.ReadKey();
