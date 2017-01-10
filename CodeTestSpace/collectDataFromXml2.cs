@@ -14,6 +14,7 @@ using AutoAssyModules.Perceptron;
 public class InspectItem
 {
     //注目測定点名 ST1_SF01など
+    /// <summary></summary>
     public List<string> InsNames { set; get; }
 
     //注目計測名 CubeHole1など
