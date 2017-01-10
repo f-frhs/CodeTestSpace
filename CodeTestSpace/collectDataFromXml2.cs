@@ -52,9 +52,16 @@ class Program
     }
 
     //注目測定点名と注目計測名と項目をファイルから読み込む
-    public List<InspectItem> GetInspectionItems(string fName)
+    public static List<InspectItem> GetInspectionItems(string fName)
     {
-        //------------- Next --------------
+        var data = CPerceptronData.LoadFromFile(fName, true); CInspectionCharacteristic outInspect;
+        if (CPerceptronData.IsContains(data, "CubeHole1", "X", out outInspect))
+        {
+            Console.WriteLine($"X={outInspect.Measurement.abusolute}");
+        }
+
+        //---作成中
+        //return ;
         throw new NotImplementedException();
     }
 
@@ -98,14 +105,8 @@ class Program
         {
             Console.WriteLine(fname);
 
-            var xmlFileName = Path.GetFileName(fname);
-
-            var data = CPerceptronData.LoadFromFile(fname, true); CInspectionCharacteristic outInspect;
-            if (CPerceptronData.IsContains(data, "CubeHole1", "X", out outInspect))
-            {
-                Console.WriteLine($"X={outInspect.Measurement.abusolute}");
-            }
-
+            //var xmlFileName = Path.GetFileName(fname);
+            var xmlListData = GetInspectionItems(fname);
 
         }
 
