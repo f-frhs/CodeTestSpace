@@ -101,6 +101,12 @@ class Program
 
             var data = CPerceptronData.LoadFromFile(fname, true);
 
+            CInspectionCharacteristic outInspect;
+            if(CPerceptronData.IsContains(data, "CubeHole1", "X", out outInspect))
+            {
+                Console.WriteLine($"X={outInspect.Measurement.abusolute}");
+            }
+
         }
 
 
