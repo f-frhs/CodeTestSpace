@@ -13,12 +13,14 @@ using AutoAssyModules.Perceptron;
 
 public class InspectItem
 {
-    //注目測定点名 CubeHole1など
+    //注目測定点名 ST1_SF01など
     public List<string> InsNames { set; get; }
 
-    //項目 Xなど
+    //注目計測名 CubeHole1など
     public List<string> Inspects { set; get; }
 
+    //項目 Xなど
+    public List<string> Items { set; get; }
 }
 
 public class CalcSetting
@@ -44,6 +46,7 @@ class Program
     //注目測定点名と注目計測名と項目をファイルから読み込む
     public List<InspectItem> GetInspectionItems(string fName)
     {
+        //------------- Next --------------
         throw new NotImplementedException();
     }
 
