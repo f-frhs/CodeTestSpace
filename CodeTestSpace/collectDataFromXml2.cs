@@ -9,6 +9,7 @@ using Microsoft.Office.Interop.Excel;
 using static System.Net.Mime.MediaTypeNames;
 using System.Linq;
 using CodeTestSpace;
+using AutoAssyModules.Perceptron;
 
 public class InspectItem
 {
@@ -92,7 +93,14 @@ class Program
         foreach(var fname in fnames)
         {
             Console.WriteLine(fname);
+
+            var xmlFileName = Path.GetFileName(fname);
+
+            var data = CPerceptronData.LoadFromFile(fname, true);
+
         }
+
+
 
         Console.ReadKey();
 

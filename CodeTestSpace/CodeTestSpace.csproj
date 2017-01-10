@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="collectDataFromXml2.cs" />
+    <Compile Include="CPerceptronData.cs" />
     <Compile Include="ListExtension.cs" />
     <Compile Include="System\Collections\Specialized.cs" />
   </ItemGroup>
