@@ -51,7 +51,7 @@ class Program
         return fnames;
     }
 
-    //注目測定点名と注目注目計測と項目をファイルから読み込む
+    //注目測定点名と注目計測と項目をファイルから読み込む
     public static List<InspectItem> GetInspectionItems(string fName)
     {
         //CSVから測定点名・注目計測・項目を読み出す
@@ -94,44 +94,24 @@ class Program
         StreamReader reader = new StreamReader(fName, Encoding.GetEncoding("Shift_JIS"));
         var result = reader.ReadLine().Split(',').ToList();
 
-        //計算は下記をこのプログラムのどこかに書き出しておき、CSVの内容からそれを読み出す
-        //例
-        //0:穴間距離
-
-        //計算内容(現在)
-        //出力：各試行(Front2mm...ごと)、全試行(各試行の合算)
-        //---RB1フランジ、RB2フランジ
-        //穴間距離：　CH、FH各試行のAvgとSD
-        //穴座標：　CH全試行 x,y,z のAvgとSD、各試行 x,y,z,Dia のAvgとSD
-        //          FH各試行 x,y,z,Dia のAvgとSD
-        //各穴法線ベクトル：　CH、FH各試行 i,j,k のAvgとSD
-        //---RB1フランジ
-        //穴間距離：　CH各試行のAvgとSD
-        //穴座標：　CH各試行 x,y,z,Dia のAvgとSD
-        //各穴法線ベクトル：　CH各試行 i,j,k のAvgとSD
-        //---ナットランナー
-        //穴間距離：　CH各試行のAvgとSD
-        //穴座標：　NH各試行 x,y,z,Dia のAvgとSD
-        //          CH各試行 x,y,z,Dia のAvgとSD
-        //---マテハン
-        //穴間距離：　MH1-2　各試行の　AvgとSD
-        //穴座標：　MH　各試行 x,y,z,Dia のAvgとSD
-        //各穴法線ベクトル：　MH　各試行 i,j,k のAvgとSD
-        //マテハン設置誤差：　x,y,z,Roll,Pitch,Yaw のAvgとSD
-
         throw new NotImplementedException();
-
     }
 
     //注目計測名と注目測定名のデータを収集する
     public List<CalcAnswer> CollectAnswers(InspectItem inspect)
     {
-        //計測名・測定名・項目からAbsoluteを返す
+        //InspectItemを元に計測名・測定名・項目からAbsoluteを返す
+        //var data = CPerceptronData.LoadFromFile(fname, true); CInspectionCharacteristic outInspect;
+        //if (CPerceptronData.IsContains(data, "CubeHole1", "X", out outInspect))
+        //{
+        //    Console.WriteLine($"X={outInspect.Measurement.abusolute}");
+        //}
+
         throw new NotImplementedException();
     }
 
     //平均と分散を求める
-    public double[] CalcMeanDev(List<CalcAnswer> correctDatas)
+    public double[] CalcMeanDev(List<CalcAnswer> collectDatas)
     {
         //平均の式
 
@@ -157,12 +137,6 @@ class Program
 
     static void Main(string[] args)
     {
-        //対象のフォルダを指定
-        string basePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\testdata\";
-
-        //フォルダ内のxmlファイルをリストに格納
-        var fnames = GetXmlFiles(basePath);
-
         //注目測定点名と注目計測名と項目ファイルのアドレス
         string csvFilePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\insepectionData\settingData.CSV";
 
@@ -182,12 +156,20 @@ class Program
         //distance,CubeHole1,CubeHole2
         //特殊計算内容は可変とする
         var calcSetting = GetClcSettings(csvCalcPath);
-    
 
-        //指定フォルダ以下のファイルを取得する
+        //対象のフォルダを指定
+        string basePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\testdata\";
+
+        //指定フォルダ以下のファイルを取得する (フォルダ内のxmlファイルをリストに格納)
+        var fnames = GetXmlFiles(basePath);
+
         //注目測定点名と合致するファイルを更にコレクトする
+        //CSVファイルからデータの読み込み
+        //読み込んだデータと合致するファイルを選択(方法：xml内の<parttype>の<name>で判別)
+
 
         //コレクトしたファイルから、注目計測名と注目測定名のデータを収集する
+        //
 
         //収集したデータから、各注目測定点名ごとの平均と分散を求める
 
@@ -200,16 +182,27 @@ class Program
 
     //---以下旧版：削除予定--------
 
-    //リスト内のXmlから対象のabusoluteを読み出し
-    //foreach (var fname in fnames)
-    //{
-    //    Console.WriteLine(fname);
-    //    var data = CPerceptronData.LoadFromFile(fname, true); CInspectionCharacteristic outInspect;
-    //    if (CPerceptronData.IsContains(data, "CubeHole1", "X", out outInspect))
-    //    {
-    //        Console.WriteLine($"X={outInspect.Measurement.abusolute}");
-    //    }
-    //}
+    //計算内容(現在)
+    //出力：各試行(Front2mm...ごと)、全試行(各試行の合算)
+    //---RB1フランジ、RB2フランジ
+    //穴間距離：　CH、FH各試行のAvgとSD
+    //穴座標：　CH全試行 x,y,z のAvgとSD、各試行 x,y,z,Dia のAvgとSD
+    //          FH各試行 x,y,z,Dia のAvgとSD
+    //各穴法線ベクトル：　CH、FH各試行 i,j,k のAvgとSD
+    //---RB1フランジ
+    //穴間距離：　CH各試行のAvgとSD
+    //穴座標：　CH各試行 x,y,z,Dia のAvgとSD
+    //各穴法線ベクトル：　CH各試行 i,j,k のAvgとSD
+    //---ナットランナー
+    //穴間距離：　CH各試行のAvgとSD
+    //穴座標：　NH各試行 x,y,z,Dia のAvgとSD
+    //          CH各試行 x,y,z,Dia のAvgとSD
+    //---マテハン
+    //穴間距離：　MH1-2　各試行の　AvgとSD
+    //穴座標：　MH　各試行 x,y,z,Dia のAvgとSD
+    //各穴法線ベクトル：　MH　各試行 i,j,k のAvgとSD
+    //マテハン設置誤差：　x,y,z,Roll,Pitch,Yaw のAvgとSD
+
 
     private static List<Tuple<string, string, string, double>> list;
     private static Dictionary<string, List<double>> names;
