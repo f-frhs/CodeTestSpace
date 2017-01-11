@@ -10,15 +10,15 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Linq;
 using CodeTestSpace;
 using AutoAssyModules.Perceptron;
+using System.Text;
 
 public class InspectItem
 {
+    //CSV内容を格納：注目測定点名・注目計測名・項目
     //注目測定点名 ST1_SF01など
-    /// <summary></summary>
     public List<string> InsNames { set; get; }
 
     //注目計測名 CubeHole1など
-    /// <summary></summary>
     public List<string> Inspects { set; get; }
 
     //項目 Xなど
@@ -27,6 +27,7 @@ public class InspectItem
 
 public class CalcSetting
 {
+    /// <summary>CSV内容を格納：計算を行う対象の測定名と計算方法</summary>
     public string InsName1 { set; get; }
     public string InsName2 { set; get; }
     public string Operator { set; get; }
@@ -34,6 +35,7 @@ public class CalcSetting
 
 public class CalcAnswer
 {
+    /// <summary>収集されたデータを格納</summary>
     public string InsName { set; get; }
     public string Inspect { set; get; }
     public double Ans { set; get; }
@@ -41,51 +43,119 @@ public class CalcAnswer
 
 class Program
 {
-    private static List<Tuple<string, string, string, double>> list;
-    private static Dictionary<string, List<double>> names;
-
     //指定フォルダ以下のファイルを取得する
     public static List<string> GetXmlFiles(string basePath)
     {
+        //引数で渡されたフォルダ以下の全てのxmlファイルを取得：フォルダは各測定(2mmFront等)ごととする
         List<string> fnames = Directory.GetFiles(basePath, "*.xml", SearchOption.AllDirectories).ToList();
         return fnames;
     }
 
-    //注目測定点名と注目計測名と項目をファイルから読み込む
+    //注目測定点名と注目注目計測と項目をファイルから読み込む
     public static List<InspectItem> GetInspectionItems(string fName)
+    //public static string[] GetInspectionItems(string fName)
     {
-        var data = CPerceptronData.LoadFromFile(fName, true); CInspectionCharacteristic outInspect;
-        if (CPerceptronData.IsContains(data, "CubeHole1", "X", out outInspect))
-        {
-            Console.WriteLine($"X={outInspect.Measurement.abusolute}");
-        }
+        //CSVから測定点名・注目計測・項目を読み出す
+        StreamReader reader = new StreamReader(fName, Encoding.GetEncoding("Shift_JIS"));
+        var result = reader.ReadLine().Split(',').ToList();
 
-        //---作成中
-        //return ;
-        throw new NotImplementedException();
+        //InspectItemに格納
+        InspectItem inspecitem = new InspectItem();
+        //string a = result[3];
+        //inspecitem.InsNames = a.ToList();
+
+        //List<string> items = new List<string>();
+
+        //items.Add(result[1]);
+        //items.Add(result[2]);
+
+        //inspecitem.Inspects = items;
+
+        //各リストに文字列を追加
+        var InsNameList = new List<string>();
+        InsNameList.Add(result[0]);
+        var InspectsList = new List<string>();
+        InspectsList.Add(result[1]);
+        InspectsList.Add(result[2]);
+        var ItemsList = new List<string>();
+        InspectsList.Add(result[3]);
+        InspectsList.Add(result[4]);
+        InspectsList.Add(result[5]);
+        InspectsList.Add(result[6]);
+        InspectsList.Add(result[7]);
+        InspectsList.Add(result[8]);
+        InspectsList.Add(result[9]);
+
+        //一つの InspectItem を作る
+        var answer = new InspectItem();
+        answer.InsNames = InsNameList;
+        answer.Inspects = InspectsList;
+        answer.Items = ItemsList;
+
+        //作成した　answer を リストの answers に追加する
+        var answers = new List<InspectItem>();
+        answers.Add(answer);
+
+        return answers;
+            //return inspecitem;
+        //throw new NotImplementedException();
     }
 
     //特殊計算内容をファイルから読み込む
     public List<CalcSetting> GetClcSettings(string fName)
     {
+        //CSVから特殊計算を読み込む
+        //計算は下記をこのプログラムのどこかに書き出しておき、CSVの内容からそれを読み出す
+        //例
+        //0:穴間距離
+
+        //計算内容(現在)
+        //出力：各試行(Front2mm...ごと)、全試行(各試行の合算)
+        //---RB1フランジ、RB2フランジ
+        //穴間距離：　CH、FH各試行のAvgとSD
+        //穴座標：　CH全試行 x,y,z のAvgとSD、各試行 x,y,z,Dia のAvgとSD
+        //          FH各試行 x,y,z,Dia のAvgとSD
+        //各穴法線ベクトル：　CH、FH各試行 i,j,k のAvgとSD
+        //---RB1フランジ
+        //穴間距離：　CH各試行のAvgとSD
+        //穴座標：　CH各試行 x,y,z,Dia のAvgとSD
+        //各穴法線ベクトル：　CH各試行 i,j,k のAvgとSD
+        //---ナットランナー
+        //穴間距離：　CH各試行のAvgとSD
+        //穴座標：　NH各試行 x,y,z,Dia のAvgとSD
+        //          CH各試行 x,y,z,Dia のAvgとSD
+        //---マテハン
+        //穴間距離：　MH1-2　各試行の　AvgとSD
+        //穴座標：　MH　各試行 x,y,z,Dia のAvgとSD
+        //各穴法線ベクトル：　MH　各試行 i,j,k のAvgとSD
+        //マテハン設置誤差：　x,y,z,Roll,Pitch,Yaw のAvgとSD
+
         throw new NotImplementedException();
+
     }
 
     //注目計測名と注目測定名のデータを収集する
     public List<CalcAnswer> CollectAnswers(InspectItem inspect)
     {
+        //計測名・測定名・項目からAbsoluteを返す
         throw new NotImplementedException();
     }
 
     //平均と分散を求める
     public double[] CalcMeanDev(List<CalcAnswer> correctDatas)
     {
+        //平均の式
+
+        //分散の式
+
         throw new NotImplementedException();
     }
 
-    //特殊計算(2点間の3D距離測定)を実施する
+    //特殊計算を実施する
     public double CalcFunction(CalcSetting calSetting)
     {
+        //GetClcSettingsで選択された計算を用いて結果を返す
+
         throw new NotImplementedException();
     }
 
@@ -98,20 +168,14 @@ class Program
 
     static void Main(string[] args)
     {
+        //対象のフォルダを指定
         string basePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\testdata\";
+
+        //フォルダ内のxmlファイルをリストに格納
         var fnames = GetXmlFiles(basePath);
 
-        foreach(var fname in fnames)
-        {
-            Console.WriteLine(fname);
-
-            //var xmlFileName = Path.GetFileName(fname);
-            var xmlListData = GetInspectionItems(fname);
-
-        }
-
-
-        Console.ReadKey();
+        //CSVファイルのアドレス
+        string csvFilePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\insepectionData\settingData.CSV";
 
         //注目測定点名と注目計測名と項目をファイルから読み込む
         //例
@@ -119,6 +183,25 @@ class Program
         //CubeHole1,CubeHole2 (注目計測名)
         //X Y ...等（項目）
         //注目計測名、項目は可変数
+        var inspectionSetting = GetInspectionItems(csvFilePath);
+
+
+        //リスト内のXmlから対象のabusoluteを読み出し
+        foreach (var fname in fnames)
+        {
+            Console.WriteLine(fname);
+
+            var data = CPerceptronData.LoadFromFile(fname, true); CInspectionCharacteristic outInspect;
+            if (CPerceptronData.IsContains(data, "CubeHole1", "X", out outInspect))
+            {
+                Console.WriteLine($"X={outInspect.Measurement.abusolute}");
+            }
+        }
+
+
+        Console.ReadKey();
+
+
 
         //特殊計算内容をファイルから読み込む
         //例：
@@ -134,11 +217,15 @@ class Program
 
         //結果をファイルに保存する
 
-   
+
     }
 
-    //ToDo: 全体をエクセルに吐き出す
 
+    //---以下旧版：削除予定--------
+    private static List<Tuple<string, string, string, double>> list;
+    private static Dictionary<string, List<double>> names;
+
+    //ToDo: 全体をエクセルに吐き出す
     //ToDo: Listから任意の要素を抜き出す部分の関数化
 
     //引数の各項の差の二乗を返す
