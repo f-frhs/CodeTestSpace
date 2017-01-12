@@ -94,7 +94,17 @@ class Program
         StreamReader reader = new StreamReader(fName, Encoding.GetEncoding("Shift_JIS"));
         var result = reader.ReadLine().Split(',').ToList();
 
-        throw new NotImplementedException();
+        //一つの InspectItem を作る
+        var answer = new CalcSetting();
+        answer.InsName1 = result[1];
+        answer.InsName2 = result[2];
+        answer.Operator = result[0];
+
+        //作成した　answer を リストの answers に追加する
+        var answers = new List<CalcSetting>();
+        answers.Add(answer);
+
+        return answers;
     }
 
     //注目計測名と注目測定名のデータを収集する
@@ -137,7 +147,7 @@ class Program
 
     static void Main(string[] args)
     {
-        //注目測定点名と注目計測名と項目ファイルのアドレス
+        //注目測定点名と注目計測名と項目が書かれたファイルのアドレス
         string csvFilePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\insepectionData\settingData.CSV";
 
         //注目測定点名と注目計測名と項目をファイルから読み込む
@@ -148,8 +158,8 @@ class Program
         //注目計測名、項目は可変数
         var insSetting = GetInspectionItems(csvFilePath);
 
-        //注目測定点名と注目計測名と項目ファイルのアドレス
-        string csvCalcPath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\insepectionData\settingData.CSV";
+        //特殊計算と対象が書かれたファイルのアドレス
+        string csvCalcPath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\insepectionData\calcSettingData.CSV";
 
         //特殊計算内容をファイルから読み込む
         //例：
@@ -157,7 +167,7 @@ class Program
         //特殊計算内容は可変とする
         var calcSetting = GetClcSettings(csvCalcPath);
 
-        //対象のフォルダを指定
+        //処理対象のフォルダを指定
         string basePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\testdata\";
 
         //指定フォルダ以下のファイルを取得する (フォルダ内のxmlファイルをリストに格納)
