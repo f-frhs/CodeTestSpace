@@ -43,6 +43,16 @@ public class CalcAnswer
 
 class Program
 {
+    //フィールド
+    //注目測定点名と注目計測名と項目が書かれたファイルのアドレス
+    private static string csvFilePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\insepectionData\settingData.CSV";
+
+    //特殊計算と対象が書かれたファイルのアドレス
+    private static string csvCalcPath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\insepectionData\calcSettingData.CSV";
+
+    //処理対象のフォルダのアドレス
+    private static string basePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\testdata\";
+
     //指定フォルダ以下のファイルを取得する
     public static List<string> GetXmlFiles(string basePath)
     {
@@ -55,34 +65,38 @@ class Program
     public static List<InspectItem> GetInspectionItems(string fName)
     {
         //CSVから測定点名・注目計測・項目を読み出す
-        StreamReader reader = new StreamReader(fName, Encoding.GetEncoding("Shift_JIS"));
-        var result = reader.ReadLine().Split(',').ToList();
 
-
-        //各リストに文字列を追加
-        var InsNameList = new List<string>();
-        InsNameList.Add(result[0]);
-        var InspectsList = new List<string>();
-        InspectsList.Add(result[1]);
-        InspectsList.Add(result[2]);
-        var ItemsList = new List<string>();
-        ItemsList.Add(result[3]);
-        ItemsList.Add(result[4]);
-        ItemsList.Add(result[5]);
-        ItemsList.Add(result[6]);
-        ItemsList.Add(result[7]);
-        ItemsList.Add(result[8]);
-        ItemsList.Add(result[9]);
-
-        //一つの InspectItem を作る
-        var answer = new InspectItem();
-        answer.InsNames = InsNameList;
-        answer.Inspects = InspectsList;
-        answer.Items = ItemsList;
+        var lines = System.IO.File.ReadAllLines(fName);
 
         //作成した　answer を リストの answers に追加する
         var answers = new List<InspectItem>();
-        answers.Add(answer);
+
+        foreach (var line in lines)
+        {
+            var result = line.Split(',').ToList();
+
+            //各リストに文字列を追加
+            var InsNameList = new List<string>();
+            InsNameList.Add(result[0]);
+            var InspectsList = new List<string>();
+            InspectsList.Add(result[1]);
+            InspectsList.Add(result[2]);
+            var ItemsList = new List<string>();
+            ItemsList.Add(result[3]);
+            ItemsList.Add(result[4]);
+            ItemsList.Add(result[5]);
+            ItemsList.Add(result[6]);
+            ItemsList.Add(result[7]);
+            ItemsList.Add(result[8]);
+            ItemsList.Add(result[9]);
+
+            //一つの InspectItem を作る
+            var answer = new InspectItem();
+            answer.InsNames = InsNameList;
+            answer.Inspects = InspectsList;
+            answer.Items = ItemsList;
+            answers.Add(answer);
+        }
 
         return answers;
     }
@@ -108,16 +122,35 @@ class Program
     }
 
     //注目計測名と注目測定名のデータを収集する
-    public List<CalcAnswer> CollectAnswers(InspectItem inspect)
+    public static List<CalcAnswer> CollectAnswers(InspectItem inspect)
     {
         //InspectItemを元に計測名・測定名・項目からAbsoluteを返す
-        //var data = CPerceptronData.LoadFromFile(fname, true); CInspectionCharacteristic outInspect;
-        //if (CPerceptronData.IsContains(data, "CubeHole1", "X", out outInspect))
-        //{
-        //    Console.WriteLine($"X={outInspect.Measurement.abusolute}");
-        //}
 
-        throw new NotImplementedException();
+        //指定フォルダ以下のファイルを取得する (フォルダ内のxmlファイルをリストに格納)
+        var fnames = GetXmlFiles(basePath);
+
+        //一つの CalcAnswer を作る
+        var answer = new CalcAnswer();
+
+        //作成した　answer を リストの answers に追加する
+        var answers = new List<CalcAnswer>();
+
+        //注目測定点名と合致するファイルを更にコレクトする
+        foreach (var fname in fnames)
+        {
+            var data = CPerceptronData.LoadFromFile(fname, true); CInspectionCharacteristic outInspect;
+            //if (CPerceptronData.IsContains(data, inspect.Inspects[0], inspect.Items[0], out outInspect))
+            if (CPerceptronData.IsContains(data, inspect.Inspects[0], "X", out outInspect))
+            {
+                answer.InsName = inspect.Inspects[0];
+                answer.Inspect = "X";//inspect.Items[0];
+                answer.Ans = double.Parse(outInspect.Measurement.abusolute);
+            }
+
+            answers.Add(answer);
+        }
+
+        return answers;
     }
 
     //平均と分散を求める
@@ -147,9 +180,6 @@ class Program
 
     static void Main(string[] args)
     {
-        //注目測定点名と注目計測名と項目が書かれたファイルのアドレス
-        string csvFilePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\insepectionData\settingData.CSV";
-
         //注目測定点名と注目計測名と項目をファイルから読み込む
         //例
         //ST1_SF01　（注目測定点名）
@@ -158,28 +188,16 @@ class Program
         //注目計測名、項目は可変数
         var insSetting = GetInspectionItems(csvFilePath);
 
-        //特殊計算と対象が書かれたファイルのアドレス
-        string csvCalcPath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\insepectionData\calcSettingData.CSV";
-
         //特殊計算内容をファイルから読み込む
         //例：
         //distance,CubeHole1,CubeHole2
         //特殊計算内容は可変とする
         var calcSetting = GetClcSettings(csvCalcPath);
 
-        //処理対象のフォルダを指定
-        string basePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\testdata\";
-
-        //指定フォルダ以下のファイルを取得する (フォルダ内のxmlファイルをリストに格納)
-        var fnames = GetXmlFiles(basePath);
-
-        //注目測定点名と合致するファイルを更にコレクトする
-        //CSVファイルからデータの読み込み
-        //読み込んだデータと合致するファイルを選択(方法：xml内の<parttype>の<name>で判別)
-
-
         //コレクトしたファイルから、注目計測名と注目測定名のデータを収集する
-        //
+        //注目測定点名と合致するファイルを更にコレクトする
+        var collectData = CollectAnswers(insSetting[0]);
+        //        Console.WriteLine(insSetting[0].Inspects[0]);
 
         //収集したデータから、各注目測定点名ごとの平均と分散を求める
 
