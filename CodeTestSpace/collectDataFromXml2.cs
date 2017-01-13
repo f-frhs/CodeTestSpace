@@ -53,14 +53,6 @@ class Program
     //処理対象のフォルダのアドレス
     private static string basePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\testdata\";
 
-    //指定フォルダ以下のファイルを取得する
-    public static List<string> GetXmlFiles(string basePath)
-    {
-        //引数で渡されたフォルダ以下の全てのxmlファイルを取得：フォルダは各測定(2mmFront等)ごととする
-        List<string> fnames = Directory.GetFiles(basePath, "*.xml", SearchOption.AllDirectories).ToList();
-        return fnames;
-    }
-
     //注目測定点名と注目計測と項目をファイルから読み込む
     public static List<InspectItem> GetInspectionItems(string fName)
     {
@@ -121,11 +113,17 @@ class Program
         return answers;
     }
 
+    //指定フォルダ以下のファイルを取得する
+    public static List<string> GetXmlFiles(string basePath)
+    {
+        //引数で渡されたフォルダ以下の全てのxmlファイルを取得：フォルダは各測定(2mmFront等)ごととする
+        List<string> fnames = Directory.GetFiles(basePath, "*.xml", SearchOption.AllDirectories).ToList();
+        return fnames;
+    }
+
     //注目計測名と注目測定名のデータを収集する
     public static List<CalcAnswer> CollectAnswers(InspectItem inspect)
     {
-        //InspectItemを元に計測名・測定名・項目からAbsoluteを返す
-
         //指定フォルダ以下のファイルを取得する (フォルダ内のxmlファイルをリストに格納)
         var fnames = GetXmlFiles(basePath);
 
@@ -134,6 +132,8 @@ class Program
 
         //作成した　answer を リストの answers に追加する
         var answers = new List<CalcAnswer>();
+
+        //
 
         //注目測定点名と合致するファイルを更にコレクトする
         foreach (var fname in fnames)
@@ -194,10 +194,11 @@ class Program
         //特殊計算内容は可変とする
         var calcSetting = GetClcSettings(csvCalcPath);
 
-        //コレクトしたファイルから、注目計測名と注目測定名のデータを収集する
+        //指定フォルダ以下のファイルを取得する
         //注目測定点名と合致するファイルを更にコレクトする
         var collectData = CollectAnswers(insSetting[0]);
-        //        Console.WriteLine(insSetting[0].Inspects[0]);
+
+        //コレクトしたファイルから、注目計測名と注目測定名のデータを収集する
 
         //収集したデータから、各注目測定点名ごとの平均と分散を求める
 
@@ -234,9 +235,6 @@ class Program
 
     private static List<Tuple<string, string, string, double>> list;
     private static Dictionary<string, List<double>> names;
-
-    //ToDo: 全体をエクセルに吐き出す
-    //ToDo: Listから任意の要素を抜き出す部分の関数化
 
     //引数の各項の差の二乗を返す
     //ToDo結果が望むものと違う修正：CubeHole1_X", "CubeHole2_Xのみの予定
