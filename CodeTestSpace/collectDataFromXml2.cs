@@ -57,10 +57,11 @@ class Program
     public static List<InspectItem> GetInspectionItems(string fName)
     {
         //CSVから測定点名・注目計測・項目を読み出す
-
         var lines = System.IO.File.ReadAllLines(fName);
+        ////配列の長さを1つ短くする（最後を無視する）
+        //lines = lines.Take(lines.Length - 1).ToArray();
 
-        //作成した　answer を リストの answers に追加する
+        //作成した　answer を リストの answers に追加する記述
         var answers = new List<InspectItem>();
 
         foreach (var line in lines)
@@ -71,7 +72,7 @@ class Program
             var InsNameList = new List<string>();
             InsNameList.Add(result[0]);
             var InspectsList = new List<string>();
-            InspectsList.Add(result[1]);
+            InspectsList.Add(result[1]) ;
             InspectsList.Add(result[2]);
             var ItemsList = new List<string>();
             ItemsList.Add(result[3]);
@@ -89,6 +90,8 @@ class Program
             answer.Items = ItemsList;
             answers.Add(answer);
         }
+
+
 
         return answers;
     }
