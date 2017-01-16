@@ -58,40 +58,43 @@ class Program
     {
         //CSVから測定点名・注目計測・項目を読み出す
         var lines = System.IO.File.ReadAllLines(fName);
-        ////配列の長さを1つ短くする（最後を無視する）
-        //lines = lines.Take(lines.Length - 1).ToArray();
 
         //作成した　answer を リストの answers に追加する記述
         var answers = new List<InspectItem>();
 
-        foreach (var line in lines)
+        //一つの InspectItem を作る
+        var answer = new InspectItem();
+
+        var InsNameList = new List<string>();
+        var InspectsList = new List<string>();
+        var ItemsList = new List<string>();
+
+        for (int i = 0; i<3; i++)
         {
-            var result = line.Split(',').ToList();
+            var result = lines[i].Split(',').ToList();
 
-            //各リストに文字列を追加
-            var InsNameList = new List<string>();
-            InsNameList.Add(result[0]);
-            var InspectsList = new List<string>();
-            InspectsList.Add(result[1]) ;
-            InspectsList.Add(result[2]);
-            var ItemsList = new List<string>();
-            ItemsList.Add(result[3]);
-            ItemsList.Add(result[4]);
-            ItemsList.Add(result[5]);
-            ItemsList.Add(result[6]);
-            ItemsList.Add(result[7]);
-            ItemsList.Add(result[8]);
-            ItemsList.Add(result[9]);
-
-            //一つの InspectItem を作る
-            var answer = new InspectItem();
-            answer.InsNames = InsNameList;
-            answer.Inspects = InspectsList;
-            answer.Items = ItemsList;
-            answers.Add(answer);
+            if (i == 0)
+            {
+                InsNameList.AddRange(result);
+                answer.InsNames = InsNameList;
+            }
+            else if (i == 1)
+            {
+                InspectsList.AddRange(result);
+                answer.Inspects = InspectsList;
+            }
+            else if (i == 2)
+            {
+                ItemsList.AddRange(result);
+                answer.Items = ItemsList;
+            }
         }
 
-
+        //一つの InspectItem を作る
+        answer.InsNames = InsNameList;
+        answer.Inspects = InspectsList;
+        answer.Items = ItemsList;
+        answers.Add(answer);
 
         return answers;
     }
@@ -143,7 +146,7 @@ class Program
         {
             var data = CPerceptronData.LoadFromFile(fname, true); CInspectionCharacteristic outInspect;
             //if (CPerceptronData.IsContains(data, inspect.Inspects[0], inspect.Items[0], out outInspect))
-            if (CPerceptronData.IsContains(data, inspect.Inspects[0], "X", out outInspect))
+            if (CPerceptronData.IsContains(data, "CubeHole1", "X", out outInspect))
             {
                 answer.InsName = inspect.Inspects[0];
                 answer.Inspect = "X";//inspect.Items[0];
