@@ -59,16 +59,16 @@ class Program
         //CSVから測定点名・注目計測・項目を読み出す
         var lines = System.IO.File.ReadAllLines(fName);
 
-        //作成した　answer を リストの answers に追加する記述
+        //answerとanswersの生成
+        var answer = new InspectItem();
         var answers = new List<InspectItem>();
 
-        //一つの InspectItem を作る
-        var answer = new InspectItem();
-
+        //それぞれの値を格納するリストの作成
         var InsNameList = new List<string>();
         var InspectsList = new List<string>();
         var ItemsList = new List<string>();
 
+        //リストに格納
         for (int i = 0; i<3; i++)
         {
             var result = lines[i].Split(',').ToList();
@@ -76,24 +76,23 @@ class Program
             if (i == 0)
             {
                 InsNameList.AddRange(result);
-                answer.InsNames = InsNameList;
             }
             else if (i == 1)
             {
                 InspectsList.AddRange(result);
-                answer.Inspects = InspectsList;
             }
             else if (i == 2)
             {
                 ItemsList.AddRange(result);
-                answer.Items = ItemsList;
             }
         }
 
-        //一つの InspectItem を作る
+        //anserを作成
         answer.InsNames = InsNameList;
         answer.Inspects = InspectsList;
         answer.Items = ItemsList;
+
+        //answerをanswersに追加
         answers.Add(answer);
 
         return answers;
@@ -103,18 +102,25 @@ class Program
     public static List<CalcSetting> GetClcSettings(string fName)
     {
         //CSVから特殊計算を読み込む
-        StreamReader reader = new StreamReader(fName, Encoding.GetEncoding("Shift_JIS"));
-        var result = reader.ReadLine().Split(',').ToList();
+        //ファイルから各行取り込み
+        var reader = System.IO.File.ReadAllLines(fName);
 
-        //一つの InspectItem を作る
-        var answer = new CalcSetting();
-        answer.InsName1 = result[1];
-        answer.InsName2 = result[2];
-        answer.Operator = result[0];
-
-        //作成した　answer を リストの answers に追加する
+        //answerとansersを作成
+        //var answer = new CalcSetting();
         var answers = new List<CalcSetting>();
-        answers.Add(answer);
+
+        //リストに格納
+        for (int i = 1; i < reader.Count() ; i++)
+        {
+            var answer = new CalcSetting();
+
+            var result = reader[i].Split(',').ToList();
+            answer.Operator = reader[0];
+            answer.InsName1 = result[0];
+            answer.InsName2 = result[1];
+
+            answers.Add(answer);
+        }
 
         return answers;
     }
@@ -133,27 +139,32 @@ class Program
         //指定フォルダ以下のファイルを取得する (フォルダ内のxmlファイルをリストに格納)
         var fnames = GetXmlFiles(basePath);
 
-        //一つの CalcAnswer を作る
-        var answer = new CalcAnswer();
-
-        //作成した　answer を リストの answers に追加する
+        //answersの作成
         var answers = new List<CalcAnswer>();
-
-        //
 
         //注目測定点名と合致するファイルを更にコレクトする
         foreach (var fname in fnames)
         {
-            var data = CPerceptronData.LoadFromFile(fname, true); CInspectionCharacteristic outInspect;
-            //if (CPerceptronData.IsContains(data, inspect.Inspects[0], inspect.Items[0], out outInspect))
-            if (CPerceptronData.IsContains(data, "CubeHole1", "X", out outInspect))
+            var data = CPerceptronData.LoadFromFile(fname, true);
+            CInspectionCharacteristic outInspect;
+            
+            for(int i = 0; i < inspect.Inspects.Count; i++)
             {
-                answer.InsName = inspect.Inspects[0];
-                answer.Inspect = "X";//inspect.Items[0];
-                answer.Ans = double.Parse(outInspect.Measurement.abusolute);
-            }
+                for(int j = 0; j < inspect.Items.Count; j++)
+                {
+                    if (CPerceptronData.IsContains(data, inspect.Inspects[i], inspect.Items[j], out outInspect))
+                    {
+                        //answerの生成
+                        var answer = new CalcAnswer();
 
-            answers.Add(answer);
+                        answer.InsName = inspect.Inspects[i];
+                        answer.Inspect = inspect.Items[j];
+                        answer.Ans = double.Parse(outInspect.Measurement.abusolute);
+
+                        answers.Add(answer);
+                    }
+                }
+            }
         }
 
         return answers;

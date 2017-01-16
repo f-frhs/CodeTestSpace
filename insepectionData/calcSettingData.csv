@@ -1,1 +1,4 @@
-distance,CubeHole1,CubeHole2
+distance
+CubeHole1,CubeHole2
+CubeHole1,CubeHole3
+CubeHole2,CubeHole3
