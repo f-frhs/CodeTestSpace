@@ -115,12 +115,31 @@ class Program
 
         //計算内容が記述されている行を指定
         var strOperator = clcSettings[0];
+        var sSettings = clcSettings.Skip(1);
+
+        //answersを作成
+        var answers = new List<CalcSetting>();
+
+        foreach (var sSetting in sSettings)
+        {
+            var sp = sSetting.Split(new[] {','});
+            if(sp.Length < 2) continue;  
+
+            var tmpSetting = new CalcSetting();
+            tmpSetting.Operator = strOperator;
+            tmpSetting.InsName1 = sp[0];
+            tmpSetting.InsName2 = sp[1];
+
+            answers.Add(tmpSetting);
+            
+        }
+
 
         //answersを作成
         var answers = new List<CalcSetting>();
 
         //リストに格納
-        for (int i = 0; i < clcSettings.Count() ; i++)
+        for (int i = 0; i < clcSettings.Length ; i++)
         {
             //0行目は計算内容が入っているので、このforループでは処理しない
             if (i == 0)
@@ -168,7 +187,7 @@ class Program
             var data = CPerceptronData.LoadFromFile(fname, true);
             CInspectionCharacteristic outInspect;
 
-            double nan = Double.NaN;
+            //double nan = Double.NaN;
 
             foreach (var element in inspect.Inspects)
             {
@@ -185,7 +204,7 @@ class Program
                         //anserに値を格納
                         answer.InsName = element;
                         answer.Inspect = item;
-                        answer.Ans = (itemAbsolute == null ? double.Parse(itemAbsolute) : nan );
+                        answer.Ans = itemAbsolute == null ? double.Parse(itemAbsolute) : double.NaN ;
 
                         answers.Add(answer);
                     }
