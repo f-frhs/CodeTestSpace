@@ -53,11 +53,15 @@ class Program
     //処理対象のフォルダのアドレス
     private static string basePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\testdata\";
 
+    //定数の作成
+    //測定点名等を読み込むリストの行数
+    private static int listLinage = 3;
+
     //注目測定点名と注目計測と項目をファイルから読み込む
     public static List<InspectItem> GetInspectionItems(string fName)
     {
         //CSVから測定点名・注目計測・項目を読み出す
-        var lines = System.IO.File.ReadAllLines(fName);
+        var inspectionItems = System.IO.File.ReadAllLines(fName);
 
         //answerとanswersの生成
         var answer = new InspectItem();
@@ -69,21 +73,19 @@ class Program
         var ItemsList = new List<string>();
 
         //リストに格納
-        for (int i = 0; i<3; i++)
+        for (int i = 0; i< listLinage; i++)
         {
-            var result = lines[i].Split(',').ToList();
+            //カンマを区切りに
+            var result = inspectionItems[i].Split(',').ToList();
 
-            if (i == 0)
+            switch(i)
             {
-                InsNameList.AddRange(result);
-            }
-            else if (i == 1)
-            {
-                InspectsList.AddRange(result);
-            }
-            else if (i == 2)
-            {
-                ItemsList.AddRange(result);
+                case 0: InsNameList.AddRange(result);
+                    break;
+                case 1: InspectsList.AddRange(result);
+                    break;
+                case 2: ItemsList.AddRange(result);
+                    break;
             }
         }
 
@@ -103,19 +105,29 @@ class Program
     {
         //CSVから特殊計算を読み込む
         //ファイルから各行取り込み
-        var reader = System.IO.File.ReadAllLines(fName);
+        var clcsettings = System.IO.File.ReadAllLines(fName);
 
-        //answerとansersを作成
-        //var answer = new CalcSetting();
+        //計算内容が記述されている行を指定
+        var strOperator = clcsettings[0];
+
+        //answersを作成
         var answers = new List<CalcSetting>();
 
         //リストに格納
-        for (int i = 1; i < reader.Count() ; i++)
+        for (int i = 0; i < clcsettings.Count() ; i++)
         {
+            //0行目は計算内容が入っているので、このforループでは処理しない
+            if (i == 0)
+            {
+                continue;
+            }
+
+            //answersを作成
             var answer = new CalcSetting();
 
-            var result = reader[i].Split(',').ToList();
-            answer.Operator = reader[0];
+            var result = clcsettings[i].Split(',').ToList();
+
+            answer.Operator = strOperator;
             answer.InsName1 = result[0];
             answer.InsName2 = result[1];
 
@@ -128,7 +140,7 @@ class Program
     //指定フォルダ以下のファイルを取得する
     public static List<string> GetXmlFiles(string basePath)
     {
-        //引数で渡されたフォルダ以下の全てのxmlファイルを取得：フォルダは各測定(2mmFront等)ごととする
+        //引数で渡されたフォルダ以下の全てのxmlファイルを取得
         List<string> fnames = Directory.GetFiles(basePath, "*.xml", SearchOption.AllDirectories).ToList();
         return fnames;
     }
@@ -147,26 +159,40 @@ class Program
         {
             var data = CPerceptronData.LoadFromFile(fname, true);
             CInspectionCharacteristic outInspect;
-            
-            for(int i = 0; i < inspect.Inspects.Count; i++)
+
+            double nan = Double.NaN;
+
+            foreach (var element in inspect.Inspects)
             {
-                for(int j = 0; j < inspect.Items.Count; j++)
+                foreach (var item in inspect.Items)
                 {
-                    if (CPerceptronData.IsContains(data, inspect.Inspects[i], inspect.Items[j], out outInspect))
+                    if (CPerceptronData.IsContains(data, element, item, out outInspect))
                     {
                         //answerの生成
                         var answer = new CalcAnswer();
 
-                        answer.InsName = inspect.Inspects[i];
-                        answer.Inspect = inspect.Items[j];
-                        answer.Ans = double.Parse(outInspect.Measurement.abusolute);
+                        var itemAdsolute = outInspect.Measurement.abusolute;
+
+                        answer.InsName = element;
+                        answer.Inspect = item;
+                        answer.Ans = (itemAdsolute == null ? double.Parse(itemAdsolute) : nan );
 
                         answers.Add(answer);
                     }
+                    //else
+                    //{
+                    //    //answerの生成
+                    //    var answer = new CalcAnswer();
+
+                    //    answer.InsName = element;
+                    //    answer.Inspect = item;
+                    //    answer.Ans = nan;
+
+                    //    answers.Add(answer);
+                    //}
                 }
             }
         }
-
         return answers;
     }
 
