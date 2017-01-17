@@ -75,21 +75,27 @@ class Program
         //リストに格納
         for (int i = 0; i< listLinage; i++)
         {
-            //カンマを区切りに
+            //カンマを区切りにリスト作成
             var result = inspectionItems[i].Split(',').ToList();
 
+            //iの値で格納先変更
             switch(i)
             {
-                case 0: InsNameList.AddRange(result);
+                case 0:
+                    InsNameList.AddRange(result);
                     break;
-                case 1: InspectsList.AddRange(result);
+                case 1:
+                    InspectsList.AddRange(result);
                     break;
-                case 2: ItemsList.AddRange(result);
+                case 2:
+                    ItemsList.AddRange(result);
+                    break;
+                default:
                     break;
             }
         }
 
-        //anserを作成
+        //anserに値を格納
         answer.InsNames = InsNameList;
         answer.Inspects = InspectsList;
         answer.Items = ItemsList;
@@ -105,16 +111,16 @@ class Program
     {
         //CSVから特殊計算を読み込む
         //ファイルから各行取り込み
-        var clcsettings = System.IO.File.ReadAllLines(fName);
+        var clcSettings = System.IO.File.ReadAllLines(fName);
 
         //計算内容が記述されている行を指定
-        var strOperator = clcsettings[0];
+        var strOperator = clcSettings[0];
 
         //answersを作成
         var answers = new List<CalcSetting>();
 
         //リストに格納
-        for (int i = 0; i < clcsettings.Count() ; i++)
+        for (int i = 0; i < clcSettings.Count() ; i++)
         {
             //0行目は計算内容が入っているので、このforループでは処理しない
             if (i == 0)
@@ -125,8 +131,10 @@ class Program
             //answersを作成
             var answer = new CalcSetting();
 
-            var result = clcsettings[i].Split(',').ToList();
+            //カンマを区切りにリスト作成
+            var result = clcSettings[i].Split(',').ToList();
 
+            //anserの中身を作成
             answer.Operator = strOperator;
             answer.InsName1 = result[0];
             answer.InsName2 = result[1];
@@ -168,14 +176,16 @@ class Program
                 {
                     if (CPerceptronData.IsContains(data, element, item, out outInspect))
                     {
-                        //answerの生成
+                        //anserを作成
                         var answer = new CalcAnswer();
 
-                        var itemAdsolute = outInspect.Measurement.abusolute;
+                        //指定した測定点・項目を元にabsoluteを返す
+                        var itemAbsolute = outInspect.Measurement.abusolute;
 
+                        //anserに値を格納
                         answer.InsName = element;
                         answer.Inspect = item;
-                        answer.Ans = (itemAdsolute == null ? double.Parse(itemAdsolute) : nan );
+                        answer.Ans = (itemAbsolute == null ? double.Parse(itemAbsolute) : nan );
 
                         answers.Add(answer);
                     }
