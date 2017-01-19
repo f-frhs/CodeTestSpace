@@ -37,8 +37,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="collectDataFromXml2.cs" />
+    <Compile Include="CollectFileLibrary.cs" />
     <Compile Include="CPerceptronData.cs" />
-    <Compile Include="ListExtension.cs" />
+    <Compile Include="DataHangar.cs" />
+    <Compile Include="FileUtility.cs" />
+    <Compile Include="MathLibrary.cs" />
     <Compile Include="System\Collections\Specialized.cs" />
   </ItemGroup>
   <ItemGroup>
