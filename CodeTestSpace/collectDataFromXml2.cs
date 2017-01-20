@@ -1,26 +1,15 @@
 ﻿// collectDataFroXmlFiles.cs <= mgetFileName.cs
 
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Xml;
-using System.Xml.Serialization;
-using Microsoft.Office.Interop.Excel;
-using System.Linq;
-using System.Text;
-using AutoAssyModules.Perceptron;
-using CalcXmlFile;
-
 
 namespace CalcXmlFile
 {
+    /// <summary> Main関数 </summary>
     public class Program
     {
-        //フィールド
-
         //定数の作成
         //測定点名等を読み込むリストの行数
-        private int listLinage = 3;
+        public static int listLinage = 3;
 
         static void Main(string[] args)
         {
@@ -50,9 +39,8 @@ namespace CalcXmlFile
 
             //指定フォルダ以下のファイルを取得する
             //注目測定点名と合致するファイルを更にコレクトする
-            var collectData = CollectFileLibrary.CollectAnswers(insSetting[0], basePath);
-
             //コレクトしたファイルから、注目計測名と注目測定名のデータを収集する
+            var collectData = CollectFileLibrary.CollectAnswers(insSetting[0], basePath);
 
             //収集したデータから、各注目測定点名ごとの平均と分散を求める
 

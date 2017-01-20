@@ -6,12 +6,13 @@ using AutoAssyModules.Perceptron;
 
 namespace CalcXmlFile
 {
+    /// <summary> 引数を元にデータを集め戻り値として返す </summary>
     public static class CollectFileLibrary
     {
-        //注目測定点名と注目計測と項目をファイルから読み込む
+        /// <summary> 指定CSVファイルから注目測定点名・注目計測名・項目名を返す </summary>
         public static List<InspectItem> GetInspectionItems(string fName)
         {
-            //CSVから測定点名・注目計測・項目を読み出す
+            //CSVファイルから測定点名・注目計測・項目を読み出す
             var inspectionItems = System.IO.File.ReadAllLines(fName);
 
             //answerとanswersの生成
@@ -24,7 +25,7 @@ namespace CalcXmlFile
             var ItemsList = new List<string>();
 
             //リストに格納
-            for (int i = 0; i < listLinage; i++)
+            for (int i = 0; i < Program.listLinage; i++)
             {
                 //カンマを区切りにリスト作成
                 var result = inspectionItems[i].Split(',').ToList();
@@ -32,12 +33,15 @@ namespace CalcXmlFile
                 //iの値で格納先変更
                 switch (i)
                 {
+                    //InsNameListに保存
                     case 0:
                         InsNameList.AddRange(result);
                         break;
+                    //InspectsListに保存
                     case 1:
                         InspectsList.AddRange(result);
                         break;
+                    //ItemsListに保存
                     case 2:
                         ItemsList.AddRange(result);
                         break;
@@ -57,11 +61,10 @@ namespace CalcXmlFile
             return answers;
         }
 
-        //特殊計算内容をファイルから読み込む
+        /// <summary> 指定CSVファイルから特殊計算の対象と内容を返す </summary>
         public static List<CalcSetting> GetClcSettings(string fName)
         {
-            //CSVから特殊計算を読み込む
-            //ファイルから各行取り込み
+            //CSVファイルから各行取り込み
             var clcSettings = System.IO.File.ReadAllLines(fName);
 
             //計算内容が記述されている行を指定
@@ -87,11 +90,11 @@ namespace CalcXmlFile
             return answers;
         }
 
-        //注目計測名と注目測定名のデータを収集する
+        /// <summary> コレクトしたファイルから、注目計測名と注目測定名とそのabsoluteを返す </summary>
         public static List<CalcAnswer> CollectAnswers(InspectItem inspect, string targetDir)
         {
             //指定フォルダ以下のファイルを取得する (フォルダ内のxmlファイルをリストに格納)
-            var fnames = GetXmlFiles(targetDir);
+            var fnames = FileUtility.GetXmlFiles(targetDir);
 
             //answersの作成
             var answers = new List<CalcAnswer>();
@@ -119,7 +122,7 @@ namespace CalcXmlFile
                             //anserに値を格納
                             answer.InsName = element;
                             answer.Inspect = item;
-                            answer.Ans = itemAbsolute == null ? double.Parse(itemAbsolute) : double.NaN;
+                            answer.Ans = itemAbsolute == string.Empty ?  double.NaN: double.Parse(itemAbsolute);
 
                             answers.Add(answer);
                         }

@@ -5,9 +5,10 @@ using System.Collections.Generic;
 
 namespace CalcXmlFile
 {
+    /// <summary> 各種計算 </summary>
     public static class MathLibrary
     {
-        //平均と分散を求める
+        /// <summary> 平均と分散を求める </summary>
         public static double[] CalcMeanDev(List<CalcAnswer> collectDatas)
         {
             //平均の式
@@ -17,7 +18,7 @@ namespace CalcXmlFile
             throw new NotImplementedException();
         }
 
-        //特殊計算を実施する
+        /// <summary> 特殊計算を求める </summary>
         public static double CalcFunction(CalcSetting calSetting)
         {
             //GetClcSettingsで選択された計算を用いて結果を返す

@@ -7,16 +7,17 @@ using System.Linq;
 
 namespace CalcXmlFile
 {
+    /// <summary> ファイルへのデータの保存や取得 </summary>
     public static class FileUtility
     {
-        //結果をファイルに保存する
+        /// <summary> 結果をファイルに保存する </summary>
         public static void SaveDatas(string fName, List<InspectItem> items, List<double> mean, List<double> dev,
         List<CalcAnswer> funcs)
         {
             throw new NotImplementedException();
         }
 
-        //指定フォルダ以下のファイルを取得する
+        /// <summary> 指定フォルダ以下のファイルを取得する </summary>
         public static List<string> GetXmlFiles(string basePath)
         {
             //引数で渡されたフォルダ以下の全てのxmlファイルを取得
