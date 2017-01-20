@@ -7,14 +7,18 @@ namespace CalcXmlFile
     {
         private static void Main(string[] args)
         {
+            //ディレクトリの設定
+            //まずは、ソリューションファイルがあるディレクトリのパス
+            var solutionDir = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + @"..\..\..\";
+
             //注目測定点名と注目計測名と項目が書かれたファイルのアドレス
-            var csvFilePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\insepectionData\settingData.CSV";
+            var csvFilePath = solutionDir + @"insepectionData\settingData.CSV";
 
             //特殊計算と対象が書かれたファイルのアドレス
-            var csvCalcPath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\insepectionData\calcSettingData.CSV";
+            var csvCalcPath = solutionDir + @"insepectionData\calcSettingData.CSV";
 
             //処理対象のフォルダのアドレス
-            var basePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\testdata\";
+            var basePath = solutionDir + @"testdata\";
 
             //注目測定点名と注目計測名と項目をファイルから読み込む
             //例
