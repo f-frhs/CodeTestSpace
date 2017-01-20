@@ -15,6 +15,7 @@ namespace CalcXmlFile
         public string Inspect { set; get; }
 
         /// <summary>absolute </summary>
+        /// <remarks>例: </remarks>
         public double Value { set; get; }
 
         /// <summary> コレクトしたファイルから、注目計測名と注目測定名とそのabsoluteを返す </summary>

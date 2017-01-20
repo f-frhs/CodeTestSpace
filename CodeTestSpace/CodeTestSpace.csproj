@@ -36,13 +36,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MeasuredValue.cs" />
-    <Compile Include="CalcSetting.cs" />
-    <Compile Include="collectDataFromXml2.cs" />
+    <Compile Include="CMeasuredValue.cs" />
+    <Compile Include="CCalcSetting.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="CPerceptronData.cs" />
-    <Compile Include="CalcXmlFile.cs" />
-    <Compile Include="FileUtil.cs" />
-    <Compile Include="MathLibrary.cs" />
+    <Compile Include="CCalcXmlFile.cs" />
+    <Compile Include="CFileUtil.cs" />
+    <Compile Include="CMathLibrary.cs" />
     <Compile Include="System\Collections\Specialized.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,11 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace CalcXmlFile
 {
-    /// <summary> 計測データ（注目測定点名・注目計測名・項目名）を格納する容器としてのクラス </summary>
+    /// <summary> 計測データ（注目測定点名・注目計測名・項目名）を格納するクラス </summary>
     public class InspectItem
     {
+        //定数の作成
+        //測定点名等を読み込むリストの行数
+        public static int NumOfLines = 3;
+
         /// <summary> 注目測定点名 ST1_SF01など </summary>
         public List<string> InsNames { get; set; }
 
@@ -19,7 +24,7 @@ namespace CalcXmlFile
         public static List<InspectItem> LoadConfiguration(string fName)
         {
             //CSVファイルから測定点名・注目計測・項目を読み出す
-            var inspectionItems = System.IO.File.ReadAllLines(fName);
+            var inspectionItems = File.ReadAllLines(fName);
 
             //answerとanswersの生成
             var answer = new InspectItem();
@@ -31,7 +36,7 @@ namespace CalcXmlFile
             var ItemsList = new List<string>();
 
             //リストに格納
-            for (int i = 0; i < Program.listLinage; i++)
+            for (int i = 0; i < NumOfLines; i++)
             {
                 //カンマを区切りにリスト作成
                 var result = inspectionItems[i].Split(',').ToList();

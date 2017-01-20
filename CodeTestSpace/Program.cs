@@ -1,16 +1,10 @@
-﻿// collectDataFroXmlFiles.cs <= mgetFileName.cs
-
-using System;
+﻿using System;
 
 namespace CalcXmlFile
 {
     /// <summary> Main関数 </summary>
     public class Program
     {
-        //定数の作成
-        //測定点名等を読み込むリストの行数
-        public static int listLinage = 3;
-
         static void Main(string[] args)
         {
             //注目測定点名と注目計測名と項目が書かれたファイルのアドレス
