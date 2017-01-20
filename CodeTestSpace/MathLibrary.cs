@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace CalcXmlFile
 {
-    /// <summary> 各種計算 </summary>
+    /// <summary> 各種計算メソッドを提供するクラス </summary>
     public static class MathLibrary
     {
         /// <summary> 平均と分散を求める </summary>

@@ -7,8 +7,8 @@ using System.Linq;
 
 namespace CalcXmlFile
 {
-    /// <summary> ファイルへのデータの保存や取得 </summary>
-    public static class FileUtility
+    /// <summary> ファイル取り扱いに関するユーティリティークラス </summary>
+    public static class FileUtil
     {
         /// <summary> 結果をファイルに保存する </summary>
         public static void SaveDatas(string fName, List<InspectItem> items, List<double> mean, List<double> dev,

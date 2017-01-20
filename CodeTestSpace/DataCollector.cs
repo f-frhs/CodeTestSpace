@@ -7,7 +7,7 @@ using AutoAssyModules.Perceptron;
 namespace CalcXmlFile
 {
     /// <summary> 引数を元にデータを集め戻り値として返す </summary>
-    public static class CollectFileLibrary
+    public static class DataCollector
     {
         /// <summary> 指定CSVファイルから注目測定点名・注目計測名・項目名を返す </summary>
         public static List<InspectItem> GetInspectionItems(string fName)
@@ -62,7 +62,7 @@ namespace CalcXmlFile
         }
 
         /// <summary> 指定CSVファイルから特殊計算の対象と内容を返す </summary>
-        public static List<CalcSetting> GetClcSettings(string fName)
+        public static List<CalcSetting> GetCalcSettings(string fName)
         {
             //CSVファイルから各行取り込み
             var clcSettings = System.IO.File.ReadAllLines(fName);
@@ -91,10 +91,10 @@ namespace CalcXmlFile
         }
 
         /// <summary> コレクトしたファイルから、注目計測名と注目測定名とそのabsoluteを返す </summary>
-        public static List<CalcAnswer> CollectAnswers(InspectItem inspect, string targetDir)
+        public static List<CalcAnswer> CollectInspectedValues(InspectItem inspect, string targetDir)
         {
             //指定フォルダ以下のファイルを取得する (フォルダ内のxmlファイルをリストに格納)
-            var fnames = FileUtility.GetXmlFiles(targetDir);
+            var fnames = FileUtil.GetXmlFiles(targetDir);
 
             //answersの作成
             var answers = new List<CalcAnswer>();
