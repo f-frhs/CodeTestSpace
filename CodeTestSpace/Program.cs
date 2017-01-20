@@ -5,7 +5,7 @@ namespace CalcXmlFile
     /// <summary> Main関数 </summary>
     public class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             //注目測定点名と注目計測名と項目が書かれたファイルのアドレス
             var csvFilePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\insepectionData\settingData.CSV";
@@ -15,7 +15,6 @@ namespace CalcXmlFile
 
             //処理対象のフォルダのアドレス
             var basePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\testdata\";
-
 
             //注目測定点名と注目計測名と項目をファイルから読み込む
             //例

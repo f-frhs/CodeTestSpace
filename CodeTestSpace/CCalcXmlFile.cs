@@ -11,13 +11,16 @@ namespace CalcXmlFile
         //測定点名等を読み込むリストの行数
         public static int NumOfLines = 3;
 
-        /// <summary> 注目測定点名 ST1_SF01など </summary>
+        /// <summary> 注目測定点名  </summary>
+        /// <remarks> 例:ST1_SF01　等 </remarks>
         public List<string> InsNames { get; set; }
 
-        /// <summary> 注目計測名 CubeHole1など </summary>
+        /// <summary> 注目計測名 </summary>
+        /// <remarks> 例:CubeHole1　等 </remarks> 
         public List<string> Inspects { get; set; }
 
-        /// <summary> 項目 Xなど </summary>
+        /// <summary> 項目 </summary> 
+        /// <remarks> 例:X　等 </remarks>
         public List<string> Items { get; set; }
 
         /// <summary> 指定CSVファイルから注目測定点名・注目計測名・項目名を返す </summary>

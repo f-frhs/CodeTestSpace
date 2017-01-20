@@ -8,16 +8,15 @@ namespace CalcXmlFile
     /// <summary> 計測データ(注目計測名・項目・absoluteの値)を格納する容器としてのクラス</summary>
     public class MeasuredValue
     {
-        /// <summary>注目計測名 </summary>
-        /// <remarks>例: </remarks>
+        /// <summary> 注目測定点名  </summary>
+        /// <remarks>例:ST1_SF01　等 </remarks>
         public string InsName { set; get; }
 
-        /// <summary>項目名 </summary>
-        /// <remarks>例: </remarks>
+        /// <summary> 項目名 </summary>
+        /// <remarks>例:X　等 </remarks>
         public string Inspect { set; get; }
 
-        /// <summary>absolute </summary>
-        /// <remarks>例: </remarks>
+        /// <summary> absolute </summary>
         public double Value { set; get; }
 
         /// <summary> コレクトしたファイルから、注目計測名と注目測定名とそのabsoluteを返す </summary>

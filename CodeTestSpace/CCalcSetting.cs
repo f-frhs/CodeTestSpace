@@ -7,15 +7,15 @@ namespace CalcXmlFile
     public class CalcSetting
     {
         /// <summary> 計算対象1 </summary>
-        /// <remarks>例: *, * など</remarks>
+        /// <remarks>例: CubeHole1 など</remarks>
         public string InsName1 { set; get; }
 
         /// <summary> 計算対象2 </summary>
-        /// <remarks>例: *, * など</remarks>
+        /// <remarks>例: CubeHole2 など</remarks>
         public string InsName2 { set; get; }
 
         /// <summary> 計算内容 </summary>
-        /// <remarks>例: *, * など</remarks>
+        /// <remarks>例: distance など</remarks>
         public string Operator { set; get; }
 
         /// <summary> 指定CSVファイルから特殊計算の対象と内容を返す </summary>
