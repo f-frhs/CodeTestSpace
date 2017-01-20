@@ -18,7 +18,7 @@ namespace CalcXmlFile
         /// <remarks>例: distance など</remarks>
         public string Operator { set; get; }
 
-        /// <summary> 指定CSVファイルから特殊計算の対象と内容を返す </summary>
+        /// <summary> fNameからCalcSetting型のリストを返す </summary>
         public static List<CalcSetting> LoadConfiguration(string fName)
         {
             //CSVファイルから各行取り込み
@@ -28,7 +28,7 @@ namespace CalcXmlFile
             var strOperator = clcSettings[0];
             var sSettings = clcSettings.Skip(1);
 
-            //answersを作成
+            //容器(answers)を作成
             var answers = new List<CalcSetting>();
 
             foreach (var sSetting in sSettings)

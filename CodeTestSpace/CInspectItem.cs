@@ -8,7 +8,7 @@ namespace CalcXmlFile
     public class InspectItem
     {
         //定数の作成
-        //測定点名等を読み込むリストの行数
+        /// <summary> リストから読み込とる行数 </summary>
         public static int NumOfLines = 3;
 
         /// <summary> 注目測定点名  </summary>
@@ -23,23 +23,21 @@ namespace CalcXmlFile
         /// <remarks> 例:X　等 </remarks>
         public List<string> Items { get; set; }
 
-        /// <summary> 指定CSVファイルから注目測定点名・注目計測名・項目名を返す </summary>
+        /// <summary> fNameからInspectItem型のリストを返す </summary>
         public static List<InspectItem> LoadConfiguration(string fName)
         {
-            //CSVファイルから測定点名・注目計測・項目を読み出す
+            //CSVファイルから測定点名・注目計測・項目を読み出し、配列に格納
             var inspectionItems = File.ReadAllLines(fName);
 
-            //answerとanswersの生成
+            //容器の生成
             var answer = new InspectItem();
             var answers = new List<InspectItem>();
-
-            //それぞれの値を格納するリストの作成
             var InsNameList = new List<string>();
             var InspectsList = new List<string>();
             var ItemsList = new List<string>();
 
-            //リストに格納
-            for (int i = 0; i < NumOfLines; i++)
+            //inspectionItemsの値をそれぞれのリストに格納
+            for (var i = 0; i < NumOfLines; i++)
             {
                 //カンマを区切りにリスト作成
                 var result = inspectionItems[i].Split(',').ToList();
@@ -64,12 +62,10 @@ namespace CalcXmlFile
                 }
             }
 
-            //anserに値を格納
+            //リストに値を格納
             answer.InsNames = InsNameList;
             answer.Inspects = InspectsList;
             answer.Items = ItemsList;
-
-            //answerをanswersに追加
             answers.Add(answer);
 
             return answers;

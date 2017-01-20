@@ -15,7 +15,7 @@ namespace CalcXmlFile
             throw new NotImplementedException();
         }
 
-        /// <summary> 指定フォルダ以下のファイルを取得する </summary>
+        /// <summary> 指定フォルダ以下のファイル名のリストを取得する </summary>
         public static List<string> GetXmlFiles(string basePath)
         {
             //引数で渡されたフォルダ以下の全てのxmlファイルを取得
