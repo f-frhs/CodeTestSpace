@@ -6,7 +6,6 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.Office.Interop.Excel;
-using static System.Net.Mime.MediaTypeNames;
 using System.Linq;
 using System.Text;
 using AutoAssyModules.Perceptron;
@@ -15,7 +14,7 @@ using CalcXmlFile;
 
 namespace CalcXmlFile
 {
-    class Program
+    public class Program
     {
         //フィールド
 

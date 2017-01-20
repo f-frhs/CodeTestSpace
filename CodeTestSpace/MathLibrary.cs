@@ -6,19 +6,17 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.Office.Interop.Excel;
-using static System.Net.Mime.MediaTypeNames;
 using System.Linq;
 using AutoAssyModules.Perceptron;
 using CalcXmlFile;
 using System.Text;
-using static CalcXmlFile.DataHangar;
 
 namespace CalcXmlFile
 {
-    class MathLibrary
+    public static class MathLibrary
     {
         //平均と分散を求める
-        public double[] CalcMeanDev(List<CalcAnswer> collectDatas)
+        public static double[] CalcMeanDev(List<CalcAnswer> collectDatas)
         {
             //平均の式
 
@@ -28,7 +26,7 @@ namespace CalcXmlFile
         }
 
         //特殊計算を実施する
-        public double CalcFunction(CalcSetting calSetting)
+        public static double CalcFunction(CalcSetting calSetting)
         {
             //GetClcSettingsで選択された計算を用いて結果を返す
 

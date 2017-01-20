@@ -3,11 +3,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoAssyModules.Perceptron;
-using static CalcXmlFile.DataHangar;
 
 namespace CalcXmlFile
 {
-    class CollectFileLibrary
+    public static class CollectFileLibrary
     {
         //注目測定点名と注目計測と項目をファイルから読み込む
         public static List<InspectItem> GetInspectionItems(string fName)
