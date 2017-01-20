@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Web.Caching;
 using AutoAssyModules.Perceptron;
 
 namespace CalcXmlFile
@@ -31,7 +33,6 @@ namespace CalcXmlFile
             foreach (var fname in fnames)
             {
                 var data = CPerceptronData.LoadFromFile(fname, true);
-                CInspectionCharacteristic outInspect;
 
                 //double nan = Double.NaN;
 
@@ -39,6 +40,7 @@ namespace CalcXmlFile
                 {
                     foreach (var item in inspect.Items)
                     {
+                        CInspectionCharacteristic outInspect;
                         if (CPerceptronData.IsContains(data, element, item, out outInspect))
                         {
                             //anserを作成
@@ -48,10 +50,10 @@ namespace CalcXmlFile
                             var itemAbsolute = outInspect.Measurement.abusolute;
 
                             //anserに値を格納
+                            double absoluteAns;
                             answer.InsName = element;
                             answer.Inspect = item;
-                            answer.Value = itemAbsolute == string.Empty ? double.NaN : double.Parse(itemAbsolute);
-
+                            answer.Value = double.TryParse(itemAbsolute, out absoluteAns) ? absoluteAns : double.NaN;
                             answers.Add(answer);
                         }
                     }

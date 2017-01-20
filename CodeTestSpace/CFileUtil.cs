@@ -19,7 +19,7 @@ namespace CalcXmlFile
         public static List<string> GetXmlFiles(string basePath)
         {
             //引数で渡されたフォルダ以下の全てのxmlファイルを取得
-            List<string> fnames = Directory.GetFiles(basePath, "*.xml", SearchOption.AllDirectories).ToList();
+            var fnames = Directory.GetFiles(basePath, "*.xml", SearchOption.AllDirectories).ToList();
             return fnames;
         }
     }
