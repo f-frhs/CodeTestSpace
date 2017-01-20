@@ -12,7 +12,7 @@ namespace CalcXmlFile
     {
         /// <summary> 結果をファイルに保存する </summary>
         public static void SaveDatas(string fName, List<InspectItem> items, List<double> mean, List<double> dev,
-        List<CalcAnswer> funcs)
+        List<MeasuredValue> funcs)
         {
             throw new NotImplementedException();
         }

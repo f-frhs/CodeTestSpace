@@ -36,7 +36,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CalcAnswer.cs" />
+    <Compile Include="MeasuredValue.cs" />
     <Compile Include="CalcSetting.cs" />
     <Compile Include="collectDataFromXml2.cs" />
     <Compile Include="DataCollector.cs" />

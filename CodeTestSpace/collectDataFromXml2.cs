@@ -29,18 +29,18 @@ namespace CalcXmlFile
             //CubeHole1,CubeHole2 (注目計測名)
             //X Y ...等（項目）
             //注目計測名、項目は可変数
-            var insSetting = InspectItem.GetInspectionItems(csvFilePath);
+            var insSetting = InspectItem.LoadConfiguration(csvFilePath);
 
             //特殊計算内容をファイルから読み込む
             //例：
             //distance,CubeHole1,CubeHole2
             //特殊計算内容は可変とする
-            var calcSetting = CalcSetting.GetCalcSettings(csvCalcPath);
+            var calcSetting = CalcSetting.LoadConfiguration(csvCalcPath);
 
             //指定フォルダ以下のファイルを取得する
             //注目測定点名と合致するファイルを更にコレクトする
             //コレクトしたファイルから、注目計測名と注目測定名のデータを収集する
-            var collectData = CalcAnswer.CollectInspectedValues(insSetting[0], basePath);
+            var collectData = MeasuredValue.CollectInspectedValues(insSetting[0], basePath);
 
             //収集したデータから、各注目測定点名ごとの平均と分散を求める
 

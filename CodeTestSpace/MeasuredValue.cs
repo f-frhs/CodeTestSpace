@@ -4,7 +4,7 @@ using AutoAssyModules.Perceptron;
 namespace CalcXmlFile
 {
     /// <summary> 計測データ(注目計測名・項目・absoluteの値)を格納する容器としてのクラス</summary>
-    public class CalcAnswer
+    public class MeasuredValue
     {
         /// <summary>注目計測名 </summary>
         /// <remarks>例: </remarks>
@@ -15,16 +15,16 @@ namespace CalcXmlFile
         public string Inspect { set; get; }
 
         /// <summary>absolute </summary>
-        public double Ans { set; get; }
+        public double Value { set; get; }
 
         /// <summary> コレクトしたファイルから、注目計測名と注目測定名とそのabsoluteを返す </summary>
-        public static List<CalcAnswer> CollectInspectedValues(InspectItem inspect, string targetDir)
+        public static List<MeasuredValue> CollectInspectedValues(InspectItem inspect, string targetDir)
         {
             //指定フォルダ以下のファイルを取得する (フォルダ内のxmlファイルをリストに格納)
             var fnames = FileUtil.GetXmlFiles(targetDir);
 
             //answersの作成
-            var answers = new List<CalcAnswer>();
+            var answers = new List<MeasuredValue>();
 
             //注目測定点名と合致するファイルを更にコレクトする
             foreach (var fname in fnames)
@@ -41,7 +41,7 @@ namespace CalcXmlFile
                         if (CPerceptronData.IsContains(data, element, item, out outInspect))
                         {
                             //anserを作成
-                            var answer = new CalcAnswer();
+                            var answer = new MeasuredValue();
 
                             //指定した測定点・項目を元にabsoluteを返す
                             var itemAbsolute = outInspect.Measurement.abusolute;
@@ -49,7 +49,7 @@ namespace CalcXmlFile
                             //anserに値を格納
                             answer.InsName = element;
                             answer.Inspect = item;
-                            answer.Ans = itemAbsolute == string.Empty ? double.NaN : double.Parse(itemAbsolute);
+                            answer.Value = itemAbsolute == string.Empty ? double.NaN : double.Parse(itemAbsolute);
 
                             answers.Add(answer);
                         }

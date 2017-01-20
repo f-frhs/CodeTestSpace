@@ -9,7 +9,7 @@ namespace CalcXmlFile
     public static class MathLibrary
     {
         /// <summary> 平均と分散を求める </summary>
-        public static double[] CalcMeanDev(List<CalcAnswer> collectDatas)
+        public static double[] CalcMeanDev(List<MeasuredValue> collectDatas)
         {
             //平均の式
 

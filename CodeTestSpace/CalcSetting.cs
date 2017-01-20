@@ -19,7 +19,7 @@ namespace CalcXmlFile
         public string Operator { set; get; }
 
         /// <summary> 指定CSVファイルから特殊計算の対象と内容を返す </summary>
-        public static List<CalcSetting> GetCalcSettings(string fName)
+        public static List<CalcSetting> LoadConfiguration(string fName)
         {
             //CSVファイルから各行取り込み
             var clcSettings = System.IO.File.ReadAllLines(fName);
