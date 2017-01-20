@@ -1,4 +1,7 @@
-﻿namespace CalcXmlFile
+﻿using System.Collections.Generic;
+using AutoAssyModules.Perceptron;
+
+namespace CalcXmlFile
 {
     /// <summary> 計測データ(注目計測名・項目・absoluteの値)を格納する容器としてのクラス</summary>
     public class CalcAnswer
@@ -13,5 +16,48 @@
 
         /// <summary>absolute </summary>
         public double Ans { set; get; }
+
+        /// <summary> コレクトしたファイルから、注目計測名と注目測定名とそのabsoluteを返す </summary>
+        public static List<CalcAnswer> CollectInspectedValues(InspectItem inspect, string targetDir)
+        {
+            //指定フォルダ以下のファイルを取得する (フォルダ内のxmlファイルをリストに格納)
+            var fnames = FileUtil.GetXmlFiles(targetDir);
+
+            //answersの作成
+            var answers = new List<CalcAnswer>();
+
+            //注目測定点名と合致するファイルを更にコレクトする
+            foreach (var fname in fnames)
+            {
+                var data = CPerceptronData.LoadFromFile(fname, true);
+                CInspectionCharacteristic outInspect;
+
+                //double nan = Double.NaN;
+
+                foreach (var element in inspect.Inspects)
+                {
+                    foreach (var item in inspect.Items)
+                    {
+                        if (CPerceptronData.IsContains(data, element, item, out outInspect))
+                        {
+                            //anserを作成
+                            var answer = new CalcAnswer();
+
+                            //指定した測定点・項目を元にabsoluteを返す
+                            var itemAbsolute = outInspect.Measurement.abusolute;
+
+                            //anserに値を格納
+                            answer.InsName = element;
+                            answer.Inspect = item;
+                            answer.Ans = itemAbsolute == string.Empty ? double.NaN : double.Parse(itemAbsolute);
+
+                            answers.Add(answer);
+                        }
+                    }
+                }
+            }
+            return answers;
+        }
+
     }
 }
