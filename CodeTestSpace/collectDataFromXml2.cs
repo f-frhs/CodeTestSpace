@@ -24,23 +24,23 @@ namespace CalcXmlFile
 
         static void Main(string[] args)
         {
-                    //注目測定点名と注目計測名と項目が書かれたファイルのアドレス
-        var csvFilePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\insepectionData\settingData.CSV";
+            //注目測定点名と注目計測名と項目が書かれたファイルのアドレス
+            var csvFilePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\insepectionData\settingData.CSV";
 
-        //特殊計算と対象が書かれたファイルのアドレス
-        var csvCalcPath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\insepectionData\calcSettingData.CSV";
+            //特殊計算と対象が書かれたファイルのアドレス
+            var csvCalcPath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\insepectionData\calcSettingData.CSV";
 
-        //処理対象のフォルダのアドレス
-        var basePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\testdata\";
+            //処理対象のフォルダのアドレス
+            var basePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\testdata\";
 
 
-        //注目測定点名と注目計測名と項目をファイルから読み込む
-        //例
-        //ST1_SF01　（注目測定点名）
-        //CubeHole1,CubeHole2 (注目計測名)
-        //X Y ...等（項目）
-        //注目計測名、項目は可変数
-        var insSetting = CollectFileLibrary.GetInspectionItems(csvFilePath);
+            //注目測定点名と注目計測名と項目をファイルから読み込む
+            //例
+            //ST1_SF01　（注目測定点名）
+            //CubeHole1,CubeHole2 (注目計測名)
+            //X Y ...等（項目）
+            //注目計測名、項目は可変数
+            var insSetting = CollectFileLibrary.GetInspectionItems(csvFilePath);
 
             //特殊計算内容をファイルから読み込む
             //例：

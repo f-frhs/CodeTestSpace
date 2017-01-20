@@ -2,14 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Xml;
-using System.Xml.Serialization;
-using Microsoft.Office.Interop.Excel;
-using System.Linq;
-using AutoAssyModules.Perceptron;
-using CalcXmlFile;
-using System.Text;
 
 namespace CalcXmlFile
 {
