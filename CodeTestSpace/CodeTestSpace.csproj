@@ -39,7 +39,6 @@
     <Compile Include="MeasuredValue.cs" />
     <Compile Include="CalcSetting.cs" />
     <Compile Include="collectDataFromXml2.cs" />
-    <Compile Include="DataCollector.cs" />
     <Compile Include="CPerceptronData.cs" />
     <Compile Include="CalcXmlFile.cs" />
     <Compile Include="FileUtil.cs" />
