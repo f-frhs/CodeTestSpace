@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CalcXmlFile
 {
@@ -9,11 +10,48 @@ namespace CalcXmlFile
         /// <summary> 平均と分散を求める </summary>
         public static double[] CalcMeanDev(List<MeasuredValue> collectDatas)
         {
+            //目的のデータをフィルタリング
+            var valsList = collectDatas
+                .FindAll(d => d.InsName == "CubeHole2" && d.Inspect == "X")
+                .Select(d => d.Value)
+                .ToList();
+
             //平均の式
+            var ave = valsList.Average();
 
             //分散の式
+            var sd = CalcDeviation(valsList);
 
-            throw new NotImplementedException();
+            return new double[] {ave, sd};
+        }
+
+        //リスト dsWithNan の標準偏差を計算する
+        //要素にNaNがある場合は、除去してから計算を開始する。
+        private static double CalcDeviation(List<double> dsWithNaN)
+        {
+            //NaNが含まれているときは除去する
+            var nanCount = dsWithNaN.FindAll(double.IsNaN).Count;
+            var ds = dsWithNaN.Where(d => !double.IsNaN(d));
+            var n = ds.Count();
+            if (dsWithNaN.Contains(double.NaN))
+            {
+                Console.WriteLine(
+                    $"dsWithNaN has {nanCount} double.NaN. After removing, the remaining list has {n} elements.");
+            }
+
+            //計算で使うデータ数の確認。データ数は1よりも多い必要がある。
+            if (n <= 1) throw new ArgumentException("Not enough data.");
+
+            var m = dsWithNaN.Average();
+            
+            var sum = 0d;
+            foreach (var d in ds)
+            {
+                sum += (d - m) * (d - m);
+            }
+            var sd = Math.Sqrt(sum) / (n - 1);
+
+            return sd;
         }
 
         /// <summary> 特殊計算を求める </summary>
