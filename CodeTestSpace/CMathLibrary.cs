@@ -43,13 +43,8 @@ namespace CalcXmlFile
             if (n <= 1) throw new ArgumentException("Not enough data.");
 
             var m = dsWithNaN.Average();
-            
-            var sum = 0d;
-            foreach (var d in ds)
-            {
-                sum += (d - m) * (d - m);
-            }
-            var sd = Math.Sqrt(sum) / (n - 1);
+            var sumSqared = ds.Sum(d => (d - m) * (d - m));
+            var sd = Math.Sqrt(sumSqared) / (n - 1);
 
             return sd;
         }
