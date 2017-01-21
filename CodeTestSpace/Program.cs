@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace CalcXmlFile
 {
@@ -39,8 +40,14 @@ namespace CalcXmlFile
             //コレクトしたファイルから、注目計測名と注目測定名のデータを収集する
             var collectData = MeasuredValue.CollectInspectedValues(insSetting[0], basePath);
 
+            //収集したデータのリストから、計算したい項目の数値をリストとして抽出する
+            var valsList = collectData
+                .Where(d => d.InsName == "CubeHole2" && d.Inspect == "X")
+                .Select(d => d.Value)
+                .ToList();
+
             //収集したデータから、各注目測定点名ごとの平均と分散を求める
-            var result = MathLibrary.CalcMeanDev(collectData);
+            var result = MathLibrary.CalcMeanDev(valsList);
 
             //結果をファイルに保存する
 
