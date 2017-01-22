@@ -47,5 +47,22 @@ namespace CalcXmlFile
             return answers;
         }
 
+        /// <summary> 特殊計算を求める </summary>
+        public static List<MeasuredValue> CalcFunction(CalcSetting calSetting, List<MeasuredValue> dataList)
+        {
+            //GetClcSettingsで選択された計算を用いて結果を返す
+            var result = new List<MeasuredValue>();
+
+            switch (calSetting.Operator)
+            {
+                case "distance":
+                    return PointData.CalcDistances(calSetting.InsName1, calSetting.InsName2, dataList);
+                default:
+                    break;
+            }
+
+            return result;
+        }
+
     }
 }

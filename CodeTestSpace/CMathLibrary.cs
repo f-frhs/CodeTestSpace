@@ -44,52 +44,11 @@ namespace CalcXmlFile
             return sd;
         }
 
-        /// <summary> 特殊計算を求める </summary>
-        public static List<double> CalcFunction(CalcSetting calSetting, List<MeasuredValue> dataList)
-        {
-            //GetClcSettingsで選択された計算を用いて結果を返す
-
-            switch (calSetting.Operator)
-            {
-                case "distance":
-                    return CalcDistances(calSetting.InsName1, calSetting.InsName2, dataList);
-                default:
-                    break;
-            }
-
-            return new List<double>();
-        }
-
-        //２点間の距離を計算する
-        //実質的には、必要なデータを抽出するコードがほとんど。
-        private static List<double> CalcDistances(string inspectName1, string inspectName2, List<MeasuredValue> dataList)
-        {
-            var fnames = dataList.Select(d => d.XmlFname).Distinct();
-            var distances = new List<double>();
-            foreach (var fname in fnames)
-            {
-                var xmlGroup = dataList.Where(d => d.XmlFname == fname).ToList();
-
-                var inspectName1Group = xmlGroup.Where(d => d.Inspect == inspectName1).ToList();
-                var x1 = inspectName1Group.First(d => d.Item == "X").Value;
-                var y1 = inspectName1Group.First(d => d.Item == "Y").Value;
-                var z1 = inspectName1Group.First(d => d.Item == "Z").Value;
-
-                var inspectName2Group = xmlGroup.Where(d => d.Inspect == inspectName2).ToList();
-                var x2 = inspectName2Group.First(d => d.Item == "X").Value;
-                var y2 = inspectName2Group.First(d => d.Item == "Y").Value;
-                var z2 = inspectName2Group.First(d => d.Item == "Z").Value;
-
-                distances.Add(CalcDistance(x1, y1, z1, x2, y2, z2));
-            }
-            return distances;
-        }
-
         //２点(p1, p2)間のユークリッド距離を計算する
         // p1 = [x1, y1, z1]
         // p2 = [x2, y2, z2]
         //座標の値に１つでもNaNがあれば、NaNを返す
-        private static double CalcDistance(double x1, double y1, double z1, double x2, double y2, double z2)
+        public static double CalcDistance(double x1, double y1, double z1, double x2, double y2, double z2)
         {
             if (new List<double> {x1, y1, z1, x2, y2, z2}.Contains(double.NaN))
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CalcXmlFile
@@ -33,27 +34,29 @@ namespace CalcXmlFile
             //例：
             //distance,CubeHole1,CubeHole2
             //特殊計算内容は可変とする
-            var calcSetting = CalcSetting.LoadConfiguration(csvCalcPath);
+            var calcSettings = CalcSetting.LoadConfiguration(csvCalcPath);
 
             //指定フォルダ以下のファイルを取得する
             //注目測定点名と合致するファイルを更にコレクトする
             //コレクトしたファイルから、注目計測名と注目測定名のデータを収集する
-            var collectData = MeasuredValue.CollectInspectedValues(insSetting[0], basePath);
+            var collectedData = MeasuredValue.CollectInspectedValues(insSetting[0], basePath);
+
+
+            //距離を計算する
+            foreach (var calcSetting in calcSettings)
+            {
+                collectedData = CalcSetting.CalcFunction(calcSetting, collectedData);
+            }
 
 
             //-----------
             //収集したデータのリストから、計算したい項目の数値をリストとして抽出する
-            var valsList = collectData
-                .Where(d => d.Inspect == "CubeHole2" && d.Item == "X")
-                .Select(d => d.Value)
-                .ToList();
+            var valsList = MeasuredValue.Extract(collectedData, inspect: "CubeHole2", item: "X" );
 
             //収集したデータから、各注目測定点名ごとの平均と分散を求める
             var result = MathLibrary.CalcMeanDev(valsList);
             //-----------
 
-            //距離を計算する
-            var result2 = MathLibrary.CalcFunction(calcSetting[0], collectData);
 
 
             //結果をファイルに保存する

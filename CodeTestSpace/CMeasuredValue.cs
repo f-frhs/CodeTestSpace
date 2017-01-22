@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AutoAssyModules.Perceptron;
 
 namespace CalcXmlFile
@@ -67,6 +68,16 @@ namespace CalcXmlFile
                 }
             }
             return answers;
+        }
+
+        public static List<double> Extract(List<MeasuredValue> dataList, string inspect, string item)
+        {
+            var result = dataList
+                .Where(d => d.Inspect == inspect)
+                .Where(d => d.Item == item)
+                .Select(d => d.Value)
+                .ToList();
+            return result;
         }
 
     }
