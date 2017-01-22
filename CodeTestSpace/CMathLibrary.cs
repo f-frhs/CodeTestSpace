@@ -19,22 +19,22 @@ namespace CalcXmlFile
             return new double[] {ave, sd};
         }
 
-        //リスト dsWithNan の標準偏差を計算する
+        //リスト ds の標準偏差を計算する
         //要素にNaNがある場合は、除去してから計算を開始する。
-        private static double CalcSD(List<double> dsWithNaN)
+        private static double CalcSD(List<double> ds)
         {
             //NaNが含まれているときは除去する
-            var nanCount = dsWithNaN.FindAll(double.IsNaN).Count;
-            var ds = dsWithNaN.Where(d => !double.IsNaN(d)).ToList();
-            var n = ds.Count;
-            if (dsWithNaN.Contains(double.NaN))
+
+            var nanCount = ds.RemoveAll(double.IsNaN);
+            if (0 < nanCount)
             {
                 Console.WriteLine(
-                    $"dsWithNaN has {nanCount} double.NaN. After removing, the remaining list has {n} elements.");
+                    $"ds had {nanCount} double.NaN. Removed NaN-s.");
             }
 
             //計算で使うデータ数の確認。データ数は1よりも多い必要がある。
-            if (n <= 1) throw new ArgumentException("Not enough data.");
+            var n = ds.Count;
+            if (n <= 1) throw new ArgumentException("Number of data must be greater than 1 to calc its deviation.");
 
             //計算部分
             var m = ds.Average();
