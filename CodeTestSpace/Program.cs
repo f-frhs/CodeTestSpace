@@ -40,14 +40,21 @@ namespace CalcXmlFile
             //コレクトしたファイルから、注目計測名と注目測定名のデータを収集する
             var collectData = MeasuredValue.CollectInspectedValues(insSetting[0], basePath);
 
+
+            //-----------
             //収集したデータのリストから、計算したい項目の数値をリストとして抽出する
             var valsList = collectData
-                .Where(d => d.InsName == "CubeHole2" && d.Inspect == "X")
+                .Where(d => d.Inspect == "CubeHole2" && d.Item == "X")
                 .Select(d => d.Value)
                 .ToList();
 
             //収集したデータから、各注目測定点名ごとの平均と分散を求める
             var result = MathLibrary.CalcMeanDev(valsList);
+            //-----------
+
+            //距離を計算する
+            var result2 = MathLibrary.CalcFunction(calcSetting[0], collectData);
+
 
             //結果をファイルに保存する
 
