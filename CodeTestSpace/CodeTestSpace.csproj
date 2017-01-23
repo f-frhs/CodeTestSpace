@@ -36,6 +36,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CCalcValue.cs" />
     <Compile Include="CMeasuredValue.cs" />
     <Compile Include="CCalcSetting.cs" />
     <Compile Include="Program.cs" />

@@ -8,11 +8,11 @@ namespace CalcXmlFile
     {
         /// <summary> 計算対象1 </summary>
         /// <remarks>例: CubeHole1 など</remarks>
-        public string InsName1 { set; get; }
+        public string Inspec1 { set; get; }
 
         /// <summary> 計算対象2 </summary>
         /// <remarks>例: CubeHole2 など</remarks>
-        public string InsName2 { set; get; }
+        public string Inspec2 { set; get; }
 
         /// <summary> 計算内容 </summary>
         /// <remarks>例: distance など</remarks>
@@ -39,8 +39,8 @@ namespace CalcXmlFile
                 var tmpSetting = new CalcSetting
                 {
                     Operator = strOperator,
-                    InsName1 = sp[0],
-                    InsName2 = sp[1]
+                    Inspec1 = sp[0],
+                    Inspec2 = sp[1]
                 };
 
                 answers.Add(tmpSetting);

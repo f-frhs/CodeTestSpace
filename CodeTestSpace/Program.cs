@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CalcXmlFile
 {
@@ -15,6 +17,9 @@ namespace CalcXmlFile
 
             //処理対象のフォルダのアドレス
             var basePath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\testdata\";
+
+            //結果ファイル保存先のアドレス
+            var saveDataPath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\output\result.csv";
 
             //注目測定点名と注目計測名と項目をファイルから読み込む
             //例
@@ -36,12 +41,12 @@ namespace CalcXmlFile
             var collectData = MeasuredValue.CollectInspectedValues(insSetting[0], basePath);
 
             //収集したデータから、各注目測定点名ごとの平均と分散を求める
-            var calcMeanDev = MathLibrary.CalcMeanDev(insSetting[0], collectData);
+            var calcMeanDev = CalcValue.CalcMeanDev(insSetting[0], collectData);
 
             //結果をファイルに保存する
+            FileUtil.SaveDatas(saveDataPath, calcMeanDev);
 
-
-            Console.ReadLine();
+            //Console.ReadLine();
         }
 
     }

@@ -8,6 +8,8 @@ namespace CalcXmlFile
     /// <summary> 計測データ(注目計測名・項目・absoluteの値)を格納するクラス</summary>
     public class MeasuredValue
     {
+        /// <summary> 対象ファイル名  </summary>
+
         /// <summary> 注目測定点名  </summary>
         /// <remarks>例:CubeHole1　等 </remarks>
         public string Inspect { set; get; }
