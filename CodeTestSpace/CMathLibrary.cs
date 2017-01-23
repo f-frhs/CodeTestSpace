@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace CalcXmlFile
 {
@@ -7,13 +9,59 @@ namespace CalcXmlFile
     public static class MathLibrary
     {
         /// <summary> 平均と分散を求める </summary>
-        public static double[] CalcMeanDev(List<MeasuredValue> collectDatas)
+        public static List<double[]> CalcMeanDev(InspectItem inspect, List<MeasuredValue> collectDatas)
         {
-            //平均の式
+            //容器を作成
+            var insArray = new double[2];
+            var insList  = new List<double[]>();
 
-            //分散の式
+            //注目測定点名・項目が同じものを取り出し、それぞれ平均分散を求める
+            foreach (var sInspection in inspect.Inspects)
+            {
+                foreach (var sItem in inspect.Items)
+                {
+                    //リストから同系のものを取り出す
+                    var dList = collectDatas
+                        .Where(d => d.Inspect == sInspection)
+                        .Where(d => d.Item == sItem)
+                        .Select(d => d.Value)
+                        .ToList();
 
-            throw new NotImplementedException();
+                    //平均
+                    insArray[0] = CalcMean(dList);
+
+                    //分散
+                    insArray[1] = CalvDev(CalcMean(dList), dList);
+
+                    //リストに格納
+                    insList.Add(insArray);
+                }
+            }
+            return  insList;
+        }
+
+        //平均の式
+        public static double CalcMean(List<double> valuses)
+        {
+            //平均の計算
+            double mean = valuses.Average();
+            return mean;
+        }
+
+        //分散の式
+        public static double CalvDev(double meanData, List<double> valuses)
+        {
+            //平均との差の2乗を加算する
+            var difSqur = new double();
+            foreach (var value in valuses)
+            {
+                difSqur += (value - meanData) * (value - meanData);
+            }
+
+            //標準偏差の導出
+            var sd = Math.Sqrt(difSqur / (valuses.Count - 1));
+
+            return sd;
         }
 
         /// <summary> 特殊計算を求める </summary>

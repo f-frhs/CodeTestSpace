@@ -32,9 +32,9 @@ namespace CalcXmlFile
             //容器の生成
             var answer = new InspectItem();
             var answers = new List<InspectItem>();
-            var InsNameList = new List<string>();
-            var InspectsList = new List<string>();
-            var ItemsList = new List<string>();
+            var insNameList = new List<string>();
+            var inspectsList = new List<string>();
+            var itemsList = new List<string>();
 
             //inspectionItemsの値をそれぞれのリストに格納
             for (var i = 0; i < NumOfLines; i++)
@@ -47,15 +47,15 @@ namespace CalcXmlFile
                 {
                     //InsNameListに保存
                     case 0:
-                        InsNameList.AddRange(result);
+                        insNameList.AddRange(result);
                         break;
                     //InspectsListに保存
                     case 1:
-                        InspectsList.AddRange(result);
+                        inspectsList.AddRange(result);
                         break;
                     //ItemsListに保存
                     case 2:
-                        ItemsList.AddRange(result);
+                        itemsList.AddRange(result);
                         break;
                     default:
                         break;
@@ -63,9 +63,9 @@ namespace CalcXmlFile
             }
 
             //リストに値を格納
-            answer.InsNames = InsNameList;
-            answer.Inspects = InspectsList;
-            answer.Items = ItemsList;
+            answer.InsNames = insNameList;
+            answer.Inspects = inspectsList;
+            answer.Items = itemsList;
             answers.Add(answer);
 
             return answers;

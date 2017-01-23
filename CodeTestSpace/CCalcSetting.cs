@@ -36,10 +36,12 @@ namespace CalcXmlFile
                 var sp = sSetting.Split(new[] { ',' });
                 if (sp.Length < 2) continue;
 
-                var tmpSetting = new CalcSetting();
-                tmpSetting.Operator = strOperator;
-                tmpSetting.InsName1 = sp[0];
-                tmpSetting.InsName2 = sp[1];
+                var tmpSetting = new CalcSetting
+                {
+                    Operator = strOperator,
+                    InsName1 = sp[0],
+                    InsName2 = sp[1]
+                };
 
                 answers.Add(tmpSetting);
 

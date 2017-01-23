@@ -9,12 +9,12 @@ namespace CalcXmlFile
     public class MeasuredValue
     {
         /// <summary> 注目測定点名  </summary>
-        /// <remarks>例:ST1_SF01　等 </remarks>
-        public string InsName { set; get; }
+        /// <remarks>例:CubeHole1　等 </remarks>
+        public string Inspect { set; get; }
 
         /// <summary> 項目名 </summary>
         /// <remarks>例:X　等 </remarks>
-        public string Inspect { set; get; }
+        public string Item { set; get; }
 
         /// <summary> absolute </summary>
         public double Value { set; get; }
@@ -50,8 +50,8 @@ namespace CalcXmlFile
                             var itemAbsolute = outInspect.Measurement.abusolute;
 
                             //リストに値を格納
-                            answer.InsName = element;
-                            answer.Inspect = item;
+                            answer.Inspect = element;
+                            answer.Item = item;
                             answer.Value = double.TryParse(itemAbsolute, out absoluteAns) ? absoluteAns : double.NaN;
                             answers.Add(answer);
                         }

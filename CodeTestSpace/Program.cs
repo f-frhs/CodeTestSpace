@@ -36,8 +36,10 @@ namespace CalcXmlFile
             var collectData = MeasuredValue.CollectInspectedValues(insSetting[0], basePath);
 
             //収集したデータから、各注目測定点名ごとの平均と分散を求める
+            var calcMeanDev = MathLibrary.CalcMeanDev(insSetting[0], collectData);
 
             //結果をファイルに保存する
+
 
             Console.ReadLine();
         }
