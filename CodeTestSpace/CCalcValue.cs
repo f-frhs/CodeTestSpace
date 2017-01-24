@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace CalcXmlFile
 {
-    /// <summary> 計算結果(注目計測名・項目・計算結果(平均・標準偏差))を格納するクラス</summary>
+    /// <summary> 計算結果(注目計測名・項目・平均・標準偏差)を格納するクラス</summary>
     public class CalcValue
     {
         /// <summary> 注目測定点名  </summary>
@@ -14,10 +14,10 @@ namespace CalcXmlFile
         /// <remarks>例:X　等 </remarks>
         public string Item { set; get; }
 
-        /// <summary> absolute </summary>
+        /// <summary> 平均 </summary>
         public double MeanValue { set; get; }
 
-        /// <summary> absolute </summary>
+        /// <summary> 標準偏差 </summary>
         public double DevValue { set; get; }
 
         /// <summary> 平均と標準偏差を求める </summary>

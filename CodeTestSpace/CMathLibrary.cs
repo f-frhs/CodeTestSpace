@@ -35,13 +35,18 @@ namespace CalcXmlFile
             return sd;
         }
 
-        /// <summary> 特殊計算を求める </summary>
-        public static double CalcFunction(CalcSetting calSetting)
+        /// <summary> 距離計算 </summary>
+        public static double CalcDistance(double[] p1, double[] p2)
         {
-            //GetClcSettingsで選択された計算を用いて結果を返す
+            //p1とp2の各項目の差を計算
+            var dx = p1[0] - p2[0];
+            var dy = p1[1] - p2[1];
+            var dz = p1[2] - p2[2];
 
+            //距離計算：dx,dy,dzの各二乗の和の平方根
+            var answer = Math.Sqrt(dx * dx + dy * dy + dz * dz);
 
-            throw new NotImplementedException();
+            return answer;
         }
     }
 }

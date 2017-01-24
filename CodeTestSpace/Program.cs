@@ -40,39 +40,23 @@ namespace CalcXmlFile
             //コレクトしたファイルから、注目計測名と注目測定名のデータを収集する
             var collectData = MeasuredValue.CollectInspectedValues(insSetting[0], basePath);
 
-            //収集したデータから、各注目測定点名ごとの平均と標準偏差を求める
+            //各注目測定点名ごとの平均と標準偏差を求める
             var calcMeanDev = CalcValue.CalcMeanDev(insSetting[0], collectData);
 
-            //収集したデータから、特殊計算を求める
-            var spCalc = CalcValueSP.SpCalc(calcSetting, collectData);
+            //特殊計算を求める
+            var spCalc = SpCalcValue.SellectSpCalc(calcSetting, collectData);
+
+
+            //-------------制作中---------------
+            //特殊計算の平均と標準偏差を求める
+            var spCalcMeanDev = SpCalcMeanDev.CalcMeanDev(spCalc);
+            //----------------------------------
 
             //結果をファイルに保存する
             FileUtil.SaveDatas(saveDataPath, calcMeanDev);
 
-            //Console.ReadLine();
         }
 
     }
 }
-    //---以下旧版：削除予定--------
 
-    //計算内容(現在)
-    //出力：各試行(Front2mm...ごと)、全試行(各試行の合算)
-    //---RB1フランジ、RB2フランジ
-    //穴間距離：　CH、FH各試行のAvgとSD
-    //穴座標：　CH全試行 x,y,z のAvgとSD、各試行 x,y,z,Dia のAvgとSD
-    //          FH各試行 x,y,z,Dia のAvgとSD
-    //各穴法線ベクトル：　CH、FH各試行 i,j,k のAvgとSD
-    //---RB1フランジ
-    //穴間距離：　CH各試行のAvgとSD
-    //穴座標：　CH各試行 x,y,z,Dia のAvgとSD
-    //各穴法線ベクトル：　CH各試行 i,j,k のAvgとSD
-    //---ナットランナー
-    //穴間距離：　CH各試行のAvgとSD
-    //穴座標：　NH各試行 x,y,z,Dia のAvgとSD
-    //          CH各試行 x,y,z,Dia のAvgとSD
-    //---マテハン
-    //穴間距離：　MH1-2　各試行の　AvgとSD
-    //穴座標：　MH　各試行 x,y,z,Dia のAvgとSD
-    //各穴法線ベクトル：　MH　各試行 i,j,k のAvgとSD
-    //マテハン設置誤差：　x,y,z,Roll,Pitch,Yaw のAvgとSD
