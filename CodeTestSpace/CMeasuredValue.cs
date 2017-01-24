@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web.Caching;
 using AutoAssyModules.Perceptron;
 
@@ -9,6 +10,7 @@ namespace CalcXmlFile
     public class MeasuredValue
     {
         /// <summary> 対象ファイル名  </summary>
+        public string Fname { set; get; }
 
         /// <summary> 注目測定点名  </summary>
         /// <remarks>例:CubeHole1　等 </remarks>
@@ -33,6 +35,9 @@ namespace CalcXmlFile
             //fnameの各ファイルごとに{}内の処理を繰り返しリストの作成
             foreach (var fname in fnames)
             {
+                //ファイル名の取得
+                var getFileName = Path.GetFileName(fname);
+
                 //パーセプトロンの解析結果を得る
                 var data = CPerceptronData.LoadFromFile(fname, true);
 
@@ -52,6 +57,7 @@ namespace CalcXmlFile
                             var itemAbsolute = outInspect.Measurement.abusolute;
 
                             //リストに値を格納
+                            answer.Fname = getFileName;
                             answer.Inspect = element;
                             answer.Item = item;
                             answer.Value = double.TryParse(itemAbsolute, out absoluteAns) ? absoluteAns : double.NaN;

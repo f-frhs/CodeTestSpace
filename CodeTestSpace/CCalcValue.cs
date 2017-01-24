@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace CalcXmlFile
 {
-    /// <summary> 計算結果(注目計測名・項目・計算結果(平均・分散))を格納するクラス</summary>
+    /// <summary> 計算結果(注目計測名・項目・計算結果(平均・標準偏差))を格納するクラス</summary>
     public class CalcValue
     {
         /// <summary> 注目測定点名  </summary>
@@ -20,13 +20,13 @@ namespace CalcXmlFile
         /// <summary> absolute </summary>
         public double DevValue { set; get; }
 
-        /// <summary> 平均と分散を求める </summary>
+        /// <summary> 平均と標準偏差を求める </summary>
         public static List<CalcValue> CalcMeanDev(InspectItem inspect, List<MeasuredValue> collectDatas)
         {
             //容器を作成
             var answers = new List<CalcValue>();
 
-            //注目測定点名・項目が同じものを取り出し、それぞれ平均分散を求める
+            //注目測定点名・項目が同じものを取り出し、それぞれ平均標準偏差を求める
             foreach (var sInspection in inspect.Inspects)
             {
                 foreach (var sItem in inspect.Items)
@@ -49,7 +49,7 @@ namespace CalcXmlFile
                     //平均
                     answer.MeanValue = MathLibrary.CalcMean(dList);
 
-                    //分散
+                    //標準偏差
                     answer.DevValue = MathLibrary.CalvDev(answer.MeanValue, dList);
 
                     answers.Add(answer);

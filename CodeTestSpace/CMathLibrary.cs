@@ -16,7 +16,7 @@ namespace CalcXmlFile
             return mean;
         }
 
-        //分散の式
+        //標準偏差
         public static double CalvDev(double meanData, List<double> values)
         {
             //平均との差の2乗を加算する
@@ -26,7 +26,7 @@ namespace CalcXmlFile
                 sumSqur += (value - meanData) * (value - meanData);
             }
 
-            //標準偏差の導出
+            //標準偏差を計算
             var sd = Math.Sqrt(sumSqur / (values.Count - 1));
 
             return sd;
