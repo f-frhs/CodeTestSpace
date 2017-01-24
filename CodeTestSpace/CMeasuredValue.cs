@@ -6,7 +6,7 @@ using AutoAssyModules.Perceptron;
 
 namespace CalcXmlFile
 {
-    /// <summary> 計測データ(注目計測名・項目・absoluteの値)を格納するクラス</summary>
+    /// <summary> 計測データ(ファイル名・注目計測名・項目・absoluteの値)を格納するクラス</summary>
     public class MeasuredValue
     {
         /// <summary> 対象ファイル名  </summary>

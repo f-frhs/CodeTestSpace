@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+
 
 namespace CalcXmlFile
 {
@@ -9,21 +9,24 @@ namespace CalcXmlFile
     public static class MathLibrary
     {        
         //平均の式
-        public static double CalcMean(List<double> valuses)
+        public static double CalcMean(List<double> values)
         {
             //平均の計算
-            var mean = valuses.Average();
+            var mean = values.Average();
             return mean;
         }
 
         //標準偏差
-        public static double CalvDev(double meanData, List<double> values)
+        public static double CalvDev(List<double> values)
         {
+            //平均の計算
+            var mean = values.Average();
+
             //平均との差の2乗を加算する
             var sumSqur = 0.0d;
             foreach (var value in values)
             {
-                sumSqur += (value - meanData) * (value - meanData);
+                sumSqur += (value - mean) * (value - mean);
             }
 
             //標準偏差を計算
@@ -36,6 +39,7 @@ namespace CalcXmlFile
         public static double CalcFunction(CalcSetting calSetting)
         {
             //GetClcSettingsで選択された計算を用いて結果を返す
+
 
             throw new NotImplementedException();
         }

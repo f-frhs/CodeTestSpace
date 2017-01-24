@@ -43,6 +43,8 @@ namespace CalcXmlFile
             //収集したデータから、各注目測定点名ごとの平均と標準偏差を求める
             var calcMeanDev = CalcValue.CalcMeanDev(insSetting[0], collectData);
 
+            //収集したデータから、特殊計算を求める
+
             //結果をファイルに保存する
             FileUtil.SaveDatas(saveDataPath, calcMeanDev);
 

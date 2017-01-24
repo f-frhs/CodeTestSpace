@@ -6,6 +6,9 @@ namespace CalcXmlFile
     /// <summary> 計算結果(注目計測名・項目・計算結果(平均・標準偏差))を格納するクラス</summary>
     public class CalcValue
     {
+        /// <summary> 対象ファイル名 </summary>
+        public string FileName { set; get; }
+
         /// <summary> 注目測定点名  </summary>
         /// <remarks>例:CubeHole1　等 </remarks>
         public string Inspect { set; get; }
@@ -50,13 +53,12 @@ namespace CalcXmlFile
                     answer.MeanValue = MathLibrary.CalcMean(dList);
 
                     //標準偏差
-                    answer.DevValue = MathLibrary.CalvDev(answer.MeanValue, dList);
+                    answer.DevValue = MathLibrary.CalvDev(dList);
 
                     answers.Add(answer);
                 }
             }
             return answers;
         }
-
     }
 }

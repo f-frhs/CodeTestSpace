@@ -24,13 +24,14 @@ namespace CalcXmlFile
             //CSVファイルから各行取り込み
             var clcSettings = System.IO.File.ReadAllLines(fName);
 
-            //計算内容が記述されている行を指定
+            //計算内容を取り出したのちリストから削除
             var strOperator = clcSettings[0];
             var sSettings = clcSettings.Skip(1);
 
             //容器(answers)を作成
             var answers = new List<CalcSetting>();
 
+            //リストから計算対象を取り出す
             foreach (var sSetting in sSettings)
             {
                 var sp = sSetting.Split(new[] { ',' });
@@ -42,9 +43,7 @@ namespace CalcXmlFile
                     Inspec1 = sp[0],
                     Inspec2 = sp[1]
                 };
-
                 answers.Add(tmpSetting);
-
             }
             return answers;
         }
