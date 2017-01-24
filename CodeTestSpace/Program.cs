@@ -44,6 +44,7 @@ namespace CalcXmlFile
             var calcMeanDev = CalcValue.CalcMeanDev(insSetting[0], collectData);
 
             //収集したデータから、特殊計算を求める
+            var spCalc = CalcValueSP.SpCalc(calcSetting, collectData);
 
             //結果をファイルに保存する
             FileUtil.SaveDatas(saveDataPath, calcMeanDev);

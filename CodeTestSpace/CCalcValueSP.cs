@@ -1,75 +1,94 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Office.Interop.Excel;
 
 namespace CalcXmlFile
+{
+    /// <summary> 計算結果(対象ファイル・注目計測名・計算内容・計算結果)を格納するクラス</summary>
+    public class CalcValueSP
     {
-        /// <summary> 計算結果(注目計測名・項目・計算結果(平均・標準偏差))を格納するクラス</summary>
-        public class CalcValueSP
+        /// <summary> 対象ファイル名 </summary>
+        public string FileName { set; get; }
+
+        /// <summary> 注目測定点名  </summary>
+        /// <remarks>例:CubeHole1　等 </remarks>
+        public string Inspect1 { set; get; }
+
+        /// <summary> 注目測定点名  </summary>
+        /// <remarks>例:CubeHole1　等 </remarks>
+        public string Inspect2 { set; get; }
+
+        /// <summary> 計算内容 </summary>
+        public  string Operator { set; get; }
+
+        /// <summary> 計算結果 </summary>
+        public double Value { set; get; }
+
+        /// <summary> 特殊計算を求めるを求める </summary>
+        public static List<CalcValueSP> SpCalc(List<CalcSetting> settingDatas, List<MeasuredValue> collectDatas)
         {
-            /// <summary> 対象ファイル名 </summary>
-            public string FileName { set; get; }
+            //容器を作成
+            var answers = new List<CalcValueSP>();
 
-            /// <summary> 注目測定点名  </summary>
-            /// <remarks>例:CubeHole1　等 </remarks>
-            public string Inspect1 { set; get; }
-
-            /// <summary> 注目測定点名  </summary>
-            /// <remarks>例:CubeHole1　等 </remarks>
-            public string Inspect2 { set; get; }
-
-            /// <summary> absolute </summary>
-            public double Value { set; get; }
-
-            /// <summary> 特殊計算を求めるを求める </summary>
-            public static List<CalcValue> SpCalc(CalcSetting settingData, List<MeasuredValue> collectDatas)
+            //ファイル毎に特殊計算結果を求める
+            foreach (var collectData in collectDatas)
             {
-                //容器を作成
-                var answers = new List<CalcValue>();
+                //計算を行うファイルを取得
+                var targetFile = collectData.Fname;
 
-                //注目測定点名・項目が同じものを取り出し、それぞれ平均標準偏差を求める
-                foreach (var data in collectDatas)
+                //特殊計算実行
+                //List<CalcSetting>の各要素毎に　計算内容を取得→二つの測定点の項目の値を取得→値を元に特殊計算実行
+                foreach (var settingData in settingDatas)
                 {
-                    foreach (var inspec1 in settingData.Inspec1)
+                    //使用する計算内容を取得
+                    var targetOperator = settingData.Operator;
+
+                    if (targetOperator == "distance")
                     {
-                        foreach (var inspec2 in settingData.Inspec2)
-                        {
-                            //容器の作成
-                            var answer = new CalcValue();
+                        //測定点1のデータ収集
+                        var fData = DatasForSpCalc(targetFile, settingData.Inspec1, collectDatas);
 
-                            //計算を行うファイルを決定
+                        //測定点2のデータ収集         
+                        var sData = DatasForSpCalc(targetFile, settingData.Inspec2, collectDatas);
 
-                            //決定したファイルからsettingDataに対応する対象を取り出す
-                            //対象がなかった場合は一気に最後にスルー
-
-                            //計算内容を読み出す（内容によって分岐 if else）
-
-                            //計算実行
-
-                            ////リストから同系のものを取り出す
-                            //var dList = collectDatas
-                            //    .Where(d => d.Inspect == sInspection)
-                            //    .Where(d => d.Item == sItem)
-                            //    .Select(d => d.Value)
-                            //    .ToList();
-
-                            //リストに格納
-                            //測定点名・項目
-                            answer.Inspect = sInspection;
-                            answer.Item = sItem;
-
-                            //平均
-                            answer.MeanValue = MathLibrary.CalcMean(dList);
-
-                            //標準偏差
-                            answer.DevValue = MathLibrary.CalvDev(dList);
-
-                            answers.Add(answer);
-                        }
+                        //var calcDistance = 
+                    }
+                    else
+                    {
+                        Console.WriteLine("Calculated content is not described");
                     }
                 }
-                return answers;
+
             }
+            return answers;
+        }
+
+        /// <summary>  </summary>
+        public static double[] DatasForSpCalc(string fname, string inspec, List<MeasuredValue> value)
+        {
+            //容器作成
+            var answer = new List<double>();
+
+            //x,y,z それぞれのデータをとってくる
+            var items = new List<string> {"X", "Y", "Z"};
+
+            //x,y,zに関してそれぞれデータを収集
+            foreach (var item in items)
+            {
+                //List<MeasuredValue>から、引数で指示されたデータを収集
+                var spData = value
+                .Where(d => d.Fname == fname)
+                .Where(d => d.Inspect == inspec)
+                .Where(d => d.Item == item)
+                .Select(d => d.Value)
+                .ToList();
+
+                //容器作成(x,y,zの順番で格納)
+                answer.Add(spData[0]);
+            }
+
+            return answer.ToArray();
         }
     }
-}
 }
