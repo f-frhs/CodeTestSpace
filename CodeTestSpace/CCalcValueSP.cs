@@ -52,7 +52,8 @@ namespace CalcXmlFile
                         //測定点2のデータ収集         
                         var sData = DatasForSpCalc(targetFile, settingData.Inspec2, collectDatas);
 
-                        //var calcDistance = 
+                        //距離計算
+                        var calcDistance = CalcDistance(fData, sData);
                     }
                     else
                     {
@@ -89,6 +90,13 @@ namespace CalcXmlFile
             }
 
             return answer.ToArray();
+        }
+
+        public static double CalcDistance(double[] fData, double[] sData)
+        {
+            var answer = Math.Sqrt(Math.Pow((fData[0] - sData[0]),2) + Math.Pow((fData[1] - sData[1]), 2) + Math.Pow((fData[2] - sData[2]), 2));
+
+            return answer;
         }
     }
 }

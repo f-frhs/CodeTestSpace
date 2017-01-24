@@ -76,22 +76,3 @@ namespace CalcXmlFile
     //穴座標：　MH　各試行 x,y,z,Dia のAvgとSD
     //各穴法線ベクトル：　MH　各試行 i,j,k のAvgとSD
     //マテハン設置誤差：　x,y,z,Roll,Pitch,Yaw のAvgとSD
-
-
-//             foreach (var placeName in placeNames)
-//         {
-//             foreach (var pointName in pointNames)
-//             {
-//                 names[$"{placeName}_{pointName}"] = new List<double>();
-//                 foreach (string file in GetFiles(@"C:\Users\hayashi\Desktop\csvtesrt"))
-//                 {
-//                     XmlRead(file);
-//                     DirectoryInfo dirInfo = Directory.GetParent(file);
-// 
-//                     foreach (var l in list.FindAll(c => c.Item2 == placeName).FindAll(c => c.Item3 == pointName))
-//                     {
-//                         names[$"{placeName}_{pointName}"].Add(l.Item4);
-//                     };
-//                 }
-//             }
-//         }
