@@ -36,36 +36,40 @@ namespace CalcXmlFile
             var inspectsList = new List<string>();
             var itemsList = new List<string>();
 
-            //inspectionItemsの値をそれぞれのリストに格納
-            for (var i = 0; i < NumOfLines; i++)
-            {
-                //カンマを区切りにリスト作成
-                var result = inspectionItems[i].Split(',').ToList();
-
-                //iの値で格納先変更
-                switch (i)
+            //for (var i = 0; i < (inspectionItems.Length / 3); i++)
+            //{
+                //inspectionItemsの値をそれぞれのリストに格納
+                for (var j = 0 ; j < NumOfLines ; j++)
                 {
-                    //InsNameListに保存
-                    case 0:
-                        insNameList.AddRange(result);
-                        break;
-                    //InspectsListに保存
-                    case 1:
-                        inspectsList.AddRange(result);
-                        break;
-                    //ItemsListに保存
-                    case 2:
-                        itemsList.AddRange(result);
-                        break;
-                    default:
-                        break;
-                }
-            }
 
-            //リストに値を格納
-            answer.InsNames = insNameList;
-            answer.Inspects = inspectsList;
-            answer.Items = itemsList;
+                    //カンマを区切りにリスト作成
+                    var result = inspectionItems[j].Split(',').ToList();
+
+                    //iの値で格納先変更
+                    switch (j)
+                    {
+                        //InsNameListに保存
+                        case 0:
+                            insNameList.AddRange(result);
+                            break;
+                        //InspectsListに保存
+                        case 1:
+                            inspectsList.AddRange(result);
+                            break;
+                        //ItemsListに保存
+                        case 2:
+                            itemsList.AddRange(result);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                //リストに値を格納
+                answer.InsNames = insNameList;
+                answer.Inspects = inspectsList;
+                answer.Items = itemsList;
+            //}
+
             answers.Add(answer);
 
             return answers;

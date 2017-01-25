@@ -41,11 +41,11 @@ namespace CalcXmlFile
             //注目測定点名と合致するファイルを更にコレクトする
             //コレクトしたファイルから、注目計測名と注目測定名のデータを収集する
             var instData = new MeasuredValue();
-            var collectData = instData.CollectInspectedValues(inspectitem[0], basePath);
+            var collectData = instData.CollectInspectedValues(inspectitem, basePath);
 
             //各注目測定点名ごとの平均と標準偏差を求める
             var instDataMeanDev = new CalcValue();
-            var calcMeanDev = instDataMeanDev.CalcMeanDev(inspectitem[0], collectData);
+            var calcMeanDev = instDataMeanDev.CalcMeanDev(inspectitem, collectData);
 
             //特殊計算を求める
             var instSpCalc = new SpCalcValue();

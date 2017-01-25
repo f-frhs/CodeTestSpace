@@ -24,7 +24,7 @@ namespace CalcXmlFile
         public double Value { set; get; }
 
         /// <summary> taegetDir以下のファイルから計測データを抜き出し、MeasuredValue型のリストを返す </summary>
-        public List<MeasuredValue> CollectInspectedValues(InspectItem inspect, string targetDir)
+        public List<MeasuredValue> CollectInspectedValues(List<InspectItem> inspects, string targetDir)
         {
             //指定フォルダ以下のファイルを取得する (フォルダ内のxmlファイルをリストに格納)
             var fnames = FileUtil.GetXmlFiles(targetDir);
@@ -41,27 +41,30 @@ namespace CalcXmlFile
                 //パーセプトロンの解析結果を得る
                 var data = CPerceptronData.LoadFromFile(fname, true);
 
-                //注目測定点名・項目を元にデータを取得し、MeasuredValue型で返す
-                foreach (var element in inspect.Inspects)
+                foreach (var inspect in inspects)
                 {
-                    foreach (var item in inspect.Items)
+                    //注目測定点名・項目を元にデータを取得し、MeasuredValue型で返す
+                    foreach (var element in inspect.Inspects)
                     {
-                        CInspectionCharacteristic outInspect;
-                        if (CPerceptronData.IsContains(data, element, item, out outInspect))
+                        foreach (var item in inspect.Items)
                         {
-                            //容器(anser)を作成
-                            var answer = new MeasuredValue();
-                            var absoluteAns = 0d;
+                            CInspectionCharacteristic outInspect;
+                            if (CPerceptronData.IsContains(data, element, item, out outInspect))
+                            {
+                                //容器(anser)を作成
+                                var answer = new MeasuredValue();
+                                var absoluteAns = 0d;
 
-                            //指定した測定点・項目を元にabsoluteを返す
-                            var itemAbsolute = outInspect.Measurement.abusolute;
+                                //指定した測定点・項目を元にabsoluteを返す
+                                var itemAbsolute = outInspect.Measurement.abusolute;
 
-                            //リストに値を格納
-                            answer.Fname = getFileName;
-                            answer.Inspect = element;
-                            answer.Item = item;
-                            answer.Value = double.TryParse(itemAbsolute, out absoluteAns) ? absoluteAns : double.NaN;
-                            answers.Add(answer);
+                                //リストに値を格納
+                                answer.Fname = getFileName;
+                                answer.Inspect = element;
+                                answer.Item = item;
+                                answer.Value = double.TryParse(itemAbsolute, out absoluteAns) ? absoluteAns : double.NaN;
+                                answers.Add(answer);
+                            }
                         }
                     }
                 }
