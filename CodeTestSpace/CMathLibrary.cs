@@ -8,7 +8,7 @@ namespace CalcXmlFile
     /// <summary> 各種計算メソッドを提供するクラス </summary>
     public static class MathLibrary
     {        
-        //平均の式
+        /// <summary> 平均 </summary>
         public static double CalcMean(List<double> values)
         {
             //平均の計算
@@ -16,7 +16,7 @@ namespace CalcXmlFile
             return mean;
         }
 
-        //標準偏差
+        /// <summary> 標準偏差 </summary>
         public static double CalvDev(List<double> values)
         {
             //平均の計算

@@ -37,7 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CCalcValue.cs" />
-    <Compile Include="CCalcValueSP.cs" />
+    <Compile Include="CSpCalcValue.cs" />
     <Compile Include="CMeasuredValue.cs" />
     <Compile Include="CCalcSetting.cs" />
     <Compile Include="CSpCalcMeanDev.cs" />

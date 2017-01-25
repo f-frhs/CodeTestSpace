@@ -1,25 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CalcXmlFile
 {
-    /// <summary> 特殊計算の設定を格納するクラス </summary>
+    /// <summary> 特殊計算の設定（計算対象1,2・計算内容）を格納するクラス </summary>
     public class CalcSetting
     {
         /// <summary> 計算対象1 </summary>
         /// <remarks>例: CubeHole1 など</remarks>
-        public string Inspec1 { set; get; }
+        public string Inspect1 { set; get; }
 
         /// <summary> 計算対象2 </summary>
         /// <remarks>例: CubeHole2 など</remarks>
-        public string Inspec2 { set; get; }
+        public string Inspect2 { set; get; }
 
         /// <summary> 計算内容 </summary>
         /// <remarks>例: distance など</remarks>
         public string Operator { set; get; }
 
         /// <summary> fNameからCalcSetting型のリストを返す </summary>
-        public static List<CalcSetting> LoadConfiguration(string fName)
+        public List<CalcSetting> LoadConfiguration(string fName)
         {
             //CSVファイルから各行取り込み
             var clcSettings = System.IO.File.ReadAllLines(fName);
@@ -40,8 +41,8 @@ namespace CalcXmlFile
                 var tmpSetting = new CalcSetting
                 {
                     Operator = strOperator,
-                    Inspec1 = sp[0],
-                    Inspec2 = sp[1]
+                    Inspect1 = sp[0],
+                    Inspect2 = sp[1]
                 };
                 answers.Add(tmpSetting);
             }

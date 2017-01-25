@@ -17,7 +17,7 @@ namespace CalcXmlFile
         public string Inspect1 { set; get; }
 
         /// <summary> 注目測定点名  </summary>
-        /// <remarks>例:CubeHole1　等 </remarks>
+        /// <remarks>例:CubeHole2　等 </remarks>
         public string Inspect2 { set; get; }
 
         /// <summary> 計算内容 </summary>
@@ -27,9 +27,8 @@ namespace CalcXmlFile
         public double Value { set; get; }
 
 
-
         //計算内容から実行するメソッドを選択
-        public static List<SpCalcValue> SellectSpCalc(List<CalcSetting> settingDatas, List<MeasuredValue> collectDatas)
+        public List<SpCalcValue> SellectSpCalc(List<CalcSetting> settingDatas, List<MeasuredValue> collectDatas)
         {
             var result = new List<SpCalcValue>();
             foreach (var settingData in settingDatas)
@@ -39,13 +38,15 @@ namespace CalcXmlFile
                     case "distance":
                         result = SpCalc(settingDatas, collectDatas);
                         break;
+                    default:
+                        break;
                 }
             }
             return result;
         }
 
         //特殊計算の実行：距離算出
-        public static List<SpCalcValue> SpCalc(List<CalcSetting> settingDatas, List<MeasuredValue> collectDatas)
+        public List<SpCalcValue> SpCalc(List<CalcSetting> settingDatas, List<MeasuredValue> collectDatas)
         {
             //容器を作成
             var answers = new List<SpCalcValue>();
@@ -57,10 +58,12 @@ namespace CalcXmlFile
                 foreach (var fname in collectDatas.Select(d => d.Fname).Distinct())
                 {
                     //測定点1のデータ収集
-                    var target1 = SpCalcValue.ExtractXyz(settingData.Inspec1, fname, collectDatas);
+                    var instTarget1 = new SpCalcValue();
+                    var target1 = ExtractXyz(settingData.Inspect1, fname, collectDatas);
 
                     //測定点2のデータ収集  
-                    var target2 = SpCalcValue.ExtractXyz(settingData.Inspec2, fname, collectDatas);
+                    var instTarget2 = new SpCalcValue();
+                    var target2 = ExtractXyz(settingData.Inspect2, fname, collectDatas);
 
                     //距離計算
                     var distance = MathLibrary.CalcDistance(target1, target2);
@@ -69,9 +72,8 @@ namespace CalcXmlFile
                     var answer = new SpCalcValue
                     {
                         FileName = fname,
-                        Inspect1 = settingData.Inspec1,
-                        Inspect2 = settingData.Inspec2,
-                        Operator = "distance",
+                        Inspect1 = settingData.Inspect1,
+                        Inspect2 = settingData.Inspect2,
                         Value = distance
                     };
                     answers.Add(answer);
@@ -81,7 +83,7 @@ namespace CalcXmlFile
         }
 
         /// <summary> allDataから対応するデータ(inspecString 及び fname)の抽出 </summary>
-        private static double[] ExtractXyz(string inspecString, string fname, List<MeasuredValue> allData )
+        public double[] ExtractXyz(string inspecString, string fname, List<MeasuredValue> allData )
         {
             //fname及びinspecStringに一致するデータを抽出
             var extractedDataSet = allData
@@ -95,7 +97,7 @@ namespace CalcXmlFile
             var z = extractedDataSet.Where(d => d.Item == "Z").Select(d => d.Value).First();
             
             //データの格納
-            return new double[] {x, y, z};
+            return new [] {x, y, z};
         }
     }
 }

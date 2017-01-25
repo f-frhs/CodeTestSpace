@@ -27,33 +27,36 @@ namespace CalcXmlFile
             //CubeHole1,CubeHole2 (注目計測名)
             //X Y ...等（項目）
             //注目計測名、項目は可変数
-            var insSetting = InspectItem.LoadConfiguration(csvFilePath);
+            var institem = new InspectItem();
+            var inspectitem = institem.LoadConfiguration(csvFilePath);
 
             //特殊計算内容をファイルから読み込む
             //例：
             //distance,CubeHole1,CubeHole2
             //特殊計算内容は可変とする
-            var calcSetting = CalcSetting.LoadConfiguration(csvCalcPath);
+            var instSetting = new CalcSetting();
+            var calcSetting = instSetting.LoadConfiguration(csvCalcPath);
 
             //指定フォルダ以下のファイルを取得する
             //注目測定点名と合致するファイルを更にコレクトする
             //コレクトしたファイルから、注目計測名と注目測定名のデータを収集する
-            var collectData = MeasuredValue.CollectInspectedValues(insSetting[0], basePath);
+            var instData = new MeasuredValue();
+            var collectData = instData.CollectInspectedValues(inspectitem[0], basePath);
 
             //各注目測定点名ごとの平均と標準偏差を求める
-            var calcMeanDev = CalcValue.CalcMeanDev(insSetting[0], collectData);
+            var instDataMeanDev = new CalcValue();
+            var calcMeanDev = instDataMeanDev.CalcMeanDev(inspectitem[0], collectData);
 
             //特殊計算を求める
-            var spCalc = SpCalcValue.SellectSpCalc(calcSetting, collectData);
+            var instSpCalc = new SpCalcValue();
+            var spCalc = instSpCalc.SellectSpCalc(calcSetting, collectData);
 
-
-            //-------------制作中---------------
             //特殊計算の平均と標準偏差を求める
-            var spCalcMeanDev = SpCalcMeanDev.CalcMeanDev(spCalc);
-            //----------------------------------
+            var instDataSpCalcMeanDev = new SpCalcMeanDev();
+            var spCalcMeanDev = instDataSpCalcMeanDev.CalcMeanDev(calcSetting, spCalc);
 
             //結果をファイルに保存する
-            FileUtil.SaveDatas(saveDataPath, calcMeanDev);
+            FileUtil.SaveDatas(saveDataPath, calcMeanDev, spCalcMeanDev);
 
         }
 

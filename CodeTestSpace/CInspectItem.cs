@@ -24,7 +24,7 @@ namespace CalcXmlFile
         public List<string> Items { get; set; }
 
         /// <summary> fNameからInspectItem型のリストを返す </summary>
-        public static List<InspectItem> LoadConfiguration(string fName)
+        public List<InspectItem> LoadConfiguration(string fName)
         {
             //CSVファイルから測定点名・注目計測・項目を読み出し、配列に格納
             var inspectionItems = File.ReadAllLines(fName);

@@ -21,12 +21,12 @@ namespace CalcXmlFile
         public double DevValue { set; get; }
 
         /// <summary> 平均と標準偏差を求める </summary>
-        public static List<CalcValue> CalcMeanDev(InspectItem inspect, List<MeasuredValue> collectDatas)
+        public List<CalcValue> CalcMeanDev(InspectItem inspect, List<MeasuredValue> collectDatas)
         {
             //容器を作成
             var answers = new List<CalcValue>();
 
-            //注目測定点名・項目が同じものを取り出し、それぞれ平均標準偏差を求める
+            //注目測定点名・項目が同じものを取り出し、それぞれ平均・標準偏差を求める
             foreach (var sInspection in inspect.Inspects)
             {
                 foreach (var sItem in inspect.Items)

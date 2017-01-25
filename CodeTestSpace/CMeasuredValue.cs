@@ -24,7 +24,7 @@ namespace CalcXmlFile
         public double Value { set; get; }
 
         /// <summary> taegetDir以下のファイルから計測データを抜き出し、MeasuredValue型のリストを返す </summary>
-        public static List<MeasuredValue> CollectInspectedValues(InspectItem inspect, string targetDir)
+        public List<MeasuredValue> CollectInspectedValues(InspectItem inspect, string targetDir)
         {
             //指定フォルダ以下のファイルを取得する (フォルダ内のxmlファイルをリストに格納)
             var fnames = FileUtil.GetXmlFiles(targetDir);
