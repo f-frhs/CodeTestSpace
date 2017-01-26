@@ -21,44 +21,41 @@ namespace CalcXmlFile
         public double DevValue { set; get; }
 
         /// <summary> 平均と標準偏差を求める </summary>
-        public List<CalcValue> CalcMeanDev(List<InspectItem> inspects, List<MeasuredValue> collectDatas)
+        public List<CalcValue> CalcMeanDev(InspectItem inspects, List<MeasuredValue> collectDatas)
         {
             //容器を作成
             var answers = new List<CalcValue>();
 
-            foreach (var inspect in inspects)
+            //注目測定点名・項目が同じものを取り出し、それぞれ平均・標準偏差を求める
+            foreach (var sInspection in inspects.Inspects)
             {
-                //注目測定点名・項目が同じものを取り出し、それぞれ平均・標準偏差を求める
-                foreach (var sInspection in inspect.Inspects)
+                foreach (var sItem in inspects.Items)
                 {
-                    foreach (var sItem in inspect.Items)
-                    {
-                        //容器の作成
-                        var answer = new CalcValue();
+                    //容器の作成
+                    var answer = new CalcValue();
 
-                        //リストから同系のものを取り出す
-                        var dList = collectDatas
-                            .Where(d => d.Inspect == sInspection)
-                            .Where(d => d.Item == sItem)
-                            .Select(d => d.Value)
-                            .ToList();
+                    //リストから同系のものを取り出す
+                    var dList = collectDatas
+                        .Where(d => d.Inspect == sInspection)
+                        .Where(d => d.Item == sItem)
+                        .Select(d => d.Value)
+                        .ToList();
 
-                        //リストに格納
-                        //測定点名・項目
-                        answer.Inspect = sInspection;
-                        answer.Item = sItem;
+                    //リストに格納
+                    //測定点名・項目
+                    answer.Inspect = sInspection;
+                    answer.Item = sItem;
 
-                        //平均
-                        answer.MeanValue = MathLibrary.CalcMean(dList);
+                    //平均
+                    answer.MeanValue = MathLibrary.CalcMean(dList);
 
-                        //標準偏差
-                        answer.DevValue = MathLibrary.CalvDev(dList);
+                    //標準偏差
+                    answer.DevValue = MathLibrary.CalvDev(dList);
 
-                        answers.Add(answer);
-                    }
+                    answers.Add(answer);
                 }
-
             }
+
             return answers;
         }
     }

@@ -9,7 +9,7 @@ namespace CalcXmlFile
     {
         //定数の作成
         /// <summary> リストから読み込とる行数 </summary>
-        public static int NumOfLines = 3;
+        //public static int NumOfLines; //= 3;
 
         /// <summary> 注目測定点名  </summary>
         /// <remarks> 例:ST1_SF01　等 </remarks>
@@ -30,10 +30,10 @@ namespace CalcXmlFile
             var inspectionItems = File.ReadAllLines(fName);
 
             //配列を3行(測定点名・注目計測・項目)毎に、リストに格納
-            var itemList = CreateListFromArray(inspectionItems);
+            //var itemList = CreateListFromArray(inspectionItems);
 
             //それぞれの配列をInspectItem型に格納
-            var listInspection = CreateListInspection(itemList);
+            var listInspection = CreateListInspection(inspectionItems);
             return listInspection;
         }
 
@@ -54,53 +54,60 @@ namespace CalcXmlFile
         }
 
         /// <summary> リストの各配列をそれぞれ inspectItem に格納し、それをList<inspectItem>に格納  </summary>
-        public List<InspectItem> CreateListInspection(List<string[]> dataLists)
+        public List<InspectItem> CreateListInspection(string[] configLines)
         {
             //容器作成
             var answers = new List<InspectItem>();
 
+            var answer = new InspectItem();
+            var insNameList = new List<string>();
+            var inspectsList = new List<string>();
+            var itemsList = new List<string>();
+
             //dataListsの各項をそれぞれinspectItemに格納
-            foreach (var dataList in dataLists)
+            //inspectionItemsの値をそれぞれのリストに格納
+            for (var i = 0; i < configLines.Length; i++)
             {
-                //容器の作成
-                var answer = new InspectItem();
-                var insNameList = new List<string>();
-                var inspectsList = new List<string>();
-                var itemsList = new List<string>();
 
-                //inspectionItemsの値をそれぞれのリストに格納
-                for (var i = 0; i < NumOfLines; i++)
+                if (i % 3 == 0)
                 {
-                    //カンマを区切りにリスト作成
-                    var result = dataList[i].Split(',').ToList();
-
-                    //iの値で格納先変更
-                    switch (i)
-                    {
-                        //InsNameListに保存
-                        case 0:
-                            insNameList.AddRange(result);
-                            break;
-                        //InspectsListに保存
-                        case 1:
-                            inspectsList.AddRange(result);
-                            break;
-                        //ItemsListに保存
-                        case 2:
-                            itemsList.AddRange(result);
-                            break;
-                        default:
-                            break;
-                    }
+                    //容器の作成
+                    answer = new InspectItem();
+                    insNameList = new List<string>();
+                    inspectsList = new List<string>();
+                    itemsList = new List<string>();
                 }
 
-                //List<inspectItem>に値を格納
-                answer.InsNames = insNameList;
-                answer.Inspects = inspectsList;
-                answer.Items = itemsList;
-                answers.Add(answer);
+                //カンマを区切りにリスト作成
+                var result = configLines[i].Split(',').ToList();
+
+                //iの値で格納先変更
+                switch (i % 3)
+                {
+                    //InsNameListに保存
+                    case 0:
+                        insNameList.AddRange(result);
+                        break;
+                    //InspectsListに保存
+                    case 1:
+                        inspectsList.AddRange(result);
+                        break;
+                    //ItemsListに保存
+                    case 2:
+                        itemsList.AddRange(result);
+
+                        //List<inspectItem>に値を格納
+                        answer.InsNames = insNameList;
+                        answer.Inspects = inspectsList;
+                        answer.Items = itemsList;
+                        answers.Add(answer);
+
+                        break;
+                    default:
+                        break;
+                }
             }
-            return answers;
+        return answers;
         }
     }
 }
