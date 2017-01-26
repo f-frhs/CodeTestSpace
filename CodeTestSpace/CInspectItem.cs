@@ -26,38 +26,56 @@ namespace CalcXmlFile
         /// <summary> fNameからInspectItem型のリストを返す </summary>
         public List<InspectItem> LoadConfiguration(string fName)
         {
-            //CSVファイルから測定点名・注目計測・項目を読み出し、配列に格納
+            //CSVファイルを読み出し、配列に格納
             var inspectionItems = File.ReadAllLines(fName);
 
-            //配列を3行(測定点名・注目計測・項目)ずつ分けリストに格納
+            //配列を3行(測定点名・注目計測・項目)毎に、リストに格納
+            var itemList = CreateListFromArray(inspectionItems);
+
+            //それぞれの配列をInspectItem型に格納
+            var listInspection = CreateListInspection(itemList);
+            return listInspection;
+        }
+
+        /// <summary> arrayDataを先頭から順番に３つずつそれぞれのリストに格納 </summary>
+        public List<string[]> CreateListFromArray(string[] arrayData)
+        {
+            //容器作成
             var listOfItems = new List<string[]>();
-            for (var i = 0; i < inspectionItems.Length / 3; i++)
+
+            //先頭から順に3つずつList<string[]>に格納
+            for (var i = 0; i < arrayData.Length / 3; i++)
             {
-                var cluster = new string[]
-                    {inspectionItems[i * 3], inspectionItems[1 + i * 3], inspectionItems[2 + i * 3]};
+                var cluster = new string[] {arrayData[i * 3], arrayData[1 + i * 3], arrayData[2 + i * 3]};
                 listOfItems.Add(cluster);
             }
 
-            //容器の生成
+            return listOfItems;
+        }
+
+        /// <summary> リストの各配列をそれぞれ inspectItem に格納し、それをList<inspectItem>に格納  </summary>
+        public List<InspectItem> CreateListInspection(List<string[]> dataLists)
+        {
+            //容器作成
             var answers = new List<InspectItem>();
 
-            foreach (var item in listOfItems)
+            //dataListsの各項をそれぞれinspectItemに格納
+            foreach (var dataList in dataLists)
             {
+                //容器の作成
                 var answer = new InspectItem();
                 var insNameList = new List<string>();
                 var inspectsList = new List<string>();
                 var itemsList = new List<string>();
 
                 //inspectionItemsの値をそれぞれのリストに格納
-                for (var j = 0; j < NumOfLines; j++)
+                for (var i = 0; i < NumOfLines; i++)
                 {
-
-
                     //カンマを区切りにリスト作成
-                    var result = item[j].Split(',').ToList();
+                    var result = dataList[i].Split(',').ToList();
 
                     //iの値で格納先変更
-                    switch (j)
+                    switch (i)
                     {
                         //InsNameListに保存
                         case 0:
@@ -74,15 +92,14 @@ namespace CalcXmlFile
                         default:
                             break;
                     }
-
                 }
-                //リストに値を格納
+
+                //List<inspectItem>に値を格納
                 answer.InsNames = insNameList;
                 answer.Inspects = inspectsList;
                 answer.Items = itemsList;
                 answers.Add(answer);
             }
-
             return answers;
         }
     }
