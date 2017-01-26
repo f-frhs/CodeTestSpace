@@ -29,21 +29,32 @@ namespace CalcXmlFile
             //CSVファイルから測定点名・注目計測・項目を読み出し、配列に格納
             var inspectionItems = File.ReadAllLines(fName);
 
-            //容器の生成
-            var answer = new InspectItem();
-            var answers = new List<InspectItem>();
-            var insNameList = new List<string>();
-            var inspectsList = new List<string>();
-            var itemsList = new List<string>();
+            //配列を3行(測定点名・注目計測・項目)ずつ分けリストに格納
+            var listOfItems = new List<string[]>();
+            for (var i = 0; i < inspectionItems.Length / 3; i++)
+            {
+                var cluster = new string[]
+                    {inspectionItems[i * 3], inspectionItems[1 + i * 3], inspectionItems[2 + i * 3]};
+                listOfItems.Add(cluster);
+            }
 
-            //for (var i = 0; i < (inspectionItems.Length / 3); i++)
-            //{
+            //容器の生成
+            var answers = new List<InspectItem>();
+
+            foreach (var item in listOfItems)
+            {
+                var answer = new InspectItem();
+                var insNameList = new List<string>();
+                var inspectsList = new List<string>();
+                var itemsList = new List<string>();
+
                 //inspectionItemsの値をそれぞれのリストに格納
-                for (var j = 0 ; j < NumOfLines ; j++)
+                for (var j = 0; j < NumOfLines; j++)
                 {
 
+
                     //カンマを区切りにリスト作成
-                    var result = inspectionItems[j].Split(',').ToList();
+                    var result = item[j].Split(',').ToList();
 
                     //iの値で格納先変更
                     switch (j)
@@ -63,14 +74,14 @@ namespace CalcXmlFile
                         default:
                             break;
                     }
+
                 }
                 //リストに値を格納
                 answer.InsNames = insNameList;
                 answer.Inspects = inspectsList;
                 answer.Items = itemsList;
-            //}
-
-            answers.Add(answer);
+                answers.Add(answer);
+            }
 
             return answers;
         }
