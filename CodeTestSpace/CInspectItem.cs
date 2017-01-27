@@ -26,8 +26,11 @@ namespace CalcXmlFile
         /// <summary> fNameからInspectItem型のリストを返す </summary>
         public List<InspectItem> LoadConfiguration(string fName)
         {
-            //CSVファイルを読み出し、配列に格納
+            //CSVファイルを読み出し、List<string>に格納
             var inspectionItems = File.ReadAllLines(fName).ToList();
+
+            //リストから空白行("")の削除
+            inspectionItems.RemoveAll(d => d == "");
 
             //それぞれの配列をInspectItem型に格納
             var listInspection = CreateListInspection(inspectionItems);
@@ -76,6 +79,10 @@ namespace CalcXmlFile
                         //ItemsListに保存
                         case 2:
                             itemsList.AddRange(result);
+                            break;
+                        //スキップ
+                        case 3:
+
                             break;
                         default:
                             break;

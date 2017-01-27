@@ -62,10 +62,12 @@ namespace CalcXmlFile
                 var instDataSpCalcMeanDev = new SpCalcMeanDev();
                 var spCalcMeanDev = instDataSpCalcMeanDev.CalcMeanDev(calcSetting, spCalc);
                 resultSpCalcMeanDev.Add(spCalcMeanDev);
+
+                //結果をファイルに保存する
+                FileUtil.SaveDatas(saveDataPath, calcMeanDev, spCalcMeanDev);
             }
 
-            //結果をファイルに保存する
-            //FileUtil.SaveDatas(saveDataPath, resultCalcMeanDev, resultSpCalcMeanDev);
+
 
         }
 

@@ -68,6 +68,5 @@ namespace CalcXmlFile
             }
             return answers;
         }
-
     }
 }
