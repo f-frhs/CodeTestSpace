@@ -66,7 +66,8 @@ namespace CalcXmlFile
                     var target2 = ExtractXyz(settingData.Inspect2, fname, collectDatas);
 
                     //距離計算
-                    var distance = MathLibrary.CalcDistance(target1, target2);
+                    var mathLibrary = new MathLibrary();
+                    var distance = mathLibrary.CalcDistance(target1, target2);
 
                     //リストに格納
                     var answer = new SpCalcValue

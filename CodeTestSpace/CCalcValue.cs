@@ -46,11 +46,13 @@ namespace CalcXmlFile
                     answer.Inspect = sInspection;
                     answer.Item = sItem;
 
+                    var mathLibrary = new MathLibrary();
+
                     //平均
-                    answer.MeanValue = MathLibrary.CalcMean(dList);
+                    answer.MeanValue = mathLibrary.CalcMean(dList);
 
                     //標準偏差
-                    answer.DevValue = MathLibrary.CalvDev(dList);
+                    answer.DevValue = mathLibrary.CalvDev(dList);
 
                     answers.Add(answer);
                 }

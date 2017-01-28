@@ -1,0 +1,102 @@
+* code
+#+BEGIN_SRC R :results output
+  library(Rcmdr)
+
+  rm()
+  df <- read.table("data.csv", sep=",", header=T, na.strings="NaN")
+
+  df$folderName <- factor(df$folderName, level=c(
+                    "RB2_CAM"))
+  options(width=360)
+
+  dont.contain <- c("folderName", "pos", "ext", "fileName", "eRB2Cam.x.1", "eRB2Cam.y.1", "eRB2Cam.z.1")
+  target.lst <- names(df)
+  target.lst <- target.lst[! target.lst %in% dont.contain]
+  target.lst
+
+  plot.of.name <- function(varname) {
+      png(paste0("z_images\\",varname,".png",sep=""), width=800, height=600)
+      with(df, plotMeans(eval(parse(text=varname)),  pos, ext, error.bars="sd", ylab=varname))
+      dev.off()
+  }
+
+  calc.mean.and.sd <- function(varname, group) {
+      z <- as.data.frame(cbind(
+          x.mean     =eval(parse(text=paste0("tapply(df$",varname,".x     , df$", group, ", mean, na.rm=TRUE)", sep=""))),
+          x.sd       =eval(parse(text=paste0("tapply(df$",varname,".x     , df$", group, ", sd  , na.rm=TRUE)", sep=""))),
+          y.mean     =eval(parse(text=paste0("tapply(df$",varname,".y     , df$", group, ", mean, na.rm=TRUE)", sep=""))),
+          y.sd       =eval(parse(text=paste0("tapply(df$",varname,".y     , df$", group, ", sd  , na.rm=TRUE)", sep=""))),
+          z.mean     =eval(parse(text=paste0("tapply(df$",varname,".z     , df$", group, ", mean, na.rm=TRUE)", sep=""))),
+          z.sd       =eval(parse(text=paste0("tapply(df$",varname,".z     , df$", group, ", sd  , na.rm=TRUE)", sep=""))),
+          Roll.mean  =eval(parse(text=paste0("tapply(df$",varname,".Roll  , df$", group, ", mean, na.rm=TRUE)", sep=""))),
+          Roll.sd    =eval(parse(text=paste0("tapply(df$",varname,".Roll  , df$", group, ", sd  , na.rm=TRUE)", sep=""))),
+          Pitch.mean =eval(parse(text=paste0("tapply(df$",varname,".Pitch , df$", group, ", mean, na.rm=TRUE)", sep=""))),
+          Pitch.sd   =eval(parse(text=paste0("tapply(df$",varname,".Pitch , df$", group, ", sd  , na.rm=TRUE)", sep=""))),
+          Yaw.mean   =eval(parse(text=paste0("tapply(df$",varname,".Yaw   , df$", group, ", mean, na.rm=TRUE)", sep=""))),
+          Yaw.sd     =eval(parse(text=paste0("tapply(df$",varname,".Yaw   , df$", group, ", sd  , na.rm=TRUE)", sep="")))
+      ))
+      z
+  }
+
+  ## batch plotting
+  ## for(vname in target.lst) {
+  ##     plot.of.name(vname)
+  ## }
+
+
+  summary(df)
+
+  eRB2Cam <- calc.mean.and.sd("eRB2Cam", "folderName")
+
+  options(digits=10)
+  eRB2Cam
+  apply(eRB2Cam, 2, mean, na.rm=TRUE)
+  apply(eRB2Cam, 2, sd  , na.rm=TRUE)
+  options(digits=7)
+
+  ## calc.mean.and.sd("eRB2Cam", "ext")
+
+  ## calc.mean.and.sd("dTCube", "folderName")
+
+
+#+END_SRC
+* CoorGramSchmidt version
+#+RESULTS:
+#+begin_example
+ [1] "eRB2Cam.x"     "eRB2Cam.y"     "eRB2Cam.z"     "eRB2Cam.O"     "eRB2Cam.A"     "eRB2Cam.T"     "eRB2Cam.Roll"  "eRB2Cam.Pitch" "eRB2Cam.Yaw"   "dTCube.x"      "dTCube.y"      "dTCube.z"      "dTCube.Roll"   "dTCube.Pitch"  "dTCube.Yaw"   
+   folderName                                fileName   eRB2Cam.x       eRB2Cam.y       eRB2Cam.z       eRB2Cam.O       eRB2Cam.A        eRB2Cam.T       eRB2Cam.x.1     eRB2Cam.y.1     eRB2Cam.z.1     eRB2Cam.Roll     eRB2Cam.Pitch      eRB2Cam.Yaw         dTCube.x        dTCube.y        dTCube.z       dTCube.Roll      dTCube.Pitch     dTCube.Yaw    
+ RB2_CAM:12    ST1_RB2_CAMERA_20161221_203355.xml:1   Min.   :1.550   Min.   :3.884   Min.   :3.652   Min.   :78.18   Min.   :0.3067   Min.   :-84.14   Min.   :1.550   Min.   :3.884   Min.   :3.652   Min.   :-0.5626   Min.   :0.03142   Min.   :-0.3193   Min.   :3.460   Min.   :9.724   Min.   :0.8297   Min.   :-147.2   Min.   :2.312   Min.   :-2.485  
+               ST1_RB2_CAMERA_20161221_203546.xml:1   1st Qu.:1.563   1st Qu.:3.895   1st Qu.:3.652   1st Qu.:79.78   1st Qu.:0.3091   1st Qu.:-81.80   1st Qu.:1.563   1st Qu.:3.895   1st Qu.:3.652   1st Qu.:-0.5180   1st Qu.:0.04459   1st Qu.:-0.3154   1st Qu.:3.468   1st Qu.:9.727   1st Qu.:0.8313   1st Qu.:-147.2   1st Qu.:2.324   1st Qu.:-2.483  
+               ST1_RB2_CAMERA_20161221_203559.xml:1   Median :1.568   Median :3.901   Median :3.654   Median :80.32   Median :0.3128   Median :-80.85   Median :1.568   Median :3.901   Median :3.654   Median :-0.4957   Median :0.04971   Median :-0.3094   Median :3.476   Median :9.729   Median :0.8323   Median :-147.1   Median :2.327   Median :-2.480  
+               ST1_RB2_CAMERA_20161221_203608.xml:1   Mean   :1.568   Mean   :3.899   Mean   :3.654   Mean   :80.63   Mean   :0.3144   Mean   :-81.14   Mean   :1.568   Mean   :3.899   Mean   :3.654   Mean   :-0.5015   Mean   :0.04854   Mean   :-0.3105   Mean   :3.476   Mean   :9.731   Mean   :0.8319   Mean   :-147.1   Mean   :2.329   Mean   :-2.480  
+               ST1_RB2_CAMERA_20161221_203617.xml:1   3rd Qu.:1.573   3rd Qu.:3.903   3rd Qu.:3.655   3rd Qu.:81.32   3rd Qu.:0.3200   3rd Qu.:-80.26   3rd Qu.:1.573   3rd Qu.:3.903   3rd Qu.:3.655   3rd Qu.:-0.4858   3rd Qu.:0.05456   3rd Qu.:-0.3063   3rd Qu.:3.485   3rd Qu.:9.735   3rd Qu.:0.8327   3rd Qu.:-147.1   3rd Qu.:2.336   3rd Qu.:-2.476  
+               ST1_RB2_CAMERA_20161221_203626.xml:1   Max.   :1.590   Max.   :3.910   Max.   :3.657   Max.   :83.61   Max.   :0.3244   Max.   :-78.73   Max.   :1.590   Max.   :3.910   Max.   :3.657   Max.   :-0.4471   Max.   :0.06288   Max.   :-0.3040   Max.   :3.494   Max.   :9.746   Max.   :0.8332   Max.   :-147.1   Max.   :2.344   Max.   :-2.473  
+              (Other)                            :6                                                                                                                                                                                                                                                                                                             
+             x.mean          x.sd      y.mean           y.sd      z.mean           z.sd     Roll.mean       Roll.sd    Pitch.mean       Pitch.sd      Yaw.mean         Yaw.sd
+RB2_CAM 1.567975583 0.01093830974 3.899137917 0.007601847353 3.653864333 0.001995753051 -0.5015476667 0.03290716289 0.04854108333 0.008820066063 -0.3105076667 0.005425041002
+         x.mean            x.sd          y.mean            y.sd          z.mean            z.sd       Roll.mean         Roll.sd      Pitch.mean        Pitch.sd        Yaw.mean          Yaw.sd 
+ 1.567975583333  0.010938309737  3.899137916667  0.007601847353  3.653864333333  0.001995753051 -0.501547666667  0.032907162888  0.048541083333  0.008820066063 -0.310507666667  0.005425041002 
+    x.mean       x.sd     y.mean       y.sd     z.mean       z.sd  Roll.mean    Roll.sd Pitch.mean   Pitch.sd   Yaw.mean     Yaw.sd 
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA 
+#+end_example
+
+* CalcGramSchmidt version
+#+RESULTS:
+#+begin_example
+ [1] "eRB2Cam.x"     "eRB2Cam.y"     "eRB2Cam.z"     "eRB2Cam.O"     "eRB2Cam.A"     "eRB2Cam.T"     "eRB2Cam.Roll"  "eRB2Cam.Pitch" "eRB2Cam.Yaw"   "dTCube.x"      "dTCube.y"      "dTCube.z"      "dTCube.Roll"   "dTCube.Pitch"  "dTCube.Yaw"   
+   folderName                                fileName   eRB2Cam.x       eRB2Cam.y       eRB2Cam.z       eRB2Cam.O       eRB2Cam.A        eRB2Cam.T       eRB2Cam.x.1     eRB2Cam.y.1     eRB2Cam.z.1     eRB2Cam.Roll     eRB2Cam.Pitch      eRB2Cam.Yaw         dTCube.x        dTCube.y        dTCube.z       dTCube.Roll      dTCube.Pitch     dTCube.Yaw    
+ RB2_CAM:12    ST1_RB2_CAMERA_20161221_203355.xml:1   Min.   :1.553   Min.   :3.880   Min.   :3.650   Min.   :74.98   Min.   :0.2910   Min.   :-82.59   Min.   :1.553   Min.   :3.880   Min.   :3.650   Min.   :-0.5620   Min.   :0.03848   Min.   :-0.3075   Min.   :3.460   Min.   :9.724   Min.   :0.8297   Min.   :-147.2   Min.   :2.312   Min.   :-2.486  
+               ST1_RB2_CAMERA_20161221_203546.xml:1   1st Qu.:1.565   1st Qu.:3.891   1st Qu.:3.650   1st Qu.:77.06   1st Qu.:0.2963   1st Qu.:-79.43   1st Qu.:1.565   1st Qu.:3.891   1st Qu.:3.650   1st Qu.:-0.5174   1st Qu.:0.05491   1st Qu.:-0.2977   1st Qu.:3.468   1st Qu.:9.727   1st Qu.:0.8313   1st Qu.:-147.2   1st Qu.:2.324   1st Qu.:-2.480  
+               ST1_RB2_CAMERA_20161221_203559.xml:1   Median :1.570   Median :3.897   Median :3.652   Median :77.95   Median :0.3002   Median :-78.47   Median :1.570   Median :3.897   Median :3.652   Median :-0.4948   Median :0.06186   Median :-0.2958   Median :3.476   Median :9.729   Median :0.8323   Median :-147.1   Median :2.327   Median :-2.475  
+               ST1_RB2_CAMERA_20161221_203608.xml:1   Mean   :1.570   Mean   :3.896   Mean   :3.652   Mean   :78.18   Mean   :0.3011   Mean   :-78.68   Mean   :1.570   Mean   :3.896   Mean   :3.652   Mean   :-0.5009   Mean   :0.05915   Mean   :-0.2951   Mean   :3.476   Mean   :9.731   Mean   :0.8319   Mean   :-147.1   Mean   :2.329   Mean   :-2.474  
+               ST1_RB2_CAMERA_20161221_203617.xml:1   3rd Qu.:1.575   3rd Qu.:3.900   3rd Qu.:3.653   3rd Qu.:78.95   3rd Qu.:0.3058   3rd Qu.:-77.55   3rd Qu.:1.575   3rd Qu.:3.900   3rd Qu.:3.653   3rd Qu.:-0.4853   3rd Qu.:0.06426   3rd Qu.:-0.2907   3rd Qu.:3.485   3rd Qu.:9.735   3rd Qu.:0.8327   3rd Qu.:-147.1   3rd Qu.:2.336   3rd Qu.:-2.469  
+               ST1_RB2_CAMERA_20161221_203626.xml:1   Max.   :1.593   Max.   :3.907   Max.   :3.656   Max.   :82.07   Max.   :0.3143   Max.   :-75.53   Max.   :1.593   Max.   :3.907   Max.   :3.656   Max.   :-0.4465   Max.   :0.07631   Max.   :-0.2839   Max.   :3.494   Max.   :9.746   Max.   :0.8332   Max.   :-147.1   Max.   :2.344   Max.   :-2.462  
+              (Other)                            :6                                                                                                                                                                                                                                                                                                             
+             x.mean          x.sd     y.mean           y.sd     z.mean           z.sd     Roll.mean     Roll.sd    Pitch.mean       Pitch.sd      Yaw.mean         Yaw.sd
+RB2_CAM 1.570460417 0.01094001179 3.89564775 0.007598065904 3.65208275 0.002136196242 -0.5008958333 0.032879259 0.05914691667 0.009899765888 -0.2950994167 0.007254804044
+         x.mean            x.sd          y.mean            y.sd          z.mean            z.sd       Roll.mean         Roll.sd      Pitch.mean        Pitch.sd        Yaw.mean          Yaw.sd 
+ 1.570460416667  0.010940011787  3.895647750000  0.007598065904  3.652082750000  0.002136196242 -0.500895833333  0.032879258996  0.059146916667  0.009899765888 -0.295099416667  0.007254804044 
+    x.mean       x.sd     y.mean       y.sd     z.mean       z.sd  Roll.mean    Roll.sd Pitch.mean   Pitch.sd   Yaw.mean     Yaw.sd 
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA 
+#+end_example
+
