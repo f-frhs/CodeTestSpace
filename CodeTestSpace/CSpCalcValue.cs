@@ -56,7 +56,7 @@ namespace CalcXmlFile
             foreach (var settingData in settingDatas)
             {
                 //下記収集・計算をファイル毎に行う
-                foreach (var fname in collectDatas.Select(d => d.Fname).Distinct())
+                foreach (var fname in collectDatas.Select(d => d.FileName).Distinct())
                 {
                     //測定点1のデータ収集
                     var instTarget1 = new SpCalcValue();
@@ -89,7 +89,7 @@ namespace CalcXmlFile
         {
             //fname及びinspecStringに一致するデータを抽出
             var extractedDataSet = allData
-                .Where(d => d.Fname == fname)
+                .Where(d => d.FileName == fname)
                 .Where(d => d.Inspect == inspecString)
                 .ToList();
 

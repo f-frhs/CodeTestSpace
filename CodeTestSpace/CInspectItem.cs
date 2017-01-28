@@ -11,17 +11,19 @@ namespace CalcXmlFile
         /// <summary> リストから読み込とる行数 </summary>
         public static int NumOfLines = 3;
 
+        public string FolderName { set; get; }
+
         /// <summary> 注目測定点名  </summary>
         /// <remarks> 例:ST1_SF01　等 </remarks>
-        public List<string> InsNames { get; set; }
+        public List<string> InsNames { set; get; }
 
         /// <summary> 注目計測名 </summary>
         /// <remarks> 例:CubeHole1　等 </remarks> 
-        public List<string> Inspects { get; set; }
+        public List<string> Inspects { set; get; }
 
         /// <summary> 項目 </summary> 
         /// <remarks> 例:X　等 </remarks>
-        public List<string> Items { get; set; }
+        public List<string> Items { set; get; }
 
         /// <summary> fNameからInspectItem型のリストを返す </summary>
         public List<InspectItem> LoadConfiguration(string fName)
