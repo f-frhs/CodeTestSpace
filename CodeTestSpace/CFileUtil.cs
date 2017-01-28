@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using AutoAssyModules.Perceptron;
 
 namespace CalcXmlFile
@@ -46,7 +47,7 @@ namespace CalcXmlFile
                 OutputResultOfCalc(values, sw, targetIjk);
 
                 ////空白行挿入
-                //OutputBlankLine(sw);
+                OutputBlankLine(sw);
 
                 ////特殊計算の表のフィールドヘッド書き出し
                 OutputFieldHeadingsForSpecialCalc(spValues, sw);
@@ -79,7 +80,6 @@ namespace CalcXmlFile
         {
             sw.WriteLine($"特殊計算内容,{spValues[0].Operator}");
             sw.WriteLine("計算対象,計算対象,平均,標準偏差");
-
         }
 
         /// <summary> 注目計測名毎に平均と標準偏差を書き出す </summary>
@@ -88,12 +88,20 @@ namespace CalcXmlFile
             //注目計測名をリストから取り出す
             var inspectName = values.Select(d => d.Inspect).Distinct().ToList();
 
+            //注目計測名等データがなかった場合の空容器
+            var p2 = new CalcValue();
+            {
+                p2.Inspect = "NaN";
+                p2.Item = "NaN";
+                p2.MeanValue = double.NaN;
+                p2.DevValue = double.NaN;
+            }
 
             //注目計測名毎に結果を出力
             foreach (var inspectname in inspectName)
             {
                 //容器作成
-                var lineToOutput = new List<CalcValue>();
+                var lineToOutput = new List<CalcValue>();              
 
                 //注目計測名と項目名をもとにデータを収集
                 foreach (var item in target)
@@ -103,17 +111,18 @@ namespace CalcXmlFile
                         .Where(d => d.Item == item)
                         .ToList()
                         .FirstOrDefault();
-                    lineToOutput.Add(value);
+
+                    lineToOutput.Add(value ?? p2);
                 }
 
-                //収集したデータを配列に格納
-                var valuesString = string.Join(", ", lineToOutput
-                    .Select(d => new double[] {d.MeanValue, d.DevValue})
-                    .SelectMany(i => i));
+                string valuesString = string.Empty;
 
-                //データの書き出し
+                valuesString = string.Join(", ", lineToOutput
+                                             .Select(d => new double[] { d.MeanValue, d.DevValue })
+                                             .SelectMany(i => i));
+
+                ////データの書き出し
                 sw.Write($"{inspectname}, {valuesString}");
-
                 sw.WriteLine();
             }
         }
