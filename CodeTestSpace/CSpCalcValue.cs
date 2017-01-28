@@ -27,7 +27,7 @@ namespace CalcXmlFile
         public double Value { set; get; }
 
 
-        //計算内容から実行するメソッドを選択
+        //計算内容から実行する特殊計算を選択
         public List<SpCalcValue> SellectSpCalc(List<CalcSetting> settingDatas, List<MeasuredValue> collectDatas)
         {
             var result = new List<SpCalcValue>();
@@ -35,6 +35,7 @@ namespace CalcXmlFile
             {
                 switch (settingData.Operator)
                 {
+                    //distanceなら距離計算
                     case "distance":
                         result = SpCalc(settingDatas, collectDatas);
                         break;

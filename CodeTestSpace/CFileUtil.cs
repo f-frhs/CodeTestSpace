@@ -21,9 +21,9 @@ namespace CalcXmlFile
         /// <summary> 結果をファイルに保存する </summary>
         public void SaveDatas(string fName, List<CalcValue> values, List<SpCalcMeanDev> spValues)
         {
+            //保存・書き出しをする対象を決定
             var targetXyz = new string[] {"X", "Y", "Z", "Diameter"};
             var targetIjk = new string[] { "Orientation I", "Orientation J", "Orientation K" };
-
 
             //CSVファイルに書き込むときに使うEncoding
             System.Text.Encoding enc = System.Text.Encoding.GetEncoding("Shift_JIS");
@@ -37,22 +37,22 @@ namespace CalcXmlFile
                 //（X,Y,Z,Dia）平均と標準偏差の書き出し
                 OutputResultOfCalc(values, sw, targetXyz);
 
-                ////空白行挿入
+                //空白行挿入
                 OutputBlankLine(sw);
 
-                ////（I,J,K）フィールドヘッド書き出し
+                //（I,J,K）フィールドヘッド書き出し
                 OutputFieldHeadingsForIjk(sw);
 
-                ////（I,J,K）平均と標準偏差の書き出し
+                //（I,J,K）平均と標準偏差の書き出し
                 OutputResultOfCalc(values, sw, targetIjk);
 
-                ////空白行挿入
+                //空白行挿入
                 OutputBlankLine(sw);
 
-                ////特殊計算の表のフィールドヘッド書き出し
+                //特殊計算の表のフィールドヘッド書き出し
                 OutputFieldHeadingsForSpecialCalc(spValues, sw);
 
-                ////特殊計算の平均と標準偏差書き出し
+                //特殊計算の平均と標準偏差書き出し
                 OutputResultOfSpecialCalc(spValues, sw);
             }
         }
@@ -115,11 +115,10 @@ namespace CalcXmlFile
                     lineToOutput.Add(value ?? nanList);
                 }
 
-                string valuesString = string.Empty;
-
-                valuesString = string.Join(", ", lineToOutput
-                                             .Select(d => new string[] { d.MeanValue.ToString("F6"), d.DevValue.ToString("E6")})
-                                             .SelectMany(i => i));
+                //平均を有効数字6桁、標準偏差を精度指定子6
+                var valuesString = string.Join(", ", lineToOutput
+                                         .Select(d => new string[] { d.MeanValue.ToString("F6"), d.DevValue.ToString("E6")})
+                                         .SelectMany(i => i));
 
                 ////データの書き出し
                 sw.Write($"{inspectname}, {valuesString}");
@@ -132,6 +131,7 @@ namespace CalcXmlFile
         {
             for (var i = 0; i < 3; i++)
             {
+                //平均を有効数字6桁、標準偏差を精度指定子6
                 sw.WriteLine(
                     $"{spValues[i].Inspect1},{spValues[i].Inspect2},{spValues[i].SpMeanValue:F6}, {spValues[i].SpDevValue:E6},");
             }
