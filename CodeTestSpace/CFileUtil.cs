@@ -89,12 +89,12 @@ namespace CalcXmlFile
             var inspectName = values.Select(d => d.Inspect).Distinct().ToList();
 
             //注目計測名等データがなかった場合の空容器
-            var p2 = new CalcValue();
+            var nanList = new CalcValue();
             {
-                p2.Inspect = "NaN";
-                p2.Item = "NaN";
-                p2.MeanValue = double.NaN;
-                p2.DevValue = double.NaN;
+                nanList.Inspect = "NaN";
+                nanList.Item = "NaN";
+                nanList.MeanValue = double.NaN;
+                nanList.DevValue = double.NaN;
             }
 
             //注目計測名毎に結果を出力
@@ -112,13 +112,13 @@ namespace CalcXmlFile
                         .ToList()
                         .FirstOrDefault();
 
-                    lineToOutput.Add(value ?? p2);
+                    lineToOutput.Add(value ?? nanList);
                 }
 
                 string valuesString = string.Empty;
 
                 valuesString = string.Join(", ", lineToOutput
-                                             .Select(d => new double[] { d.MeanValue, d.DevValue })
+                                             .Select(d => new string[] { d.MeanValue.ToString("F6"), d.DevValue.ToString("E6")})
                                              .SelectMany(i => i));
 
                 ////データの書き出し
@@ -133,7 +133,7 @@ namespace CalcXmlFile
             for (var i = 0; i < 3; i++)
             {
                 sw.WriteLine(
-                    $"{spValues[i].Inspect1},{spValues[i].Inspect2},{Math.Round(spValues[i].SpMeanValue, 6)},{spValues[i].SpDevValue:E},");
+                    $"{spValues[i].Inspect1},{spValues[i].Inspect2},{spValues[i].SpMeanValue:F6}, {spValues[i].SpDevValue:E6},");
             }
         }
     }
