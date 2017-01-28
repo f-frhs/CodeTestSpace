@@ -29,6 +29,8 @@ namespace CalcXmlFile
             //容器を作成
             var answers = new List<SpCalcMeanDev>();
 
+            var mathLibrary = new MathLibrary();
+
             //指定注目測定点2点の平均・標準偏差を（collectDatas全体から）求める
             foreach (var settingData in settingDatas)
             {
@@ -46,10 +48,10 @@ namespace CalcXmlFile
                     Operator = settingData.Operator,
 
                     //平均
-                    SpMeanValue = MathLibrary.CalcMean(data),
+                    SpMeanValue = mathLibrary.CalcMean(data),
 
                     //標準偏差
-                    SpDevValue = MathLibrary.CalvDev(data)
+                    SpDevValue = mathLibrary.CalvDev(data)
                 };     
                 answers.Add(answer);          
             }

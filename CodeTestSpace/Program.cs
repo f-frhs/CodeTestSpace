@@ -64,7 +64,8 @@ namespace CalcXmlFile
                 resultSpCalcMeanDev.Add(spCalcMeanDev);
 
                 //結果をファイルに保存する
-                FileUtil.SaveDatas(saveDataPath, calcMeanDev, spCalcMeanDev);
+                var saveDatas = new FileUtil();
+                saveDatas.SaveDatas(saveDataPath, calcMeanDev, spCalcMeanDev);
             }
 
 

@@ -8,10 +8,10 @@ using AutoAssyModules.Perceptron;
 namespace CalcXmlFile
 {
     /// <summary> ファイル取り扱いに関するユーティリティークラス </summary>
-    public static class FileUtil
+    public class FileUtil
     {
         /// <summary> 指定フォルダ以下のファイル名のリストを取得する </summary>
-        public static List<string> GetXmlFiles(string basePath)
+        public List<string> GetXmlFiles(string basePath)
         {
             //引数で渡されたフォルダ以下の全てのxmlファイルを取得
             var fnames = Directory.GetFiles(basePath, "*.xml", SearchOption.AllDirectories).ToList();
@@ -19,7 +19,7 @@ namespace CalcXmlFile
         }
 
         /// <summary> 結果をファイルに保存する </summary>
-        public static void SaveDatas(string fName, List<CalcValue> values, List<SpCalcMeanDev> spValues)
+        public void SaveDatas(string fName, List<CalcValue> values, List<SpCalcMeanDev> spValues)
         {
             var targetXyz = new string[] {"X", "Y", "Z", "Diameter"};
             var targetIjk = new string[] { "Orientation I", "Orientation J", "Orientation K" };
@@ -58,32 +58,32 @@ namespace CalcXmlFile
         }
 
         /// <summary> 空白行の挿入 </summary>
-        private static void OutputBlankLine(StreamWriter sw)
+        private void OutputBlankLine(StreamWriter sw)
         {
             sw.WriteLine();
         }
 
         /// <summary> FiekdHeadings書き出し: X,Y,Z,Diaの平均・標準偏差 </summary>
-        private static void OutputFieldHeadingsForXyzDia(StreamWriter sw)
+        private void OutputFieldHeadingsForXyzDia(StreamWriter sw)
         {
             sw.WriteLine("注目計測名,X Avg,X SD,Y Avg,Y SD,Z Avg,Z SD,Dia Avg,Dia SD");
         }
 
         /// <summary> FiekdHeadings書き出し: I,J,Kの平均・標準偏差 </summary>
-        private static void OutputFieldHeadingsForIjk(StreamWriter sw)
+        private void OutputFieldHeadingsForIjk(StreamWriter sw)
         {
             sw.WriteLine("注目計測名,I Avg,I SD,J Avg,J SD,K Avg,K SD");
         }
 
         /// <summary> FiekdHeadings書き出し: 特殊計算の平均・標準偏差 </summary>
-        private static void OutputFieldHeadingsForSpecialCalc(List<SpCalcMeanDev> spValues, StreamWriter sw)
+        private void OutputFieldHeadingsForSpecialCalc(List<SpCalcMeanDev> spValues, StreamWriter sw)
         {
             sw.WriteLine($"特殊計算内容,{spValues[0].Operator}");
             sw.WriteLine("計算対象,計算対象,平均,標準偏差");
         }
 
         /// <summary> 注目計測名毎に平均と標準偏差を書き出す </summary>
-        private static void OutputResultOfCalc(List<CalcValue> values, StreamWriter sw, string[] target)
+        private void OutputResultOfCalc(List<CalcValue> values, StreamWriter sw, string[] target)
         {
             //注目計測名をリストから取り出す
             var inspectName = values.Select(d => d.Inspect).Distinct().ToList();
@@ -128,7 +128,7 @@ namespace CalcXmlFile
         }
 
         /// <summary> 注目計測名毎に特殊計算の平均と標準偏差を書き出す </summary>
-        private static void OutputResultOfSpecialCalc(List<SpCalcMeanDev> spValues, StreamWriter sw)
+        private void OutputResultOfSpecialCalc(List<SpCalcMeanDev> spValues, StreamWriter sw)
         {
             for (var i = 0; i < 3; i++)
             {

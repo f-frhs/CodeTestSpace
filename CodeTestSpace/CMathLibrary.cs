@@ -6,10 +6,10 @@ using System.Linq;
 namespace CalcXmlFile
 {
     /// <summary> 各種計算メソッドを提供するクラス </summary>
-    public static class MathLibrary
+    public class MathLibrary
     {        
         /// <summary> 平均 </summary>
-        public static double CalcMean(List<double> values)
+        public double CalcMean(List<double> values)
         {
             //平均の計算
             var mean = values.Average();
@@ -17,7 +17,7 @@ namespace CalcXmlFile
         }
 
         /// <summary> 標準偏差 </summary>
-        public static double CalvDev(List<double> values)
+        public double CalvDev(List<double> values)
         {
             //平均の計算
             var mean = values.Average();
@@ -36,7 +36,7 @@ namespace CalcXmlFile
         }
 
         /// <summary> 距離計算 </summary>
-        public static double CalcDistance(double[] p1, double[] p2)
+        public double CalcDistance(double[] p1, double[] p2)
         {
             //p1とp2の各項目の差を計算
             var dx = p1[0] - p2[0];

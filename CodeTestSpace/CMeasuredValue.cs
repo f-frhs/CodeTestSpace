@@ -27,7 +27,8 @@ namespace CalcXmlFile
         public List<MeasuredValue> CollectInspectedValues(InspectItem inspects, string targetDir)
         {
             //指定フォルダ以下のファイルを取得する (フォルダ内のxmlファイルをリストに格納)
-            var fnames = FileUtil.GetXmlFiles(targetDir);
+            var getfiles = new FileUtil();
+            var fnames = getfiles.GetXmlFiles(targetDir);
 
             //answersの作成
             var answers = new List<MeasuredValue>();
