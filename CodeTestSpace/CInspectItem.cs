@@ -11,7 +11,7 @@ namespace CalcXmlFile
         /// <summary> リストから読み込とる行数 </summary>
         public static int NumOfLines = 3;
 
-        public string FolderName { set; get; }
+        //public string FolderName { set; get; }
 
         /// <summary> 注目測定点名  </summary>
         /// <remarks> 例:ST1_SF01　等 </remarks>

@@ -18,18 +18,6 @@ namespace CalcXmlFile
             return fnames;
         }
 
-        /// <summary> 指定フォルダ以下のフォルダ名のリストを取得 </summary>
-        public List<string> getFolderList(string targetDir)
-        {
-            var folderNames = Directory.GetDirectories(targetDir).ToList();
-            var folderNameList = new List<string>();
-            foreach (var folderName in folderNames)
-            {
-                folderNameList.Add(Path.GetFileName(folderName));
-            }
-            return folderNameList;
-        }
-
         /// <summary> 結果をファイルに保存 </summary>
         public void SaveDatas(string fName, List<CalcValue> values, List<SpCalcMeanDev> spValues)
         {

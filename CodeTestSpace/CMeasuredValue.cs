@@ -32,11 +32,8 @@ namespace CalcXmlFile
         {
             var getTargetNameList = new FileUtil();
 
-            //指定フォルダ以下のファイル名を取得する
-            var fileNames = getTargetNameList.GetXmlFiles(targetDir);
-
             //指定フォルダ以下のフォルダ名を取得する
-            var folderNameList = getTargetNameList.getFolderList(targetDir);
+            var folderNameList = Directory.GetDirectories(targetDir);
 
             //容器作成
             var answers = new List<MeasuredValue>();
@@ -44,6 +41,9 @@ namespace CalcXmlFile
             //フォルダごとに下記の処理を繰り返す
             foreach (var folderName in folderNameList)
             {
+                //指定フォルダ以下のファイル名を取得する
+                var fileNames = getTargetNameList.GetXmlFiles(folderName);
+
                 //ファイルごとに下記の処理を繰り返しリストの作成
                 foreach (var fname in fileNames)
                 {
@@ -69,7 +69,7 @@ namespace CalcXmlFile
                                 var itemAbsolute = outInspect.Measurement.abusolute;
 
                                 //リストに値を格納
-                                answer.FolderName = folderName;
+                                answer.FolderName = Path.GetFileName(folderName);
                                 answer.FileName = fileName;
                                 answer.Inspect = element;
                                 answer.Item = item;
