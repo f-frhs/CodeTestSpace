@@ -34,25 +34,25 @@ namespace CalcXmlFile
                 OutputFieldHeadingsForXyzDia(sw);
 
                 //（X,Y,Z,Dia）平均と標準偏差の書き出し
-                OutputData(values, sw, targetXyz);
+                OutputResultOfCalc(values, sw, targetXyz);
 
                 ////空白行挿入
-                //OutputBlankLine(sw);
+                OutputBlankLine(sw);
 
                 ////（I,J,K）フィールドヘッド書き出し
-                //OutputFieldHeadingsForIjk(sw);
+                OutputFieldHeadingsForIjk(sw);
 
                 ////（I,J,K）平均と標準偏差の書き出し
-                //OutputData(values, sw, targetIjk);
+                OutputResultOfCalc(values, sw, targetIjk);
 
                 ////空白行挿入
                 //OutputBlankLine(sw);
 
                 ////特殊計算の表のフィールドヘッド書き出し
-                //OutputFieldHeadingsForSpecialCalc(spValues, sw);
+                OutputFieldHeadingsForSpecialCalc(spValues, sw);
 
                 ////特殊計算の平均と標準偏差書き出し
-                //OutputResultOfSpecialCalc(spValues, sw);
+                OutputResultOfSpecialCalc(spValues, sw);
             }
         }
 
@@ -83,7 +83,7 @@ namespace CalcXmlFile
         }
 
         /// <summary> 注目計測名毎に平均と標準偏差を書き出す </summary>
-        private static void OutputData(List<CalcValue> values, StreamWriter sw, string[] target)
+        private static void OutputResultOfCalc(List<CalcValue> values, StreamWriter sw, string[] target)
         {
             //注目計測名をリストから取り出す
             var inspectName = values.Select(d => d.Inspect).Distinct().ToList();
@@ -112,15 +112,13 @@ namespace CalcXmlFile
                     .SelectMany(i => i));
 
                 //データの書き出し
-                sw.Write(inspectname);
                 sw.Write($"{inspectname}, {valuesString}");
 
                 sw.WriteLine();
             }
         }
 
-
-        /// <summary>  </summary>
+        /// <summary> 注目計測名毎に特殊計算の平均と標準偏差を書き出す </summary>
         private static void OutputResultOfSpecialCalc(List<SpCalcMeanDev> spValues, StreamWriter sw)
         {
             for (var i = 0; i < 3; i++)
