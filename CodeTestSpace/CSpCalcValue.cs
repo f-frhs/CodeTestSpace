@@ -35,7 +35,7 @@ namespace CalcXmlFile
 
             //フォルダ名のリスト作成
             var fileUtil = new FileUtil();
-            var folderNames = fileUtil.GetFolderNameList(collectDatas);
+            var folderNames = fileUtil.SpGetFolderNameList(collectDatas);
 
             //フォルダ名毎に下記処理を行う
             foreach (var folderName in folderNames)
@@ -67,7 +67,6 @@ namespace CalcXmlFile
                     answers.Add(answer);
                 }
             }
-
             return answers;
         }
     }

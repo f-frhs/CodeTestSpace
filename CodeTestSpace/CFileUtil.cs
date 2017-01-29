@@ -18,7 +18,7 @@ namespace CalcXmlFile
             return fnames;
         }
 
-        /// <summary> List<MeasuredValue>からフォルダ名を取得し、重複名を削除したリストを返す </summary>
+        /// <summary> List<MeasuredValue/>からフォルダ名を取得し、重複名を削除したリストを返す </summary>
         public List<string> GetFolderNameList(List<MeasuredValue> collectDatas)
         {
             //リストからフォルダ名取得→重複を削除リスト化
@@ -27,8 +27,8 @@ namespace CalcXmlFile
             return folderNameList;
         }
 
-        /// <summary> List<SpMeasuredValue>からフォルダ名を取得し、重複名を削除したリストを返す </summary>
-        public List<string> GetFolderNameList(List<SpMeasuredValue> collectDatas)
+        /// <summary> List<SpMeasuredValue/>からフォルダ名を取得し、重複名を削除したリストを返す </summary>
+        public List<string> SpGetFolderNameList(List<SpMeasuredValue> collectDatas)
         {
             //リストからフォルダ名取得→重複を削除リスト化
             var folderNameList = collectDatas.Select(collectData => collectData.FolderName).Distinct().ToList();
@@ -47,13 +47,13 @@ namespace CalcXmlFile
             System.Text.Encoding enc = System.Text.Encoding.GetEncoding("Shift_JIS");
 
             // 出力用のファイルを開く
-            // outputフォルダが存在するか?
+            // outputフォルダの有無：なければフォルダ追加
             if (!File.Exists(fName))
             {
                 Directory.CreateDirectory(@"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\output");
             }
 
-            using (var sw = new System.IO.StreamWriter(fName, false, enc))
+            using (var sw = new StreamWriter(fName, false, enc))
             {
                 //（X,Y,Z,Dia）フィールドヘッドの書き出し
                 OutputFieldHeadingsForXyzDia(sw);
@@ -90,20 +90,20 @@ namespace CalcXmlFile
         /// <summary> FiekdHeadings書き出し: X,Y,Z,Diaの平均・標準偏差 </summary>
         private void OutputFieldHeadingsForXyzDia(StreamWriter sw)
         {
-            sw.WriteLine("注目計測名,X Avg,X SD,Y Avg,Y SD,Z Avg,Z SD,Dia Avg,Dia SD");
+            sw.WriteLine("注目計測名,フォルダ名,X Avg,X SD,Y Avg,Y SD,Z Avg,Z SD,Dia Avg,Dia SD");
         }
 
         /// <summary> FiekdHeadings書き出し: I,J,Kの平均・標準偏差 </summary>
         private void OutputFieldHeadingsForIjk(StreamWriter sw)
         {
-            sw.WriteLine("注目計測名,I Avg,I SD,J Avg,J SD,K Avg,K SD");
+            sw.WriteLine("注目計測名,フォルダ名,I Avg,I SD,J Avg,J SD,K Avg,K SD");
         }
 
         /// <summary> FiekdHeadings書き出し: 特殊計算の平均・標準偏差 </summary>
         private void OutputFieldHeadingsForSpecialCalc(List<SpCalcValue> spValues, StreamWriter sw)
         {
             sw.WriteLine($"特殊計算内容,{spValues[0].Operator}");
-            sw.WriteLine("計算対象,計算対象,平均,標準偏差");
+            sw.WriteLine("計算対象,フォルダ名,計算対象,平均,標準偏差");
         }
 
         /// <summary> 注目計測名毎に平均と標準偏差を書き出す </summary>
@@ -111,6 +111,9 @@ namespace CalcXmlFile
         {
             //注目計測名をリストから取り出す
             var inspectName = values.Select(d => d.Inspect).Distinct().ToList();
+
+            //フォルダ名のリスト作成
+            var folderNames = values.Select(collectData => collectData.FolderName).Distinct().ToList();
 
             //注目計測名等データがなかった場合の空容器
             var nanList = new CalcValue();
@@ -124,40 +127,52 @@ namespace CalcXmlFile
             //注目計測名毎に結果を出力
             foreach (var inspectname in inspectName)
             {
-                //容器作成
-                var lineToOutput = new List<CalcValue>();              
-
-                //注目計測名と項目名をもとにデータを収集
-                foreach (var item in target)
+                //フォルダ名毎に下記処理を行う
+                foreach (var folderName in folderNames)
                 {
-                    var value = values
-                        .Where(d => d.Inspect == inspectname)
-                        .Where(d => d.Item == item)
-                        .ToList()
-                        .FirstOrDefault();
+                    //容器作成
+                    var lineToOutput = new List<CalcValue>();
 
-                    lineToOutput.Add(value ?? nanList);
+                    //注目計測名と項目名をもとにデータを収集
+                    foreach (var item in target)
+                    {
+                        var value = values
+                            .Where(d => d.FolderName == folderName)
+                            .Where(d => d.Inspect == inspectname)
+                            .Where(d => d.Item == item)
+                            .ToList()
+                            .FirstOrDefault();
+
+                        lineToOutput.Add(value ?? nanList);
+                    }
+
+                    //平均を有効数字6桁、標準偏差を精度指定子6
+                    var valuesString = string.Join(", ", lineToOutput
+                        .Select(d => new string[] {d.MeanValue.ToString("F6"), d.DevValue.ToString("E6")})
+                        .SelectMany(i => i));
+
+                    //データの書き出し
+                    sw.Write($"{inspectname},{folderName}, {valuesString}");
+                    sw.WriteLine();
                 }
-
-                //平均を有効数字6桁、標準偏差を精度指定子6
-                var valuesString = string.Join(", ", lineToOutput
-                                         .Select(d => new string[] { d.MeanValue.ToString("F6"), d.DevValue.ToString("E6")})
-                                         .SelectMany(i => i));
-
-                ////データの書き出し
-                sw.Write($"{inspectname}, {valuesString}");
-                sw.WriteLine();
             }
         }
 
         /// <summary> 注目計測名毎に特殊計算の平均と標準偏差を書き出す </summary>
         private void OutputResultOfSpecialCalc(List<SpCalcValue> spValues, StreamWriter sw)
         {
-            for (var i = 0; i < 3; i++)
+            //フォルダ名のリスト作成
+            var folderNames = spValues.Select(collectData => collectData.FolderName).Distinct().ToList();
+
+            //フォルダ毎に下記作業を行う
+            foreach (var folderName in folderNames)
             {
-                //平均を有効数字6桁、標準偏差を精度指定子6
-                sw.WriteLine(
-                    $"{spValues[i].Inspect1},{spValues[i].Inspect2},{spValues[i].SpMeanValue:F6}, {spValues[i].SpDevValue:E6},");
+                for (var i = 0; i < 3; i++)
+                {
+                    //平均を有効数字6桁、標準偏差を精度指定子6
+                    sw.WriteLine(
+                        $"{spValues[i].Inspect1},{spValues[i].Inspect2},{folderName},{spValues[i].SpMeanValue:F6}, {spValues[i].SpDevValue:E6},");
+                }
             }
         }
     }

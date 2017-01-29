@@ -29,7 +29,6 @@ namespace CalcXmlFile
             //容器を作成
             var answers = new List<CalcValue>();
 
-
             //フォルダ名のリスト作成
             var fileUtil = new FileUtil();
             var folderNames = fileUtil.GetFolderNameList(collectDatas);
@@ -58,8 +57,9 @@ namespace CalcXmlFile
                         answer.Inspect = sInspection;
                         answer.Item = sItem;
                         answer.FolderName = folderName;
-
+                        
                         var mathLibrary = new MathLibrary();
+
                         //平均
                         answer.MeanValue = mathLibrary.CalcMean(dList);
 
