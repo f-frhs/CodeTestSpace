@@ -47,6 +47,7 @@ namespace CalcXmlFile
             System.Text.Encoding enc = System.Text.Encoding.GetEncoding("Shift_JIS");
 
             // 出力用のファイルを開く
+            // TODO: outputフォルダが存在するか?
             using (var sw = new System.IO.StreamWriter(fName, false, enc))
             {
                 //（X,Y,Z,Dia）フィールドヘッドの書き出し
