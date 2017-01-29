@@ -28,11 +28,20 @@ namespace CalcXmlFile
         {
             //容器を作成
             var answers = new List<CalcValue>();
- 
+            var folderNameList = new List<string>();
+
             //フォルダごとに下記の処理を繰り返す
             foreach (var collectData in collectDatas)
             {
-                    //注目測定点名・項目が同じものを取り出し、それぞれ平均・標準偏差を求める
+                var names = collectData.FolderName;
+                folderNameList.Add(names);
+            }
+
+            var folderNames = folderNameList.Distinct();
+
+            foreach (var folderName in folderNames)
+            {
+                //注目測定点名・項目が同じものを取り出し、それぞれ平均・標準偏差を求める
                 foreach (var sInspection in inspects.Inspects)
                 {
                     foreach (var sItem in inspects.Items)
@@ -42,7 +51,7 @@ namespace CalcXmlFile
 
                         //リストから同系のものを取り出す
                         var dList = collectDatas
-                            .Where(d => d.FolderName == collectData.FolderName)
+                            .Where(d => d.FolderName == folderName)
                             .Where(d => d.Inspect == sInspection)
                             .Where(d => d.Item == sItem)
                             .Select(d => d.Value)
@@ -52,7 +61,7 @@ namespace CalcXmlFile
                         //測定点名・項目
                         answer.Inspect = sInspection;
                         answer.Item = sItem;
-                        answer.FolderName = collectData.FolderName;
+                        answer.FolderName = folderName;
 
                         var mathLibrary = new MathLibrary();
 
