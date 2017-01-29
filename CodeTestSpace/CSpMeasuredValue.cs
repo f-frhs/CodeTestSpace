@@ -55,9 +55,8 @@ namespace CalcXmlFile
             //容器を作成
             var answers = new List<SpMeasuredValue>();
 
-            //フォルダ名のリスト作成
-            var fileUtil = new FileUtil();
-            var folderNames = fileUtil.GetFolderNameList(collectDatas);
+            //リストからフォルダ名取得→重複を削除リスト化
+            var folderNames = collectDatas.Select(d => d.FolderName).Distinct().ToList();
 
             //フォルダ名毎に下記処理を行う
             foreach (var folderName in folderNames)
@@ -112,7 +111,5 @@ namespace CalcXmlFile
             //データの格納
             return new [] {x, y, z};
         }
-
-
     }
 }

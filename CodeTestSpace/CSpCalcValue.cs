@@ -33,9 +33,8 @@ namespace CalcXmlFile
             var answers = new List<SpCalcValue>();
             var mathLibrary = new MathLibrary();
 
-            //フォルダ名のリスト作成
-            var fileUtil = new FileUtil();
-            var folderNames = fileUtil.SpGetFolderNameList(collectDatas);
+            //リストからフォルダ名取得→重複を削除リスト化
+            var folderNames = collectDatas.Select(d => d.FolderName).Distinct().ToList();
 
             //フォルダ名毎に下記処理を行う
             foreach (var folderName in folderNames)

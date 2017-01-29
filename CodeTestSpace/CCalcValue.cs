@@ -29,9 +29,8 @@ namespace CalcXmlFile
             //容器を作成
             var answers = new List<CalcValue>();
 
-            //フォルダ名のリスト作成
-            var fileUtil = new FileUtil();
-            var folderNames = fileUtil.GetFolderNameList(collectDatas);
+            //リストからフォルダ名取得→重複を削除リスト化
+            var folderNames = collectDatas.Select(d => d.FolderName).Distinct().ToList();
 
             //フォルダ名毎に下記処理を行う
             foreach (var folderName in folderNames)
@@ -72,6 +71,5 @@ namespace CalcXmlFile
             }
             return answers;
         }
-
     }
 }

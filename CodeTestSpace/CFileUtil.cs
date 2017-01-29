@@ -18,30 +18,13 @@ namespace CalcXmlFile
             return fnames;
         }
 
-        /// <summary> List<MeasuredValue/>からフォルダ名を取得し、重複名を削除したリストを返す </summary>
-        public List<string> GetFolderNameList(List<MeasuredValue> collectDatas)
-        {
-            //リストからフォルダ名取得→重複を削除リスト化
-            var folderNameList = collectDatas.Select(collectData => collectData.FolderName).Distinct().ToList();
-
-            return folderNameList;
-        }
-
-        /// <summary> List<SpMeasuredValue/>からフォルダ名を取得し、重複名を削除したリストを返す </summary>
-        public List<string> SpGetFolderNameList(List<SpMeasuredValue> collectDatas)
-        {
-            //リストからフォルダ名取得→重複を削除リスト化
-            var folderNameList = collectDatas.Select(collectData => collectData.FolderName).Distinct().ToList();
-
-            return folderNameList;
-        }
-
         /// <summary> 結果をファイルに書き出し保存 </summary>
         public void SaveDatas(string fName, List<CalcValue> values, List<SpCalcValue> spValues)
         {
             //保存・書き出しをする対象を決定
             var targetXyz = new string[] {"X", "Y", "Z", "Diameter"};
             var targetIjk = new string[] { "Orientation I", "Orientation J", "Orientation K" };
+            var targetInspect = new string[] {"CubeHole1", "CubeHole2", "CubeHole3"};
 
             //CSVファイルに書き込むときに使うEncoding
             System.Text.Encoding enc = System.Text.Encoding.GetEncoding("Shift_JIS");
@@ -60,6 +43,15 @@ namespace CalcXmlFile
 
                 //（X,Y,Z,Dia）平均と標準偏差の書き出し
                 OutputResultOfCalc(values, sw, targetXyz);
+
+                //空白行挿入
+                OutputBlankLine(sw);
+
+                //（計測名毎のX,Y,Z,Dia）フィールドヘッドの書き出し
+                OutputFieldHeadingsForAllDatas(sw);
+
+                //計測名毎の（X,Y,Z,Dia）平均と標準偏差の書き出し
+                OutputResultOfCalcDatas(values, sw, targetXyz, targetInspect);
 
                 //空白行挿入
                 OutputBlankLine(sw);
@@ -93,6 +85,12 @@ namespace CalcXmlFile
             sw.WriteLine("注目計測名,フォルダ名,X Avg,X SD,Y Avg,Y SD,Z Avg,Z SD,Dia Avg,Dia SD");
         }
 
+        /// <summary> FiekdHeadings書き出し: 計測名毎のX,Y,Z,Diaの平均・標準偏差 </summary>
+        private void OutputFieldHeadingsForAllDatas(StreamWriter sw)
+        {
+            sw.WriteLine("注目計測名,X Avg,X SD,Y Avg,Y SD,Z Avg,Z SD");
+        }
+
         /// <summary> FiekdHeadings書き出し: I,J,Kの平均・標準偏差 </summary>
         private void OutputFieldHeadingsForIjk(StreamWriter sw)
         {
@@ -112,8 +110,8 @@ namespace CalcXmlFile
             //注目計測名をリストから取り出す
             var inspectName = values.Select(d => d.Inspect).Distinct().ToList();
 
-            //フォルダ名のリスト作成
-            var folderNames = values.Select(collectData => collectData.FolderName).Distinct().ToList();
+            //リストからフォルダ名取得→重複を削除リスト化
+            var folderNames = values.Select(d => d.FolderName).Distinct().ToList();
 
             //注目計測名等データがなかった場合の空容器
             var nanList = new CalcValue();
@@ -158,11 +156,60 @@ namespace CalcXmlFile
             }
         }
 
+        /// <summary> 注目計測名毎に平均と標準偏差を書き出す </summary>
+        private void OutputResultOfCalcDatas(List<CalcValue> values, StreamWriter sw, string[] targetXyz, string[] targetInspect)
+        {
+            //注目計測名をリストから取り出す
+            var inspectName = values.Select(d => d.Inspect).Distinct().ToList();
+
+            //注目計測名等データがなかった場合の空容器
+            var nanList = new CalcValue();
+            {
+                nanList.Inspect = "NaN";
+                nanList.Item = "NaN";
+                nanList.MeanValue = double.NaN;
+                nanList.DevValue = double.NaN;
+            }
+
+            //それぞれの計測名毎に平均値の平均とその標準偏差を書き出す
+            foreach (var inspectname in targetInspect)
+            {
+                //容器作成
+                var dobleList = new List<List<double>>();
+
+                //注目計測名と項目名をもとにデータを収集
+                foreach (var item in targetXyz)
+                {
+                    var value = values
+                        .Where(d => d.Inspect == inspectname)
+                        .Where(d => d.Item == item)
+                        .Select(d => d.MeanValue)
+                        .ToList();
+
+                    dobleList.Add(value);
+                }
+
+                var mathLibrary = new MathLibrary();
+                foreach (var item in dobleList)
+                {
+                    //平均
+                    var allDataMean = mathLibrary.CalcMean(item);
+
+                    //分散
+                    var allDataDev = mathLibrary.CalvDev(item);
+
+                    //データの書き出し
+                    sw.Write($"{inspectname},{allDataMean:F6}, {allDataDev:E6}");
+                }
+                sw.WriteLine();
+            }
+        }
+
         /// <summary> 注目計測名毎に特殊計算の平均と標準偏差を書き出す </summary>
         private void OutputResultOfSpecialCalc(List<SpCalcValue> spValues, StreamWriter sw)
         {
-            //フォルダ名のリスト作成
-            var folderNames = spValues.Select(collectData => collectData.FolderName).Distinct().ToList();
+            //リストからフォルダ名取得→重複を削除リスト化
+            var folderNames = spValues.Select(d => d.FolderName).Distinct().ToList();
 
             //フォルダ毎に下記作業を行う
             foreach (var folderName in folderNames)
