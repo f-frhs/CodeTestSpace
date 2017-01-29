@@ -30,6 +30,7 @@ namespace CalcXmlFile
         /// <summary> taegetDir以下のファイルから計測データを抜き出し、MeasuredValue型のリストを返す </summary>
         public List<MeasuredValue> CollectInspectedValues(InspectItem inspects, string targetDir)
         {
+            //TODO: この変数名を変えること。意図が分かるように。
             var getTargetNameList = new FileUtil();
 
             //指定フォルダ以下のフォルダ名を取得する

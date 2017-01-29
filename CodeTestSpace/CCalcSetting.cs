@@ -19,7 +19,7 @@ namespace CalcXmlFile
         /// <remarks>例: distance など</remarks>
         public string Operator { set; get; }
 
-        /// <summary> fNameからCalcSetting型のリストを返す </summary>
+        /// <summary> fNameから特殊計算の内容を読み出し、CalcSetting型のリストとして返す </summary>
         public List<CalcSetting> LoadConfiguration(string fName)
         {
             //CSVファイルから各行取り込み

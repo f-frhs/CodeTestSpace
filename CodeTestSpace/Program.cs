@@ -45,7 +45,7 @@ namespace CalcXmlFile
             var instSetting = new CalcSetting();
             var calcSetting = instSetting.LoadConfiguration(csvCalcPath);
 
-            //csvFilePathに複数行計算対象が記された場合の分岐
+            //csvFilePathに複数セットの計測対象が記された場合の分岐
             foreach (var inspectItem in inspectItems)
             {
                 //指定フォルダ以下のファイルを取得する

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO.Pipes;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Office.Interop.Excel;
 
 namespace CalcXmlFile
 {

@@ -18,10 +18,10 @@ namespace CalcXmlFile
         public List<string> InsNames { set; get; }
 
         /// <summary> 注目計測名 </summary>
-        /// <remarks> 例:CubeHole1　等 </remarks> 
+        /// <remarks> 例:CubeHole1　等 </remarks>
         public List<string> Inspects { set; get; }
 
-        /// <summary> 項目 </summary> 
+        /// <summary> 項目 </summary>
         /// <remarks> 例:X　等 </remarks>
         public List<string> Items { set; get; }
 
@@ -83,9 +83,9 @@ namespace CalcXmlFile
                             itemsList.AddRange(result);
                             break;
                         //スキップ
-                        case 3:
-
-                            break;
+                        //case 3:
+                        //このケースには到達できない。 numOfLines = 3 なので。
+                        //    break;
                         default:
                             break;
                     }

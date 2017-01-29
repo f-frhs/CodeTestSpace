@@ -56,7 +56,7 @@ namespace CalcXmlFile
                         answer.Inspect = sInspection;
                         answer.Item = sItem;
                         answer.FolderName = folderName;
-                        
+
                         var mathLibrary = new MathLibrary();
 
                         //平均
