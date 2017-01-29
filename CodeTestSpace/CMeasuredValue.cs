@@ -7,7 +7,7 @@ using AutoAssyModules.Perceptron;
 
 namespace CalcXmlFile
 {
-    /// <summary> 計測データ(ファイル名・注目計測名・項目・absoluteの値)を格納するクラス</summary>
+    /// <summary> 計測データ(対象フォルダ名・対象ファイル名・注目計測名・項目・absoluteの値)を格納するクラス</summary>
     public class MeasuredValue
     {
         /// <summary> 対象フォルダ名  </summary>
@@ -61,19 +61,20 @@ namespace CalcXmlFile
                             CInspectionCharacteristic outInspect;
                             if (CPerceptronData.IsContains(data, element, item, out outInspect))
                             {
-                                //容器作成
-                                var answer = new MeasuredValue();
                                 var absoluteAns = 0d;
 
                                 //指定した測定点・項目を元にabsoluteを返す
                                 var itemAbsolute = outInspect.Measurement.abusolute;
 
                                 //リストに値を格納
-                                answer.FolderName = Path.GetFileName(folderName);
-                                answer.FileName = fileName;
-                                answer.Inspect = element;
-                                answer.Item = item;
-                                answer.Value = double.TryParse(itemAbsolute, out absoluteAns) ? absoluteAns : double.NaN;
+                                var answer = new MeasuredValue
+                                {
+                                    FolderName = Path.GetFileName(folderName),
+                                    FileName = fileName,
+                                    Inspect = element,
+                                    Item = item,
+                                    Value = double.TryParse(itemAbsolute, out absoluteAns) ? absoluteAns : double.NaN
+                                };
                                 answers.Add(answer);
                             }
                         }

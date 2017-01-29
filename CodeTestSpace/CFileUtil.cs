@@ -18,8 +18,27 @@ namespace CalcXmlFile
             return fnames;
         }
 
-        /// <summary> 結果をファイルに保存 </summary>
-        public void SaveDatas(string fName, List<CalcValue> values, List<SpCalcMeanDev> spValues)
+        /// <summary> List<MeasuredValue>からフォルダ名を取得し、重複名を削除したリストを返す </summary>
+        public List<string> GetFolderNameList(List<MeasuredValue> collectDatas)
+        {
+            //容器作成
+            var folderNameList = new List<string>();
+
+            //フォルダごとに下記の処理を繰り返す
+            foreach (var collectData in collectDatas)
+            {
+                var names = collectData.FolderName;
+                folderNameList.Add(names);
+            }
+
+            //リスト内重複の削除
+            var folderNames = folderNameList.Distinct().ToList();
+
+            return folderNames;
+        }
+
+        /// <summary> 結果をファイルに書き出し保存 </summary>
+        public void SaveDatas(string fName, List<CalcValue> values, List<SpCalcValue> spValues)
         {
             //保存・書き出しをする対象を決定
             var targetXyz = new string[] {"X", "Y", "Z", "Diameter"};
@@ -76,7 +95,7 @@ namespace CalcXmlFile
         }
 
         /// <summary> FiekdHeadings書き出し: 特殊計算の平均・標準偏差 </summary>
-        private void OutputFieldHeadingsForSpecialCalc(List<SpCalcMeanDev> spValues, StreamWriter sw)
+        private void OutputFieldHeadingsForSpecialCalc(List<SpCalcValue> spValues, StreamWriter sw)
         {
             sw.WriteLine($"特殊計算内容,{spValues[0].Operator}");
             sw.WriteLine("計算対象,計算対象,平均,標準偏差");
@@ -127,7 +146,7 @@ namespace CalcXmlFile
         }
 
         /// <summary> 注目計測名毎に特殊計算の平均と標準偏差を書き出す </summary>
-        private void OutputResultOfSpecialCalc(List<SpCalcMeanDev> spValues, StreamWriter sw)
+        private void OutputResultOfSpecialCalc(List<SpCalcValue> spValues, StreamWriter sw)
         {
             for (var i = 0; i < 3; i++)
             {

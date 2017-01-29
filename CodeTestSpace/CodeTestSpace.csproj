@@ -37,10 +37,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CCalcValue.cs" />
-    <Compile Include="CSpCalcValue.cs" />
+    <Compile Include="CSpMeasuredValue.cs" />
     <Compile Include="CMeasuredValue.cs" />
     <Compile Include="CCalcSetting.cs" />
-    <Compile Include="CSpCalcMeanDev.cs" />
+    <Compile Include="CSpCalcValue.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="CPerceptronData.cs" />
     <Compile Include="CInspectItem.cs" />

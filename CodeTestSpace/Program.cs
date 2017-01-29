@@ -23,7 +23,7 @@ namespace CalcXmlFile
 
             //結果保持用
             var resultCalcMeanDev = new List<List<CalcValue>>();
-            var resultSpCalcMeanDev = new List< List<SpCalcMeanDev>>();
+            var resultSpCalcMeanDev = new List< List<SpCalcValue>>();
 
             //注目測定点名と注目計測名と項目をファイルから読み込む
             //例
@@ -41,6 +41,7 @@ namespace CalcXmlFile
             var instSetting = new CalcSetting();
             var calcSetting = instSetting.LoadConfiguration(csvCalcPath);
 
+            //csvFilePathに複数行計算対象が記された場合の分岐
             foreach (var inspectItem in inspectItems)
             {
                 //指定フォルダ以下のファイルを取得する
@@ -55,11 +56,11 @@ namespace CalcXmlFile
                 resultCalcMeanDev.Add(calcMeanDev);
 
                 //特殊計算を求める
-                var instSpCalc = new SpCalcValue();
+                var instSpCalc = new SpMeasuredValue();
                 var spCalc = instSpCalc.SellectSpCalc(calcSetting, measuredValues);
 
                 //特殊計算の平均と標準偏差を求める
-                var instDataSpCalcMeanDev = new SpCalcMeanDev();
+                var instDataSpCalcMeanDev = new SpCalcValue();
                 var spCalcMeanDev = instDataSpCalcMeanDev.CalcMeanDev(calcSetting, spCalc);
                 resultSpCalcMeanDev.Add(spCalcMeanDev);
 

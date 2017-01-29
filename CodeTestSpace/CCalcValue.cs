@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace CalcXmlFile
 {
-    /// <summary> 計算結果(注目計測名・項目・平均・標準偏差)を格納するクラス</summary>
+    /// <summary> 計算結果(対象フォルダ名・注目計測名・項目・平均・標準偏差)を格納するクラス</summary>
     public class CalcValue
     {
         /// <summary> 対象フォルダ名  </summary>
@@ -28,17 +28,12 @@ namespace CalcXmlFile
         {
             //容器を作成
             var answers = new List<CalcValue>();
-            var folderNameList = new List<string>();
 
-            //フォルダごとに下記の処理を繰り返す
-            foreach (var collectData in collectDatas)
-            {
-                var names = collectData.FolderName;
-                folderNameList.Add(names);
-            }
+            //フォルダ名のリスト作成
+            var fileUtil = new FileUtil();
+            var folderNames = fileUtil.GetFolderNameList(collectDatas);
 
-            var folderNames = folderNameList.Distinct();
-
+            //フォルダ名毎に下記処理を行う
             foreach (var folderName in folderNames)
             {
                 //注目測定点名・項目が同じものを取り出し、それぞれ平均・標準偏差を求める
@@ -77,5 +72,6 @@ namespace CalcXmlFile
             }
             return answers;
         }
+
     }
 }
