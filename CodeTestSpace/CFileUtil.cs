@@ -21,20 +21,19 @@ namespace CalcXmlFile
         /// <summary> List<MeasuredValue>からフォルダ名を取得し、重複名を削除したリストを返す </summary>
         public List<string> GetFolderNameList(List<MeasuredValue> collectDatas)
         {
-            //容器作成
-            var folderNameList = new List<string>();
+            //リストからフォルダ名取得→重複を削除リスト化
+            var folderNameList = collectDatas.Select(collectData => collectData.FolderName).Distinct().ToList();
 
-            //フォルダごとに下記の処理を繰り返す
-            foreach (var collectData in collectDatas)
-            {
-                var names = collectData.FolderName;
-                folderNameList.Add(names);
-            }
+            return folderNameList;
+        }
 
-            //リスト内重複の削除
-            var folderNames = folderNameList.Distinct().ToList();
+        /// <summary> List<SpMeasuredValue>からフォルダ名を取得し、重複名を削除したリストを返す </summary>
+        public List<string> GetFolderNameList(List<SpMeasuredValue> collectDatas)
+        {
+            //リストからフォルダ名取得→重複を削除リスト化
+            var folderNameList = collectDatas.Select(collectData => collectData.FolderName).Distinct().ToList();
 
-            return folderNames;
+            return folderNameList;
         }
 
         /// <summary> 結果をファイルに書き出し保存 </summary>

@@ -81,10 +81,12 @@ namespace CalcXmlFile
                         //リストに格納
                         var answer = new SpMeasuredValue
                         {
+                            FolderName = folderName,
                             FileName = fname,
                             Inspect1 = settingData.Inspect1,
                             Inspect2 = settingData.Inspect2,
-                            Value = distance
+                            Operator = settingData.Operator,
+                            Value = distance                            
                         };
                         answers.Add(answer);
                     }

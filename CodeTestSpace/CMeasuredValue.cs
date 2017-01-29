@@ -44,7 +44,7 @@ namespace CalcXmlFile
                 //指定フォルダ以下のファイル名を取得する
                 var fileNames = getTargetNameList.GetXmlFiles(folderName);
 
-                //ファイルごとに下記の処理を繰り返しリストの作成
+                //ファイル毎に下記の処理を繰り返しリストの作成
                 foreach (var fname in fileNames)
                 {
                     //ファイル名の取得
