@@ -112,5 +112,7 @@ namespace CalcXmlFile
             //データの格納
             return new [] {x, y, z};
         }
+
+
     }
 }
