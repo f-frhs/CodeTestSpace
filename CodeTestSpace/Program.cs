@@ -23,7 +23,7 @@ namespace CalcXmlFile
             var basePath = solutionDir + @"testdata\";
 
             //結果ファイル保存先のアドレス
-            var saveDataPath = @"C:\Users\hayashi\Documents\Visual Studio 2015\Projects\CodeTestSpace\output\result.csv";
+            var saveDataPath = solutionDir + @"output\result.csv";
 
             //結果保持用
             var resultCalcMeanDev = new List<List<CalcValue>>();
